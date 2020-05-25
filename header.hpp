@@ -56,6 +56,8 @@ struct Network {
 
 /* ---- FUNCTIONS ---- */
 
+// Overloading the >> operator to read a Sine_function from input
+istream &operator>>(istream &input, Sine_function &s);
 
 // Overloading the >> operator to read a Component from input
 istream &operator>>(istream &input, Component &s);

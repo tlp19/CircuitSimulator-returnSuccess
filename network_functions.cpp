@@ -40,6 +40,27 @@ void Component::set_nb_branches() {
 }
 
 
+// Overloading the >> operator to read a Sine_function from input
+istream &operator>>(istream &input, Sine_function &s) {
+	/*
+	TODO
+	- Takes an input of the form "SINE(x y z)"
+	- All parameters (x, y and z) are separated by whitespaces (not commas or semi-columns)
+	- x, y and z are strings: for example they could be "10k"
+	- The Sine_function is a structure (struct) defined in header.hpp -> go have a look at it
+	- In your code, you must define the 3 member variables of the "s" object:
+		- dc_offset (x in the example)
+		- amplitude (y in the example)
+		- frequency (z in the example)
+	- As it is an input/output overload, you don't have to return the object at the end, but you have to return 'input" (it is already returned, so just don't change it)
+	- Look at my other >> operator overloadings for inspiration (I detailed the overload of >> for the Instruction (around line 120)
+		- Compared as for the Instruction, you won't have to read useless zeros, but x and z are right next to parentheses, so that might be a bit challenging (maybe not, idk)
+	*/
+	
+	
+	
+	return input;
+}
 
 // Overloading the >> operator to read a Component from input
 istream &operator>>(istream &input, Component &s) {
@@ -61,14 +82,17 @@ istream &operator>>(istream &input, Component &s) {
 	}
 	assert(s.nodes.size()==s.nb_branches);
 	
-	//DOESN'T WORK WITH SINE FUNCTION, NEED TO IMPLEMENT THAT FOR V and I
-	string _value_type;
-	input >> _value_type;
-//	input.getline(_value_type, numeric_limits<streamsize>::max(), '\n');
-	if(s.type=='Q'){
-		s.transistor_type=_value_type;
+	if((s.type=='V')||(s.type=='I')) {
+		//if peek 'S' -> Sine_function
+		//else -> value
+	} else if(s.type=='Q'){
+		string _transistor_type;
+		input >> _transistor_type;
+		s.transistor_type=_transistor_type;
 	} else {
-		s.value=_value_type;
+		string _value;
+		input >> _value;
+		s.value=_value;
 	}
 	
 	return input;
@@ -84,8 +108,6 @@ ostream &operator<<(ostream &output, const Component &s) {
 	return output;
 }
 
-
-
 // Overloading the >> operator to read an Instruction from input in the SPICE format
 istream &operator>>(istream &input, Instruction &s) {
 	string _name;
@@ -94,20 +116,18 @@ istream &operator>>(istream &input, Instruction &s) {
 		s.is_end=true;
 	} else {
 		s.is_end=false;
-		float arg0;
-		cin >> arg0;
-		string _stop_time;
-		cin >> _stop_time;
-		s.stop_time=_stop_time;
-		cin >> arg0;
-		string _timestep;
-		cin >> _timestep;
-		s.timestep = _timestep;
+		float arg0;					//we expect to read a 0 first
+		cin >> arg0;				//so we just read it and forget about it
+		string _stop_time;			//prepare to read the stop_time variable in a dummy variable
+		cin >> _stop_time;			//read the stop_time variable
+		s.stop_time=_stop_time;		//define the stop_time of s (the Instruction) as the thing we read
+		cin >> arg0;				//read the second 0
+		string _timestep;			//same thing now, but with the timestep
+		cin >> _timestep;			//read the timestep in a dummy variable
+		s.timestep = _timestep;		//define the timestep of s as the thing we just read
 	}
 	return input;
 }
-
-
 
 // Overloading the >> operator to read a Network from input in the SPICE format
 istream &operator>>(istream &input, Network &s) {
@@ -144,7 +164,6 @@ ostream &operator<<(ostream &output, const Network &s) {
 	output << ".tran 0 " << s.instruction.stop_time << " 0 " << s.instruction.timestep << endl << ".end";
 	return output;
 }
-
 
 
 //Convert a litteral value from string to double
