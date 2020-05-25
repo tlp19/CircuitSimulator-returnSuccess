@@ -64,21 +64,50 @@ ostream &operator<<(ostream &output, const Component &s) {
 
 
 
+// Overloading the >> operator to read an Instruction from input in the SPICE format
+istream &operator>>(istream &input, Instruction &s) {
+	string _name;
+	cin >> _name;
+	if(_name==".end") {
+		s.is_end=true;
+	} else {
+		s.is_end=false;
+		float arg0;
+		cin >> arg0;
+		string _stop_time;
+		cin >> _stop_time;
+		s.stop_time=_stop_time;
+		cin >> arg0;
+		string _timestep;
+		cin >> _timestep;
+		s.timestep = _timestep;
+	}
+	return input;
+}
+
+
+
 // Overloading the >> operator to read a Network from input in the SPICE format
 istream &operator>>(istream &input, Network &s) {
-	//Read the components
 	Component _x;
-	while(input.peek() != ('.' | '*')) {
-		input >> _x;
-		s.components.push_back(_x);
-	}
-	//Ignore the 
-	//Read the instruction
-	assert(input.peek() == ('.' | '*'));
-	string _instruction;
-	input >> _instruction;
-	
-		
+	Instruction _instruction;
+	while(input.good()) {
+		if(input.peek()=='*') {
+			//Ignore a comment
+			input.ignore(numeric_limits<streamsize>::max(), '\n')
+		} else if (input.peek()=='.') {
+			//Read an instruction
+			input >> _instruction;
+			if(_instruction.is_end==false){
+				s.instruction=_instruction;
+			} else {
+				return input;
+			}
+		} else {
+			//Read a component
+			input >> _x;
+			s.components.push_back(_x);
+		}
 	return input;
 }
 	
