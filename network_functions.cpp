@@ -76,7 +76,7 @@ istream &operator>>(istream &input, Network &s) {
 	//Read the instruction
 	assert(input.peek() == ('.' | '*'));
 	string _instruction;
-	input >> instruction
+	input >> instruction;
 	
 		
 	return input;
