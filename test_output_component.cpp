@@ -35,6 +35,4 @@ x.components = c;
 
 cout<< x<< endl;
 
-cout<< get_numerical("10m") <<endl;
-
 }
