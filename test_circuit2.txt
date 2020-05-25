@@ -1,0 +1,12 @@
+* This is a simple test circuit
+V1 N1 0 5
+R1 N1 N2 1k
+C1 0 N2 1n
+L1 0 N2 1m
+C2 N1 N3 1p
+R2 N3 N2 1Meg
+*The analysis instructions are:
+.tran 0 2 0 0.2
+.tran 0 1 0 0.05
+.end
+L0 N1 N2 1u
