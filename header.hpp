@@ -20,8 +20,16 @@ struct Component {
 	string name;					//Arbitrary name of the component
 	int nb_branches;				//Number of nodes that the component is connected to
 	vector<string> nodes;			//List of the nodes that the component is connected to (2 or 3)
-	float value;					//Value of the component (in Ohms, Farads, etc.)
+	string value;					//Value of the component (in Ohms, Farads, etc.)
 	string transistor_type;			//In case the component is a transistor, this is either NPN or PNP
+	
+	string value_type() {			//Returns either the value or the transistor type depending on the component
+		if(type=='Q') {
+			return transistor_type;
+		} else {
+			return value;
+		}
+	}
 };
 
 
@@ -44,34 +52,18 @@ struct Network {
 
 
 // Edits the component characteristics to fill in the nb_branches parameter
-Component find_nb_branches(Component input){
-	if(input.type == 'Q'){
-		input.nb_branches = 3;
-	} else {
-		input.nb_branches = 2;
-	};
-	return input; 
-}
+Component find_nb_branches(Component input);
 
-	
-// Overloading the >> operator to read a network from input in the SPICE format
-istream &operator>>(istream &input, Network &s) {
-		
-		
-		
-	return input;
-}
-	
+// Overloading the << operator to print a Component
+ostream &operator<<(ostream &output, const Component &s);
+
+// Overloading the >> operator to read a Network from input in the SPICE format
+istream &operator>>(istream &input, Network &s);
+
 // Overloading the << operator to print a Network (for debugging purposes)
-ostream &operator<<(ostream &output, const Network &s) {
-	//Output the components
-	int network_size = Network.components.size();
-	for
-	
-	//Output the instruction
-	output << ".tran 0 " << s.instruction.stop_time << " 0 " << s.instruction.timestep << endl << ".end" << endl;
-	return output;
-}
+ostream &operator<<(ostream &output, const Network &s);
+
+
 
 
 #endif
