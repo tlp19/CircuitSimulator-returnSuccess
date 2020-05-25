@@ -17,16 +17,24 @@ struct Component {
 	float value;
 	string transistor_type;
 
-}
+};
 
-struct
+//struct Instruction;
 
 class Network {
 	vector<Component> components;
-	vector<Instruction> instructions;
-}
+//	vector<Instruction> instructions;
+};
 
-int find_nb_branches(Component input);
+Component find_nb_branches(Component input){
+
+if(input.type == 'Q'){
+	input.nb_branches = 3;
+	}
+else{input.nb_branches = 2;};
+
+return input; 
+}
 
 
 #endif
