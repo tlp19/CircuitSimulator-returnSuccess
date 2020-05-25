@@ -43,6 +43,7 @@ istream &operator>>(istream &input, Component &s) {
 	}
 	
 	string _value_type;
+	input >> _value_type;
 	if(s.type=='Q'){
 		s.transistor_type=_value_type;
 	} else {
@@ -94,20 +95,28 @@ istream &operator>>(istream &input, Network &s) {
 	while(input.good()) {
 		if(input.peek()=='*') {
 			//Ignore a comment
-			input.ignore(numeric_limits<streamsize>::max(), '\n')
-		} else if (input.peek()=='.') {
-			//Read an instruction
-			input >> _instruction;
-			if(_instruction.is_end==false){
-				s.instruction=_instruction;
-			} else {
-				return input;
-			}
+//			cerr << "comment" << endl;
+			input.ignore(numeric_limits<streamsize>::max(), '\n');
 		} else {
-			//Read a component
-			input >> _x;
-			s.components.push_back(_x);
+			if (input.peek()=='.') {
+				//Read an instruction
+//				cerr << "instruction" << endl;
+				input >> _instruction;
+				if(_instruction.is_end==false){
+					s.instruction=_instruction;
+					input.ignore(numeric_limits<streamsize>::max(), '\n');
+				} else {
+					return input;
+				}
+			} else {
+				//Read a component
+//				cerr << "component" << endl;
+				input >> _x;
+				s.components.push_back(_x);
+				input.ignore(numeric_limits<streamsize>::max(), '\n');
+			}
 		}
+	}
 	return input;
 }
 	
