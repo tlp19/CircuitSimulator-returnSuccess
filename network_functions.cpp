@@ -2,13 +2,22 @@
 
 using namespace std;
 
-// Overloading to print a vector<string> to cout [DEBUGGING ONLY]
+
+
+/* --- DEBUGGING FUNCTIONS --- */
+
+
+// Overloading to print a vector<string> to cout
 ostream &operator<<(ostream &output, const vector<string> &s) {
 	for(int i=0 ; i < s.size() ; i++) {
 		output << s[i] << " ";
 	}
 	return output;
 }
+
+
+
+/* --- PRACTICAL FUNCTIONS --- */
 
 
 // Returns either the value or the transistor type depending on the component

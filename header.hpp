@@ -12,8 +12,15 @@ using namespace std;
 
 
 
-/* CLASSES AND STRUCTURES */
+/* -- CLASSES AND STRUCTURES -- */
 
+
+//Struct to define a sine function (for components V and I)
+struct Sine_function {
+	string dc_offset;
+	string amplitude;
+	string frequency;
+};
 
 //Struct to define a specific component inside the circuit
 struct Component {
@@ -22,6 +29,7 @@ struct Component {
 	int nb_branches;				//Number of nodes that the component is connected to
 	vector<string> nodes;			//List of the nodes that the component is connected to (2 or 3)
 	string value;					//Value of the component (in Ohms, Farads, etc.)
+	Sine_function function;			//Sine function for V and I components
 	string transistor_type;			//In case the component is a transistor, this is either NPN or PNP
 	double num_value;				//Numerical value extracted from the value variable.
 	
@@ -46,7 +54,7 @@ struct Network {
 
 
 
-/* FUNCTIONS */
+/* ---- FUNCTIONS ---- */
 
 
 // Overloading the >> operator to read a Component from input
