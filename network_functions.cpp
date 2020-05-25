@@ -58,7 +58,7 @@ ostream &operator<<(ostream &output, const Component &s) {
 	for(int i=0 ; i < s.nb_branches ; i++) {
 		output << s.nodes[i] << " ";
 	}
-	output << s.value_type() << endl;
+	output << s.value_type();
 	return output;
 }
 
@@ -90,6 +90,6 @@ ostream &operator<<(ostream &output, const Network &s) {
 	}
 	
 	//Output the instruction
-	output << ".tran 0 " << s.instruction.stop_time << " 0 " << s.instruction.timestep << endl << ".end" << endl;
+	output << ".tran 0 " << s.instruction.stop_time << " 0 " << s.instruction.timestep << endl << ".end";
 	return output;
 }
