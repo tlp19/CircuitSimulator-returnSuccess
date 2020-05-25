@@ -16,7 +16,7 @@ using namespace std;
 
 //Struct to define a specific component inside the circuit
 struct Component {
-	char type;						//Type of the component; either R, C, L, D or Q
+	char type;						//Type of the component; either V, I, R, C, L, D or Q
 	string name;					//Arbitrary name of the component
 	int nb_branches;				//Number of nodes that the component is connected to
 	vector<string> nodes;			//List of the nodes that the component is connected to (2 or 3)
