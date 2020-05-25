@@ -19,7 +19,10 @@ struct Component {
 
 };
 
-struct Instruction;
+struct Instruction{
+	string stop_time;
+	string timestep;
+};
 
 class Network {
 	vector<Component> components;
@@ -27,13 +30,13 @@ class Network {
 };
 
 Component find_nb_branches(Component input){
-
-if(input.type == 'Q'){
-	input.nb_branches = 3;
-	}
-else{input.nb_branches = 2;};
-
-return input; 
+	if(input.type == 'Q'){
+		input.nb_branches = 3;
+	} else{
+		input.nb_branches = 2;
+	};
+	
+	return input; 
 }
 
 
