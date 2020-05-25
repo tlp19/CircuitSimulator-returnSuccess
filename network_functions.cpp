@@ -34,19 +34,19 @@ istream &operator>>(istream &input, Component &s) {
 	input >> _name;
 	s.name = _name;
 	
-	x.set_nb_branches();
+	s.set_nb_branches();
 	
 	string _node;
-	for(int i=0 ; i<x.nb_branches ; i++) {
+	for(int i=0 ; i<s.nb_branches ; i++) {
 		input >> _node;
-		x.nodes.push_back(_node);
+		s.nodes.push_back(_node);
 	}
 	
 	string _value_type;
-	if(x.type=='Q'){
-		x.transistor_type=_value_type;
+	if(s.type=='Q'){
+		s.transistor_type=_value_type;
 	} else {
-		x.value=_value_type;
+		s.value=_value_type;
 	}
 	
 	return input;
@@ -76,7 +76,7 @@ istream &operator>>(istream &input, Network &s) {
 	//Read the instruction
 	assert(input.peek() == ('.' | '*'));
 	string _instruction;
-	input >> instruction;
+	input >> _instruction;
 	
 		
 	return input;
