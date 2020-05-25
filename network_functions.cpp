@@ -24,8 +24,8 @@ void Component::set_nb_branches() {
 
 
 
-// Overloading the >> operator to read a Network from input
-istream &operator>>(istream &input, Network &s) {
+// Overloading the >> operator to read a Component from input
+istream &operator>>(istream &input, Component &s) {
 	char _type;
 	input >> _type;
 	s.type=_type;
