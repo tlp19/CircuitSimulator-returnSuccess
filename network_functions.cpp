@@ -15,13 +15,13 @@ Component find_nb_branches(Component input){
 }
 
 
-
+// Overloading the << operator to print a Component
 ostream &operator<<(ostream &output, const Component &s) {
 	output << s.type << s.name << " ";
 	for(int i=0 ; i < s.nb_branches ; i++) {
 		output << s.nodes[i] << " ";
 	}
-	output << s.value_type() << end;
+	output << s.value_type() << endl;
 	return output;
 }
 

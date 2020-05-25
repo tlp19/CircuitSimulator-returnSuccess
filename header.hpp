@@ -23,7 +23,7 @@ struct Component {
 	string value;					//Value of the component (in Ohms, Farads, etc.)
 	string transistor_type;			//In case the component is a transistor, this is either NPN or PNP
 	
-	string value_type() {			//Returns either the value or the transistor type depending on the component
+	string value_type() const {			//Returns either the value or the transistor type depending on the component
 		if(type=='Q') {
 			return transistor_type;
 		} else {
