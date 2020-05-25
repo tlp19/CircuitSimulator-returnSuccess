@@ -9,6 +9,9 @@
 
 using namespace std;
 
+
+// CLASSES AND STRUCTURES
+
 struct Component {
 	char type;
 	string name;
@@ -16,17 +19,29 @@ struct Component {
 	vector<string> nodes;
 	float value;
 	string transistor_type;
+};
 
-}
-
-struct
+struct Instruction{
+	string stop_time;
+	string timestep;
+};
 
 class Network {
 	vector<Component> components;
-	vector<Instruction> instructions;
-}
+	Instruction instruction;
+};
 
-int find_nb_branches(Component input);
+
+//FUNCTIONS
+
+Component find_nb_branches(Component input){
+	if(input.type == 'Q'){
+		input.nb_branches = 3;
+	} else {
+		input.nb_branches = 2;
+	};
+	return input; 
+}
 
 
 #endif
