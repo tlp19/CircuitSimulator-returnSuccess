@@ -3,17 +3,54 @@
 using namespace std;
 
 
-
-// Edits the component characteristics to fill in the nb_branches parameter
-Component find_nb_branches(Component input){
-	if(input.type == 'Q'){
-		input.nb_branches = 3;
+// Returns either the value or the transistor type depending on the component
+string Component::value_type() const {
+	if(type=='Q') {
+		return transistor_type;
 	} else {
-		input.nb_branches = 2;
-	};
-	return input; 
+		return value;
+	}
 }
 
+
+// Edits the component characteristics to fill in the nb_branches parameter
+void Component::set_nb_branches() {
+	if(type == 'Q'){
+		nb_branches = 3;
+	} else {
+		nb_branches = 2;
+	};
+}
+
+
+
+// Overloading the >> operator to read a Network from input
+istream &operator>>(istream &input, Network &s) {
+	char _type;
+	input >> _type;
+	s.type=_type;
+	
+	string _name;
+	input >> _name;
+	s.name = _name;
+	
+	x.set_nb_branches();
+	
+	string _node;
+	for(int i=0 ; i<x.nb_branches ; i++) {
+		input >> _node;
+		x.nodes.push_back(_node);
+	}
+	
+	string _value_type;
+	if(x.type=='Q'){
+		x.transistor_type=_value_type;
+	} else {
+		x.value=_value_type;
+	}
+	
+	return input;
+}
 
 // Overloading the << operator to print a Component
 ostream &operator<<(ostream &output, const Component &s) {
@@ -29,8 +66,18 @@ ostream &operator<<(ostream &output, const Component &s) {
 
 // Overloading the >> operator to read a Network from input in the SPICE format
 istream &operator>>(istream &input, Network &s) {
-		
-		
+	//Read the components
+	Component _x;
+	while(input.peek() != ('.' | '*')) {
+		input >> _x;
+		s.components.push_back(_x);
+	}
+	//Ignore the 
+	//Read the instruction
+	assert(input.peek() == ('.' | '*'));
+	string _instruction;
+	input >> instruction
+	
 		
 	return input;
 }

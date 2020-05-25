@@ -23,13 +23,8 @@ struct Component {
 	string value;					//Value of the component (in Ohms, Farads, etc.)
 	string transistor_type;			//In case the component is a transistor, this is either NPN or PNP
 	
-	string value_type() const {			//Returns either the value or the transistor type depending on the component
-		if(type=='Q') {
-			return transistor_type;
-		} else {
-			return value;
-		}
-	}
+	string value_type() const;
+	void set_nb_branches();
 };
 
 
@@ -52,7 +47,10 @@ struct Network {
 
 
 // Edits the component characteristics to fill in the nb_branches parameter
-Component find_nb_branches(Component input);
+Component set_nb_branches(Component x);
+
+// Overloading the >> operator to read a Component from input
+istream &operator>>(istream &input, Component &s);
 
 // Overloading the << operator to print a Component
 ostream &operator<<(ostream &output, const Component &s);
