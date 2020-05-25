@@ -62,6 +62,4 @@ istream &operator>>(istream &input, Network &s);
 ostream &operator<<(ostream &output, const Network &s);
 
 
-
-
 #endif
