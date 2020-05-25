@@ -19,11 +19,11 @@ struct Component {
 
 };
 
-//struct Instruction;
+struct Instruction;
 
 class Network {
 	vector<Component> components;
-//	vector<Instruction> instructions;
+	vector<Instruction> instructions;
 };
 
 Component find_nb_branches(Component input){
