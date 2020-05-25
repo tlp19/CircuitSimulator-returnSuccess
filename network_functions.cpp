@@ -2,6 +2,14 @@
 
 using namespace std;
 
+// Overloading to print a vector<string> to cout [DEBUGGING ONLY]
+ostream &operator<<(ostream &output, const vector<string> &s) {
+	for(int i=0 ; i < s.size() ; i++) {
+		output << s[i] << " ";
+	}
+	return output;
+}
+
 
 // Returns either the value or the transistor type depending on the component
 string Component::value_type() const {
@@ -34,6 +42,7 @@ istream &operator>>(istream &input, Component &s) {
 	input >> _name;
 	s.name = _name;
 	
+	s.nodes = {};
 	s.set_nb_branches();
 	
 	string _node;
@@ -41,9 +50,12 @@ istream &operator>>(istream &input, Component &s) {
 		input >> _node;
 		s.nodes.push_back(_node);
 	}
+	assert(s.nodes.size()==s.nb_branches);
 	
+	//DOESN'T WORK WITH SINE FUNCTION, NEED TO IMPLEMENT THAT FOR V and I
 	string _value_type;
 	input >> _value_type;
+//	input.getline(_value_type, numeric_limits<streamsize>::max(), '\n');
 	if(s.type=='Q'){
 		s.transistor_type=_value_type;
 	} else {
@@ -95,12 +107,9 @@ istream &operator>>(istream &input, Network &s) {
 	while(input.good()) {
 		if(input.peek()=='*') {
 			//Ignore a comment
-//			cerr << "comment" << endl;
 			input.ignore(numeric_limits<streamsize>::max(), '\n');
-		} else {
-			if (input.peek()=='.') {
+		} else if (input.peek()=='.') {
 				//Read an instruction
-//				cerr << "instruction" << endl;
 				input >> _instruction;
 				if(_instruction.is_end==false){
 					s.instruction=_instruction;
@@ -110,30 +119,26 @@ istream &operator>>(istream &input, Network &s) {
 				}
 			} else {
 				//Read a component
-//				cerr << "component" << endl;
 				input >> _x;
 				s.components.push_back(_x);
 				input.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
-		}
 	}
 	return input;
 }
 	
 // Overloading the << operator to print a Network (for debugging purposes)
 ostream &operator<<(ostream &output, const Network &s) {
-	//Output the components
 	for(int i=0 ; i < s.components.size() ; i++) {
 		output << s.components[i] << endl;
 	}
-	
-	//Output the instruction
 	output << ".tran 0 " << s.instruction.stop_time << " 0 " << s.instruction.timestep << endl << ".end";
 	return output;
 }
 
 
-//Convert the litteral value from string to double
+
+//Convert a litteral value from string to double
 double get_numerical(string value){
 	string num , letter;
 	for (int i=0; i<value.length() ; i++){
@@ -170,4 +175,4 @@ double get_numerical(string value){
 		} else {
 			return num_list;
 		}
-	}
+}

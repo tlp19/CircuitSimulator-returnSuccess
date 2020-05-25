@@ -5,6 +5,7 @@ C1 0 N2 1n
 L1 0 N2 1m
 C2 N1 N3 1p
 R2 N3 N2 1Meg
+Q1 N1 N2 N3 NPN
 *The analysis instructions are:
 .tran 0 2 0 0.2
 .tran 0 1 0 0.05

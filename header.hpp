@@ -32,7 +32,7 @@ struct Component {
 
 //Struct to store the analysis instruction of the .tran line in the input
 struct Instruction{
-	bool is_end;					//1 if it's the .end instruction, 0 otherwise.
+	bool is_end;					//1 if it's the .end instruction, 0 otherwise
 	string stop_time;				//Second argument of the .tran instruction
 	string timestep;				//Fourth argument of the .tran instruction
 };
@@ -49,9 +49,6 @@ struct Network {
 /* FUNCTIONS */
 
 
-// Edits the component characteristics to fill in the nb_branches parameter
-Component set_nb_branches(Component x);
-
 // Overloading the >> operator to read a Component from input
 istream &operator>>(istream &input, Component &s);
 
@@ -67,6 +64,7 @@ istream &operator>>(istream &input, Network &s);
 // Overloading the << operator to print a Network (for debugging purposes)
 ostream &operator<<(ostream &output, const Network &s);
 
+//Convert the litteral value from string to double
 double get_numerical(string value);
 
 #endif
