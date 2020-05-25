@@ -131,3 +131,43 @@ ostream &operator<<(ostream &output, const Network &s) {
 	output << ".tran 0 " << s.instruction.stop_time << " 0 " << s.instruction.timestep << endl << ".end";
 	return output;
 }
+
+
+//Convert the litteral value from string to double
+double get_numerical(string value){
+	string num , letter;
+	for (int i=0; i<value.length() ; i++){
+		if ( isdigit(value[i])){
+			num.push_back(value[i]);
+			} else if((value[i]>='A' && value[i]<= 'Z') || (value[i]>= 'a' && value[i] <= 'z')){
+				letter.push_back(value[i]);
+				}
+		} 
+	double num_list = stod(num);
+	double total;
+
+	if (letter[0] == 'p'){
+		total = num_list * pow(10, -12);
+		return total;
+		} else if (letter[0] == 'n'){
+			total = num_list * pow(10,-9);
+			return total;
+		} else if (letter[0] == 'u'){
+			total = num_list * pow(10,-6);
+			return total;
+		} else if (letter[0] == 'm'){
+			total = num_list *  pow(10,-3);
+			return total;
+		} else if (letter[0] == 'k'){
+			total = num_list * pow(10,3);
+			return total;
+		} else if (letter[0] == 'M'){
+			total = num_list * pow(10,6);
+			return total;
+		} else if (letter[0] == 'G'){
+			total = num_list * pow(10,9);
+			return total;
+		} else {
+			return num_list;
+		}
+	}

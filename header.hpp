@@ -67,5 +67,6 @@ istream &operator>>(istream &input, Network &s);
 // Overloading the << operator to print a Network (for debugging purposes)
 ostream &operator<<(ostream &output, const Network &s);
 
+double get_numerical(string value);
 
 #endif
