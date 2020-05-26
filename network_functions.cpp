@@ -22,15 +22,7 @@ ostream &operator<<(ostream &output, const vector<string> &s) {
 
 //Writes a Sine_function as a string
 string Component::function_to_string() const {
-	string function_to_string;
-	function_to_string += "SINE(";
-//	function_to_string.push_back("SINE(");
-	function_to_string.push_back(function.dc_offset);
-	function_to_string.push_back(' ');
-	function_to_string.push_back(function.amplitude);
-	function_to_string.push_back(' ');
-	function_to_string.push_back(function.frequency);
-	function_to_string.push_back(')');
+	string function_to_string = "SINE(" + to_string(function.dc_offset) + " " + to_string(function.amplitude) + " " + to_string(function.frequency) + ")";
 	return function_to_string;
 }
 
@@ -93,9 +85,9 @@ istream &operator>>(istream &input, Component &s) {
 	}
 	assert(s.nodes.size()==s.nb_branches);
 	
+	s.has_function = false;
 	if((s.type=='V')||(s.type=='I')) {
-		//if peek 'S' -> Sine_function
-		//else -> value
+		input.ignore(1);
 		if(input.peek()=='S') {
 			s.has_function = true;
 			Sine_function _function;
