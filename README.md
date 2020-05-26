@@ -1,7 +1,7 @@
 # returnSuccess // ELEC40006 Project
 List of program files:
-  - header.hpp
-  	- Contains all structures and classes, as well as all important function declarations.
+  - network_header.hpp
+  	- Contains all network structures and classes, as well as all important function declarations.
   - network_functions.cpp	
   	- Contains all definitions of the functions associated with the reading of a network.
   - analysis_functions.cpp
