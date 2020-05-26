@@ -128,15 +128,15 @@ istream &operator>>(istream &input, Instruction &s) {
 		s.is_end=true;
 	} else {
 		s.is_end=false;
-		float arg0;					//we expect to read a 0 first
-		cin >> arg0;				//so we just read it and forget about it
-		string _stop_time;			//prepare to read the stop_time variable in a dummy variable
-		cin >> _stop_time;			//read the stop_time variable
-		s.stop_time=_stop_time;		//define the stop_time of s (the Instruction) as the thing we read
-		cin >> arg0;				//read the second 0
-		string _timestep;			//same thing now, but with the timestep
-		cin >> _timestep;			//read the timestep in a dummy variable
-		s.timestep = _timestep;		//define the timestep of s as the thing we just read
+		float arg0;
+		cin >> arg0;
+		string _stop_time;
+		cin >> _stop_time;
+		s.stop_time=_stop_time;
+		cin >> arg0;
+		string _timestep;
+		cin >> _timestep;
+		s.timestep = _timestep;
 	}
 	return input;
 }
@@ -150,20 +150,20 @@ istream &operator>>(istream &input, Network &s) {
 			//Ignore a comment
 			input.ignore(numeric_limits<streamsize>::max(), '\n');
 		} else if (input.peek()=='.') {
-				//Read an instruction
-				input >> _instruction;
-				if(_instruction.is_end==false){
-					s.instruction=_instruction;
-					input.ignore(numeric_limits<streamsize>::max(), '\n');
-				} else {
-					return input;
-				}
-			} else {
-				//Read a component
-				input >> _x;
-				s.components.push_back(_x);
+			//Read an instruction
+			input >> _instruction;
+			if(_instruction.is_end==false){
+				s.instruction=_instruction;
 				input.ignore(numeric_limits<streamsize>::max(), '\n');
+			} else {
+				return input;
 			}
+		} else {
+			//Read a component
+			input >> _x;
+			s.components.push_back(_x);
+			input.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
 	}
 	return input;
 }
