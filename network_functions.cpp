@@ -178,7 +178,9 @@ ostream &operator<<(ostream &output, const Network &s) {
 }
 
 
-//Convert a litteral value from string to double
+//Convert a litteral value from string to double by taking the last letter of the string and analysing it
+//it is used in the sine function operator to isolate the member variables, digits from letter
+//and to detect the units following a number
 //allow you to split a string into different respective categories: number letter and symbol
 double get_numerical(string value){
 	string num , letter , symbol;
