@@ -63,9 +63,9 @@ istream &operator>>(istream &input, Sine_function &s) {
 	cin >> _dc_offset;
 	s.dc_offset = get_numerical(_dc_offset);
 		
-	double _amplitude;
+	string _amplitude;
 	cin >> _amplitude;
-	s.amplitude = _amplitude;
+	s.amplitude = get_numerical(_amplitude);
 	
 	string _frequency;
 	cin >> _frequency;
@@ -193,26 +193,27 @@ double get_numerical(string value){
 		} 
 	double num_list = stod(num);
 	double total;
-
-	if (letter[0] == 'p'){
+	int n = letter.length();
+	
+	if (letter[n-1] == 'p'){
 		total = num_list * pow(10, -12);
 		return total;
-		} else if (letter[0] == 'n'){
+		} else if (letter[n-1] == 'n'){
 			total = num_list * pow(10,-9);
 			return total;
-		} else if (letter[0] == 'u'){
+		} else if (letter[n-1] == 'u'){
 			total = num_list * pow(10,-6);
 			return total;
-		} else if (letter[0] == 'm'){
+		} else if (letter[n-1] == 'm'){
 			total = num_list *  pow(10,-3);
 			return total;
-		} else if (letter[0] == 'k'){
+		} else if (letter[n-1] == 'k'){
 			total = num_list * pow(10,3);
 			return total;
-		} else if (letter[0] == 'M'){
+		} else if (letter[n-1] == 'g'){
 			total = num_list * pow(10,6);
 			return total;
-		} else if (letter[0] == 'G'){
+		} else if (letter[n-1] == 'G'){
 			total = num_list * pow(10,9);
 			return total;
 		} else {
