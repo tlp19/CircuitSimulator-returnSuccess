@@ -3,7 +3,9 @@ List of program files:
   - header.hpp
   	- Contains all structures and classes, as well as all important function declarations.
   - network_functions.cpp	
-  	- Contains all function definitions.
+  	- Contains all definitions of the functions associated with the reading of a network.
+  - analysis_functions.cpp
+    - Contains all definitions of the functions associated with the analysis of a network.
 
 List of test files:
   - Test programs:

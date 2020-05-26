@@ -31,9 +31,10 @@ class Component {
 	int nb_branches;				//Number of nodes that the component is connected to
 	vector<string> nodes;			//List of the nodes that the component is connected to (2 or 3)
 	string value;					//Litteral value of the component (in Ohms, Farads, etc.)
-	Sine_function function;			//Sine function for V and I components
-	string transistor_type;			//In case the component is a transistor, this is either NPN or PNP
 	double num_value;				//Numerical value extracted from the value variable
+//	Sine_function function;			//Sine function for V and I components
+//	string transistor_type;			//In case the component is a transistor, this is either NPN or PNP
+
 
 	string value_or_type() const;	//Returns the transis. type if Q, returns the value otherwise
 	void set_nb_branches();			//Fills in the nb_branches member variable
