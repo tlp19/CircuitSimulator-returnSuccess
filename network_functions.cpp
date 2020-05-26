@@ -20,10 +20,25 @@ ostream &operator<<(ostream &output, const vector<string> &s) {
 /* --- PRACTICAL FUNCTIONS --- */
 
 
+//Writes a Sine_function as a string
+string Component::function_to_string() const {
+	string function_to_string;
+	function_to_string.push_back("SINE(")
+	function_to_string.push_back(function.dc_offset)
+	function_to_string.push_back(" ")
+	function_to_string.push_back(function.amplitude)
+	function_to_string.push_back(" ")
+	function_to_string.push_back(function.frequency)
+	function_to_string.push_back(")")
+	return function_to_string;
+}
+
 // Returns either the value or the transistor type depending on the component
 string Component::value_or_type() const {
 	if(type=='Q') {
 		return transistor_type;
+	} else if() {
+		return s.function_to_string();
 	} else {
 		return value;
 	}
@@ -80,6 +95,17 @@ istream &operator>>(istream &input, Component &s) {
 	if((s.type=='V')||(s.type=='I')) {
 		//if peek 'S' -> Sine_function
 		//else -> value
+		if(input.peek()=='S') {
+			s.has_function = true;
+			Sine_function _function;
+			input >> _function;
+			s.function = _function;
+		} else {
+			s.has_function = false;
+			string _value;
+			input >> _value;
+			s.value = _value;
+		}
 	} else if(s.type=='Q'){
 		string _transistor_type;
 		input >> _transistor_type;
