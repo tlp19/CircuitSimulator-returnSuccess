@@ -42,23 +42,6 @@ void Component::set_nb_branches() {
 
 // Overloading the >> operator to read a Sine_function from input
 istream &operator>>(istream &input, Sine_function &s) {
-	/*
-	TODO
-	- Takes an input of the form "SINE(x y z)"
-	- All parameters (x, y and z) are separated by whitespaces (not commas or semi-columns)
-	- x, y and z are strings: for example they could be "10k"
-	- The Sine_function is a structure (struct) defined in header.hpp -> go have a look at it
-	- In your code, you must define the 3 member variables of the "s" object:
-		- dc_offset (x in the example)
-		- amplitude (y in the example)
-		- frequency (z in the example)
-	- As it is an input/output overload, you don't have to return the object at the end, but you have to return 'input" (it is already returned, so just don't change it)
-	- Look at my other >> operator overloadings for inspiration (I detailed the overload of >> for the Instruction (around line 120)
-		- Compared as for the Instruction, you won't have to read useless zeros, but x and z are right next to parentheses, so that might be a bit challenging (maybe not, idk)
-	*/
-	
-	s.is_sine=true;
-		
 	string _dc_offset;
 	cin >> _dc_offset;
 	s.dc_offset = get_numerical(_dc_offset);
@@ -178,10 +161,10 @@ ostream &operator<<(ostream &output, const Network &s) {
 }
 
 
-//Convert a litteral value from string to double by taking the last letter of the string and analysing it
-//it is used in the sine function operator to isolate the member variables, digits from letter
-//and to detect the units following a number
-//allow you to split a string into different respective categories: number letter and symbol
+/*Convert a litteral value from string to double by taking the last letter of the string and analysing it.
+It is used in the sine function operator to isolate the member variables, digits from letter
+and to detect the multipliers following a number.
+Allows you to split a string into different respective categories: number letter and symbol */
 double get_numerical(string value){
 	string num , letter , symbol;
 	for (int i=0; i<value.length() ; i++){

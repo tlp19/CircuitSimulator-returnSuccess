@@ -7,7 +7,7 @@ C2 N1 N3 1p
 R2 N3 N2 1Meg
 Q1 N1 N2 N3 NPN
 *The analysis instructions are:
-.tran 0 2 0 0.2
-.tran 0 1 0 0.05
+.tran 0 2s 0 0.2s
+.tran 0 1ms 0 0.05us
 .end
 L0 N1 N2 1u
