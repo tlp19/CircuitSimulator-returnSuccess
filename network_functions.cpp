@@ -23,13 +23,14 @@ ostream &operator<<(ostream &output, const vector<string> &s) {
 //Writes a Sine_function as a string
 string Component::function_to_string() const {
 	string function_to_string;
-	function_to_string.push_back("SINE(")
-	function_to_string.push_back(function.dc_offset)
-	function_to_string.push_back(" ")
-	function_to_string.push_back(function.amplitude)
-	function_to_string.push_back(" ")
-	function_to_string.push_back(function.frequency)
-	function_to_string.push_back(")")
+	function_to_string += "SINE(";
+//	function_to_string.push_back("SINE(");
+	function_to_string.push_back(function.dc_offset);
+	function_to_string.push_back(' ');
+	function_to_string.push_back(function.amplitude);
+	function_to_string.push_back(' ');
+	function_to_string.push_back(function.frequency);
+	function_to_string.push_back(')');
 	return function_to_string;
 }
 
@@ -37,8 +38,8 @@ string Component::function_to_string() const {
 string Component::value_or_type() const {
 	if(type=='Q') {
 		return transistor_type;
-	} else if() {
-		return s.function_to_string();
+	} else if(has_function==true) {
+		return function_to_string();
 	} else {
 		return value;
 	}
