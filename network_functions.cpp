@@ -57,8 +57,20 @@ istream &operator>>(istream &input, Sine_function &s) {
 		- Compared as for the Instruction, you won't have to read useless zeros, but x and z are right next to parentheses, so that might be a bit challenging (maybe not, idk)
 	*/
 	
+	s.is_sine=true;
+		
+	string _dc_offset;
+	cin >> _dc_offset;
+	s.dc_offset = get_numerical(_dc_offset);
+		
+	double _amplitude;
+	cin >> _amplitude;
+	s.amplitude = _amplitude;
 	
-	
+	string _frequency;
+	cin >> _frequency;
+	s.frequency = get_numerical(_frequency);
+			
 	return input;
 }
 
@@ -167,14 +179,17 @@ ostream &operator<<(ostream &output, const Network &s) {
 
 
 //Convert a litteral value from string to double
+//allow you to split a string into different respective categories: number letter and symbol
 double get_numerical(string value){
-	string num , letter;
+	string num , letter , symbol;
 	for (int i=0; i<value.length() ; i++){
 		if ( isdigit(value[i])){
 			num.push_back(value[i]);
 			} else if((value[i]>='A' && value[i]<= 'Z') || (value[i]>= 'a' && value[i] <= 'z')){
 				letter.push_back(value[i]);
-				}
+				} else {
+					symbol.push_back(value[i]);
+					}
 		} 
 	double num_list = stod(num);
 	double total;

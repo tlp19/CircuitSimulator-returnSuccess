@@ -17,9 +17,10 @@ using namespace std;
 
 //Struct to define a sine function (for components V and I)
 struct Sine_function {
-	string dc_offset;
-	string amplitude;
-	string frequency;
+	bool is_sine;
+	double dc_offset;
+	double amplitude;
+	double frequency;
 };
 
 //Struct to define a specific component inside the circuit
