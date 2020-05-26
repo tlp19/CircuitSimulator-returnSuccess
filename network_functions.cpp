@@ -21,7 +21,7 @@ ostream &operator<<(ostream &output, const vector<string> &s) {
 
 
 // Returns either the value or the transistor type depending on the component
-string Component::value_type() const {
+string Component::value_or_type() const {
 	if(type=='Q') {
 		return transistor_type;
 	} else {
@@ -116,7 +116,7 @@ ostream &operator<<(ostream &output, const Component &s) {
 	for(int i=0 ; i < s.nb_branches ; i++) {
 		output << s.nodes[i] << " ";
 	}
-	output << s.value_type();
+	output << s.value_or_type();
 	return output;
 }
 
