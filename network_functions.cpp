@@ -206,31 +206,11 @@ double get_numerical(string value){
 	double num_list = stod(num);
 	double total;
 	int n = letter.length();
+	string new_letter;
 	if (letter[n-1] == 's'){
-		if (letter[n-2] == 'p'){
-			total = num_list * pow(10, -12);
-			return total;
-			} else if (letter[n-2] == 'n'){
-				total = num_list * pow(10,-9);
-				return total;
-			} else if (letter[n-2] == 'u'){
-				total = num_list * pow(10,-6);
-				return total;
-			} else if (letter[n-2] == 'm'){
-				total = num_list *  pow(10,-3);
-				return total;
-			} else if (letter[n-2] == 'k'){
-				total = num_list * pow(10,3);
-				return total;
-			} else if (letter[n-2] == 'g'){
-				total = num_list * pow(10,6);
-				return total;
-			} else if (letter[n-2] == 'G'){
-				total = num_list * pow(10,9);
-				return total;
-			} else {
-				return num_list;
-			}
+		value.pop_back();
+		double x = get_numerical(value);
+		return x;
 		} else if (letter[n-1] == 'p'){
 			total = num_list * pow(10, -12);
 			return total;
