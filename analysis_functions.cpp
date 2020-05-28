@@ -1,5 +1,4 @@
-#include "network_header.hpp"
-#include "network_functions.cpp"
+#include "analysis_header.hpp"
 
 using namespace std;
 

@@ -1,5 +1,5 @@
-#ifndef network_hpp
-#define network_hpp
+#ifndef network_header_hpp
+#define network_header_hpp
 
 #include <vector>
 #include <iostream>
