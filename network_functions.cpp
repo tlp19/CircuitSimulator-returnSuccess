@@ -33,7 +33,8 @@ string Component::value_or_type() const {
 	} else if(has_function==true) {
 		return function_to_string();
 	} else {
-		return value;
+		return to_string(num_value);
+		//return value;
 	}
 }
 
@@ -44,7 +45,14 @@ void Component::set_nb_branches() {
 		nb_branches = 3;
 	} else {
 		nb_branches = 2;
-	};
+	}
+}
+
+// Edits the component characteristics to fill in the num_value parameter
+void Component::set_num_value() {
+	if((type != 'Q')&&(has_function == false)){
+		num_value = get_numerical(value);
+	}
 }
 
 
@@ -108,6 +116,8 @@ istream &operator>>(istream &input, Component &s) {
 		input >> _value;
 		s.value=_value;
 	}
+	
+	s.set_num_value();
 	
 	return input;
 }

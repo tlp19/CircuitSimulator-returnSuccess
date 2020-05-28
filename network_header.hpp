@@ -38,6 +38,7 @@ class Component {
 	string value_or_type() const;	//Returns the transis. type if Q, returns the value otherwise
 	void set_nb_branches();			//Fills in the nb_branches member variable
 	string function_to_string() const;	//Writes a Sine_function as a string
+	void set_num_value();			//Sets the numerical value or value to num_value for a component
 };
 
 /*// Derived class of Component
