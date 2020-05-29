@@ -3,24 +3,17 @@
 
 #include "network_header.hpp"
 #include "network_functions.cpp"
+#include "dlib/matrix.h"
 
 using namespace std;
-
+using namespace dlib;
 
 
 /* -- CLASSES AND STRUCTURES -- */
 
 
-// Struct to define a Matrix ans its methods
-struct Matrix {
-	int rows;
-	int columns;
-	vector<double> values;
-	
-	void set_nb_rows();
-	void set_nb_columns();
-	void set_value();
-};
+// Struct to define a Matrix and its methods
+
 
 
 
