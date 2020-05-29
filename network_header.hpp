@@ -63,6 +63,8 @@ struct Instruction{
 struct Network {
 	vector<Component> components;	//List of the components in the network
 	Instruction instruction;		//Specification of the .tran instruction to analyse the circuit
+	
+	std::vector<string> find_nodes() const;
 };
 
 

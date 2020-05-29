@@ -6,7 +6,6 @@
 #include "dlib/matrix.h"
 
 using namespace std;
-using namespace dlib;
 
 
 /* -- CLASSES AND STRUCTURES -- */
