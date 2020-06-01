@@ -1,9 +1,12 @@
 #ifndef analysis_header_hpp
 #define analysis_header_hpp
 
+#include <algorithm>
+
 #include "network_header.hpp"
 #include "network_functions.cpp"
-#include "dlib/matrix.h"
+#include "libraries/matrix/Matrix.h"
+//#include "libraries/matrix/Matrix.cpp"
 
 using namespace std;
 

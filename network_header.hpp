@@ -64,7 +64,7 @@ struct Network {
 	vector<Component> components;	//List of the components in the network
 	Instruction instruction;		//Specification of the .tran instruction to analyse the circuit
 	
-	std::vector<string> find_nodes() const;
+	vector<string> list_nodes() const;	//Lists all nodes inside a Network in a sorted order [Analysis]
 };
 
 
