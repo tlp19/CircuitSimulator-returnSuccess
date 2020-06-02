@@ -11,8 +11,7 @@ struct Matrix
 
 
     void resize(int rows, int cols)
-    {
-    	cerr << "In: resize()" << endl; 
+    { 
         this->rows=rows;
         this->cols=cols;
 //NEW: previously wasn't resizing the vector values
@@ -24,18 +23,15 @@ struct Matrix
     
     void write(int r, int c, Component v)
     {
-    	cerr << "In: write(Component)" << endl;
         values[r*cols+c] = v.num_value;
     }
 
     double read(int r, int c)
     {
-    	cerr << "In: read()" << endl;
         return values[r*cols+c];
     }
     
     void fill_with_zeros() {
-    	cerr << "In: fill_with_zeros()" << endl;
 		for(int i = 0 ; i < rows ; i++) {
 			for(int j = 0 ; j < cols ; j++) {
 				double zero = 0;
@@ -45,7 +41,6 @@ struct Matrix
     }
 
 	vector<int> extract_node_number(vector<string> nodenames){
-    	cerr << "In: extract_node_number()" << endl;
     	vector<int> lastdigit = {};
         for(int i=0; i < nodenames.size(); i++){
             //for every node name do this:
@@ -62,17 +57,17 @@ struct Matrix
 	}
 	
 	void print() const {
-    	cerr << "In: print()" << endl;
+    	cerr << endl << "We get the following conductance matrix:" << endl;
 		for(int i = 0 ; i < rows ; i++) {
 			for(int j = 0 ; j < cols ; j++) {
 				cout << values[i*cols+j] << " ";
 			}
 			cout << endl;
 		}
+		cerr << endl;
 	}
 
 	void write_resistor_conductance(Network input_network) {
-    	cerr << "In: write_resistor_conductance()" << endl;
     	vector<Component> input_components = input_network.components; //list of components
 		vector<string> list_of_nodes = input_network.list_nodes(); //list of nodes in the circuit including ground
 		int size = list_of_nodes.size() - 1; //number of nodes excluding ground
@@ -116,6 +111,7 @@ struct Matrix
 				values[a*cols+a] += G;
 				values[b*cols+b] += G;
 			}
+			cerr << endl;
         }
     }
 
