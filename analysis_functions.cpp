@@ -27,3 +27,17 @@ vector<string> Network::list_nodes() const {
 	
 	return node_list;
 }
+
+vector<double> Network::time_intervals() const {
+	vector<double> intervals;
+	double counter = 0.0;
+	double _stop_time = get_numerical(instruction.stop_time);
+	double _timestep = get_numerical(instruction.timestep);
+	intervals.reserve(_stop_time/_timestep+1);
+	while(counter < (_stop_time-_timestep/2)) {
+		intervals.push_back(counter);
+		counter += _timestep;
+	}
+	intervals.push_back(_stop_time);
+	return intervals;
+}

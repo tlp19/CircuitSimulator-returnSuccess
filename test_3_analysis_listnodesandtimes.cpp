@@ -9,4 +9,10 @@ int main() {
 	for(int i = 0 ; i < list_of_nodes.size() ; i++) {
 		cout << list_of_nodes[i] << endl;
 	}
+
+	vector<double> list_of_times = x.time_intervals();
+	for(int i = 0 ; i < list_of_times.size() ; i++) {
+		cout << list_of_times[i] << endl;
+	}
+	
 }
