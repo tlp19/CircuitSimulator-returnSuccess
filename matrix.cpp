@@ -1,12 +1,7 @@
-#include <vector>
-#include <iostream>
-#include <cmath>
-#include <string>
-#include <cassert>
-#include <limits>
-#include "network_header.hpp"
+#include "analysis_functions.cpp"
 
 using namespace std;
+
 
 struct Matrix
 {
@@ -42,52 +37,61 @@ struct Matrix
             }  
     }
 
-    void write_resistor_conductance(vector<Component> resistor_list){
+    void write_resistor_conductance(Network input_network){
     
+    	vector<Component> input_components = input_network.components; //list of components
+		vector<string> list_of_nodes = input_network.list_nodes(); //list of nodes in the circuit including ground
+		int size = list_of_nodes.size() - 1; //number of nodes excluding ground
+		vector<Component> resistor_list; //list of resistors
+		for (int i=0; i < input_components.size(); i++)
+		{  
+		    Component x = input_components[i]; 
+		    if( x.type=='R'){
+		    resistor_list.push_back(x);
+		    }
+		}
+    	
         for(int i=0; i < resistor_list.size(); i++)
         {
-           vector<string> nodenames = resistor_list[i].nodes; //vector of strings cointaining list of nodes.
-           //for a resistor it should only have 2 strings in it
-           int value = resistor_list[i].num_value; //value of each resistor
-           //extract the character at the end of the 2 node names (it corresponds to the node number)
-           vector<int> lastdigit = extract_node_number(nodenames);
-           int G =-1/value;
-           //check if it's connected to ground       
-           if (lastdigit[0]==0 || lastdigit[1] == 0 ){
-                    //diagonal() 
-                        for(int i=1; i<=size; i++){
-                         if(lastdigit[0]==i || lastdigit[1]==i ){
-                         int r=i-1; int c=i-1;
-                         values[r*cols+c] = G;
-                         }
-                        }
-                    
-                    } else {
-                        int a = lastdigit[0] - 1;
-                        int b = lastdigit[1] - 1;
-                        values[a*cols+b] = G;
-                        values[b*cols+a] = G;
-                    
-                    }
-        
+           	vector<string> nodenames = resistor_list[i].nodes; //vector of strings cointaining list of nodes.
+           	//for a resistor it should only have 2 strings in it
+           	int value = resistor_list[i].num_value; //value of each resistor
+           	//extract the character at the end of the 2 node names (it corresponds to the node number)
+           	vector<int> lastdigit = extract_node_number(nodenames);
+           	int G = 1/value;
+          	//check if it's connected to ground       
+         	if (lastdigit[0]==0 || lastdigit[1] == 0 ){
+                    //diagonal
+           		for(int i=1; i<=size; i++){
+                	if(lastdigit[0]==i || lastdigit[1]==i ){
+                    int j=i-1;
+                    values[j*cols+j] += G;
+                 	}
+              	}     
+			} else {
+				int a = lastdigit[0] - 1;
+				int b = lastdigit[1] - 1;
+				values[a*cols+b] = -G;
+				values[b*cols+a] = -G;
+				values[a*cols+a] += G;
+				values[b*cols+b] += G;
+			}
         }
-     
     }
-    
-    
+
 };
 
 
-int main()
-{
+int main() {
     
     Network x;
 	cin >> x;
 
     vector<Component> input = x.components; //list of components
+
     vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit including ground
     int size = list_of_nodes.size() - 1; //number of nodes excluding ground
-
+/*
     vector<Component> resistor_list; //list of resistors
     for (int i=0; i < input.size(); i++)
     {  
@@ -96,11 +100,11 @@ int main()
         resistor_list.push_back(x);
         }
     }
-
+*/
     //square matrix of conductance (resistors only)
     Matrix conduct;
     conduct.resize(size,size);
-    conduct.write_resistor_conductance(resistor_list);
+    conduct.write_resistor_conductance(/*input*/ x);
 
       /*
     Matrix allvoltages; //vertical matrix v1,v2,v3,v4,v5 ecc... 
@@ -156,13 +160,5 @@ int main()
         Component vv = currentsource_list[i];
         current.write(rr, 1, vv);
     }
-    
 
-    }
-
-    
-    
-
-
-
-
+}
