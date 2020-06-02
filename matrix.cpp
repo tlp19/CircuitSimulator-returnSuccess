@@ -42,12 +42,12 @@ struct Matrix
             }  
     }
 
-    void write_conductance(vector<Component> resistor_list){
+    void write_resistor_conductance(vector<Component> resistor_list){
     
         for(int i=0; i < resistor_list.size(); i++)
         {
            vector<string> nodenames = resistor_list[i].nodes; //vector of strings cointaining list of nodes.
-           //should only have 2 strings in it
+           //for a resistor it should only have 2 strings in it
            int value = resistor_list[i].num_value; //value of each resistor
            //extract the character at the end of the 2 node names (it corresponds to the node number)
            vector<int> lastdigit = extract_node_number(nodenames);
@@ -55,6 +55,13 @@ struct Matrix
            //check if it's connected to ground       
            if (lastdigit[0]==0 || lastdigit[1] == 0 ){
                     //diagonal() 
+                        for(int i=1; i<=size; i++){
+                         if(lastdigit[0]==i || lastdigit[1]==i ){
+                         int r=i-1; int c=i-1;
+                         values[r*cols+c] = G;
+                         }
+                        }
+                    
                     } else {
                     int a = lastdigit[0];
                     int b = lastdigit[1];
@@ -72,59 +79,15 @@ struct Matrix
 
 int main()
 {
-    //input vector
-    vector<Component> input;
-
-    //vector that will fill the voltage matrix
-    vector<Component> voltage_list;
-    //number of voltages = number of nodes(exluding ground) = size of our matrices;
-    int size = voltage_list.size(); 
-
-    for (int i=0; i < input.size(); i++)
-    {  
-        Component x = input[i]; 
-        if( x.type=='V'){
-        voltage_list.push_back(x);
-        }
-    }
     
-    //vertical matrix of voltages
-    Matrix vol;
-    vol.resize(size,1);
-    
-    for(int i=0; i < voltage_list.size(); i++)
-    {
-        int rr=i;
-        Component vv = voltage_list[i];
-        vol.write(rr, 1, vv);
-    }
+    Network x;
+	cin >> x;
 
-    //vector that will fill the current matrix
-    vector<Component> current_list;
+    vector<Component> input = x.components; //list of components
+    vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit including ground
+    int size = list_of_nodes.size() - 1; //number of nodes excluding ground
 
-    for (int i=0; i < input.size(); i++)
-    {  
-        Component x = input[i]; 
-        if( x.type=='I'){
-        current_list.push_back(x);
-        }
-    }
-    
-    //vertical matrix of currents
-    Matrix current;
-    int size = current_list.size();
-    current.resize(size,1);
-    
-    for(int i=0; i < current_list.size(); i++)
-    {
-        int rr=i;
-        Component vv = current_list[i];
-        current.write(rr, 1, vv);
-    }
-    
-    //vector that will fill the conductance matrix
-    vector<Component> resistor_list;
-
+    vector<Component> resistor_list; //list of resistors
     for (int i=0; i < input.size(); i++)
     {  
         Component x = input[i]; 
@@ -133,11 +96,67 @@ int main()
         }
     }
 
-    //square matrix of conductance
+    //square matrix of conductance (resistors only)
     Matrix conduct;
     conduct.resize(size,size);
-    conduct.write_conductance(resistor_list);
+    conduct.write_resistor_conductance(resistor_list);
+
+      /*
+    Matrix allvoltages; //vertical matrix v1,v2,v3,v4,v5 ecc... 
+    allvoltages.resize(size,1);
+    
+    for(int i=0; i < size; i++){
+
+        int rr=i;
+        Component vv = //can't define this because uknown voltages aren't components
+        allvoltages.write(rr, 1, vv);
+    }
+    */
    
+
+    vector<Component> voltagesource_list; //list of voltagesources
+    int n_vsources = voltagesource_list.size(); //number of voltagesources
+
+    for (int i=0; i < input.size(); i++) 
+    {  
+        Component x = input[i]; 
+        if( x.type=='V'){
+        voltagesource_list.push_back(x);
+        }
+    }
+    
+    Matrix vol; //vertical matrix of voltagesources
+    vol.resize(n_vsources,1);
+
+    for(int i=0; i < voltagesource_list.size(); i++)
+    {
+        int rr=i;
+        Component vv = voltagesource_list[i];
+        vol.write(rr, 1, vv);
+    }
+
+    vector<Component> currentsource_list; //list of currentsources
+    int n_csources = currentsource_list.size(); //number of currentsurces
+
+    for (int i=0; i < input.size(); i++)
+    {  
+        Component x = input[i]; 
+        if( x.type=='I'){
+        currentsource_list.push_back(x);
+        }
+    }
+    
+    Matrix current; //vertical matrix of currentsources
+    current.resize(n_csources,1);
+    
+    for(int i=0; i < currentsource_list.size(); i++)
+    {
+        int rr=i;
+        Component vv = currentsource_list[i];
+        current.write(rr, 1, vv);
+    }
+    
+
     }
 
     
