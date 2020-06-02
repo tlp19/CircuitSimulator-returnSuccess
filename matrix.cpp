@@ -9,21 +9,32 @@ struct Matrix
     int cols; 
     vector<double> values;
 
+
     void resize(int rows, int cols)
     {
         this->rows=rows;
         this->cols=cols;
     }
+    
     void write(int r, int c, Component v)
     {
         values[r*cols+c] = v.num_value;
     }
+    
     double read(int r, int c)
     {
         return values[r*cols+c];
     }
+    
+    void fill_with_zeros() {
+		for(int i = 0 ; i < rows ; i++) {
+			for(int j = 0 ; j < cols ; j++) {
+				values[i*cols+j] = 0;
+			}
+		}
+    }
 
-    vector<int> extract_node_number(vector<string> nodenames){
+	vector<int> extract_node_number(vector<string> nodenames){
         for(int i=0; i < nodenames.size(); i++){
             //for every node name do this:
             string name = nodenames[i];
@@ -35,10 +46,18 @@ struct Matrix
             vector<int> lastdigit;
             lastdigit.push_back(a);// for every resistor I store the 2 numbes which represent the terminal nodes
             }  
-    }
+	}
+	
+	void print() const {
+		for(int i = 0 ; i < rows ; i++) {
+			for(int j = 0 ; j < cols ; j++) {
+				cout << values[i*cols+j] << " ";
+			}
+			cout << endl;
+		}
+	}
 
-    void write_resistor_conductance(Network input_network){
-    
+	void write_resistor_conductance(Network input_network){
     	vector<Component> input_components = input_network.components; //list of components
 		vector<string> list_of_nodes = input_network.list_nodes(); //list of nodes in the circuit including ground
 		int size = list_of_nodes.size() - 1; //number of nodes excluding ground
@@ -82,6 +101,11 @@ struct Matrix
 };
 
 
+
+
+/* ---- MAIN ---- */
+
+
 int main() {
     
     Network x;
@@ -104,6 +128,7 @@ int main() {
     //square matrix of conductance (resistors only)
     Matrix conduct;
     conduct.resize(size,size);
+    conduct.fill_with_zeros();
     conduct.write_resistor_conductance(/*input*/ x);
 
       /*
@@ -161,4 +186,7 @@ int main() {
         current.write(rr, 1, vv);
     }
 
+
+
+	conduct.print();
 }
