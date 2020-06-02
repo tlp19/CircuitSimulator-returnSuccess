@@ -63,10 +63,11 @@ struct Matrix
                         }
                     
                     } else {
-                    int a = lastdigit[0];
-                    int b = lastdigit[1];
-                    int r=a-1; int c=b-1;
-                    values[r*cols+c] = G;
+                        int a = lastdigit[0] - 1;
+                        int b = lastdigit[1] - 1;
+                        values[a*cols+b] = G;
+                        values[b*cols+a] = G;
+                    
                     }
         
         }
