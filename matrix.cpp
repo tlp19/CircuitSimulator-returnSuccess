@@ -2,6 +2,7 @@
 
 using namespace std;
 
+char tab = 9;
 
 struct Matrix
 {
@@ -60,7 +61,7 @@ struct Matrix
     	cerr << endl << "We get the following conductance matrix:" << endl;
 		for(int i = 0 ; i < rows ; i++) {
 			for(int j = 0 ; j < cols ; j++) {
-				cout << values[i*cols+j] << " ";
+				cout << values[i*cols+j] << tab;
 			}
 			cout << endl;
 		}
