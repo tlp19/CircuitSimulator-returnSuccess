@@ -94,4 +94,5 @@ ostream &operator<<(ostream &output, const Network &s);
 //Convert the litteral value from string to double
 double get_numerical(string value);
 
+
 #endif

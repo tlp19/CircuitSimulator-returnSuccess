@@ -14,5 +14,4 @@ int main() {
 	for(int i = 0 ; i < list_of_times.size() ; i++) {
 		cout << list_of_times[i] << endl;
 	}
-	
 }
