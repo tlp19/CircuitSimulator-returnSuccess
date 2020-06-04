@@ -7,6 +7,19 @@ bool get_value_capacitor(Component C, /*current */ int i){
 	C.num_value = i;
 	}
 
+vector<double> Network::time_intervals() const {
+	vector<double> intervals;
+	double counter = 0.0;
+	double _stop_time = get_numerical(instruction.stop_time);
+	double _timestep = get_numerical(instruction.timestep);
+	intervals.reserve(_stop_time/_timestep+1);
+	while(counter < (_stop_time-_timestep/2)) {
+		intervals.push_back(counter);
+		counter += _timestep;
+	}
+	intervals.push_back(_stop_time);
+	return intervals;
+}
 
 //Lists all nodes inside a Network in a sorted order
 vector<string> Network::list_nodes() const {
@@ -34,31 +47,19 @@ vector<string> Network::list_nodes() const {
 	return node_list;
 }
 
-vector<double> Network::time_intervals() const {
-	vector<double> intervals;
-	double counter = 0.0;
-	double _stop_time = get_numerical(instruction.stop_time);
-	double _timestep = get_numerical(instruction.timestep);
-	intervals.reserve(_stop_time/_timestep+1);
-	while(counter < (_stop_time-_timestep/2)) {
-		intervals.push_back(counter);
-		counter += _timestep;
-	}
-	intervals.push_back(_stop_time);
-	return intervals;
-}
-
-
-vector<double> Network::set_nodes_to_numbers() const {
+void Network::set_nodes_to_numbers(){
 	vector<string> a = Network::list_nodes();
-	vector<double> listed_nodes_numbers;
-	int n= a.size();
-	for(int i=0; i<n; i++){
-		listed_nodes_numbers[i] = i;
-		}
-	return listed_nodes_numbers;
+	for(int i=0; i< components.size(); i++){
+		for(int j=0 ; j<components[i].nodes.size() ; j++){
+			for(int k=0 ; k< a.size(); k++){
+				if(components[i].nodes[j] == a[k]){
+					components[i].nodes[j] = k;
+				}
+			}
+		}		
+	}
+//	return listed_nodes_numbers;
 }
-
 
 // Resizes a matrix
 void Matrix::resize(int rows, int cols) { 
