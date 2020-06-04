@@ -2,169 +2,26 @@
 
 using namespace std;
 
-char tab = 9;
-
-
-struct Matrix
-{
-    int rows;
-    int cols; 
-    vector<double> values;
-
-	// Resizes a matrix
-    void resize(int rows, int cols)
-    { 
-        this->rows=rows;
-        this->cols=cols;
-        values.resize(rows*cols);
-        cerr << "Rows: " << rows << endl;
-        cerr << "Columns: " << cols << endl;
-        cerr << "-> Size: " << values.size() << endl;
-    }
-    
-    // Writes the value of a component inside the matrix
-    void write(int r, int c, Component v)
-    {
-        values[r*cols+c] = v.num_value;
-    }
-
-	// Returns the value stored in the matrix at a specific location
-    double read(int r, int c)
-    {
-        return values[r*cols+c];
-    }
-    
-    // Fills a matrix with zeros (of the type double)
-    void fill_with_zeros() {
-		for(int i = 0 ; i < rows ; i++) {
-			for(int j = 0 ; j < cols ; j++) {
-				double zero = 0;
-				values[i*cols+j] = zero;
-			}
-		}
-    }
-
-	// Returns the last digit of the node name
-	vector<int> extract_node_number(vector<string> nodenames){
-    	vector<int> lastdigit = {};
-        for(int i=0; i < nodenames.size(); i++){
-            string name = nodenames[i];
-            int n = name.length();
-            char x = name[n-1]; 
-            //convert the char to an int (with ascii shift)
-            int a = int(x) - 48;
-            lastdigit.push_back(a);
-		}
-			cerr << "Between the nodes: " << lastdigit[0] << "-" << lastdigit[1] << endl;
-    return lastdigit;
-	}
-	
-	// Prints a matrix to cout
-	void print() const {
-    	cerr << endl << "We get the following conductance matrix:" << endl;
-		for(int i = 0 ; i < rows ; i++) {
-			for(int j = 0 ; j < cols ; j++) {
-				cout << values[i*cols+j] << tab;
-			}
-			cout << endl;
-		}
-		cerr << endl;
-	}
-
-	// Fills in the values in the conductance matrix for the resistors present in the circuit
-	void write_resistor_conductance(Network input_network) {
-    	vector<Component> input_components = input_network.components;
-		vector<string> list_of_nodes = input_network.list_nodes();
-		int size = list_of_nodes.size() - 1; //number of nodes excluding ground
-		vector<Component> resistor_list;
-		for (int i=0; i < input_components.size(); i++)
-		{  
-		    Component x = input_components[i]; 
-		    if( x.type=='R'){
-		    resistor_list.push_back(x);
-		    }
-		}
-    	
-        for(int i=0; i < resistor_list.size(); i++)
-        {
-           	vector<string> nodenames = resistor_list[i].nodes;
-           	int value = resistor_list[i].num_value;
-           	//extract the character at the end of the 2 node names (it corresponds to the node number)
-           	vector<int> lastdigit = extract_node_number(nodenames);
-           	double G = 1.0/value;
-           	cerr << "Conductance value: " << G << endl;
-          	//check if it's connected to ground       
-         	if (lastdigit[0]==0 || lastdigit[1] == 0 ){
-                //diagonal
-            	int i = lastdigit[0] + lastdigit[1] - 1;
-              	cerr << "In the matrix at the coordinates: (" << i << ";" << i << ") [diagonal]" << endl;
-            	values[i*cols+i] += G;   
-			} else {
-				//between two non-ground nodes
-				int a = lastdigit[0] - 1;
-				int b = lastdigit[1] - 1;
-				cerr << "In the matrix at the coordinates: (" << a << ";" << b << ")" << endl;
-				cerr << "In the matrix at the coordinates: (" << b << ";" << a << ")" << endl;
-				values[a*cols+b] = -G;
-				values[b*cols+a] = -G;
-				values[a*cols+a] += G;
-				values[b*cols+b] += G;
-			}
-			cerr << endl;
-        }
-    }
-    
-    
-    void overwrite_w_voltage_sources(Network input);
-
-};
-
-
-
-
-/* ---- MAIN ---- */
-
 
 int main() {
     
     Network x;
 	cin >> x;
 
-    vector<Component> input = x.components; //list of components
-
     vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit including ground
     int size = list_of_nodes.size() - 1; //number of nodes excluding ground
 
-    //square matrix of conductance (resistors only)
+    //square matrix of conductance
     Matrix conduct;
     conduct.resize(size,size);
-    conduct.fill_with_zeros();
-	conduct.print();
-    conduct.write_resistor_conductance(x);
-	
-   
-//TODO
-    /*vector<Component> voltagesource_list; //list of voltagesources
-    int n_vsources = voltagesource_list.size(); //number of voltagesources
-
-    for (int i=0; i < input.size(); i++) 
-    {  
-        Component x = input[i]; 
-        if( x.type=='V'){
-        voltagesource_list.push_back(x);
-        }
-    }
     
-    Matrix vol; //vertical matrix of voltagesources
-    vol.resize(n_vsources,1);
-
-    for(int i=0; i < voltagesource_list.size(); i++)
-    {
-        int rr=i;
-        Component vv = voltagesource_list[i];
-        vol.write(rr, 1, vv);
-    } */
+    //fill the conductance matrix with the conductance of the resistors
+    conduct.write_resistor_conductance(x);
+    conduct.print();
+    
+    //overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
+    conduct.print();
 
 //TODO
    /* vector<Component> currentsource_list; //list of currentsources
