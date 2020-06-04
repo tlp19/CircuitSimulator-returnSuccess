@@ -57,6 +57,7 @@ vector<double> Network::set_nodes_to_numbers() const {
 		listed_nodes_numbers[i] = i;
 		}
 	return listed_nodes_numbers;
+}
 
 
 // Resizes a matrix
@@ -189,5 +190,4 @@ void Matrix::overwrite_w_voltage_sources(Network input_network) {
 			values[neg*cols+pos] = 0;
 		}
 	}
->>>>>>> 0d4f5426a96e2e57b58962d2f220811e21afaf08
 }

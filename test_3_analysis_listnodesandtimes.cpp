@@ -14,4 +14,11 @@ int main() {
 	for(int i = 0 ; i < list_of_times.size() ; i++) {
 		cout << list_of_times[i] << endl;
 	}
+	
+	x.set_nodes_to_numbers();
+	
+	vector<double> list_of_times = x.time_intervals();
+	for(int i = 0 ; i < list_of_times.size() ; i++) {
+		cout << list_of_times[i] << endl;
+	}
 }
