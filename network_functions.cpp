@@ -197,7 +197,7 @@ Allows you to split a string into different respective categories: number letter
 double get_numerical(string value){
 	string num , letter , symbol;
 	for (int i=0; i<value.length() ; i++){
-		if ( isdigit(value[i])){
+		if ( isdigit(value[i]) || value[i]=='.'){
 			num.push_back(value[i]);
 			} else if((value[i]>='A' && value[i]<= 'Z') || (value[i]>= 'a' && value[i] <= 'z')){
 				letter.push_back(value[i]);

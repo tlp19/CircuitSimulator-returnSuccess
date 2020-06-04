@@ -63,6 +63,9 @@ struct Instruction{
 struct Network {
 	vector<Component> components;	//List of the components in the network
 	Instruction instruction;		//Specification of the .tran instruction to analyse the circuit
+	
+	vector<string> list_nodes() const;	//Lists all nodes inside a Network in a sorted order [Analysis]
+	vector<double> time_intervals() const;	//Lists all the time intervals that we need to do the analysis at [Analysis] 
 };
 
 
