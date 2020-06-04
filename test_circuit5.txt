@@ -1,0 +1,8 @@
+* This is a simple test circuit
+V1 a 0 10
+R1 a d 5
+R2 d 0 5
+R3 d g 10
+R4 g 0 10
+.tran 0 2s 0 0.5ms
+.end
