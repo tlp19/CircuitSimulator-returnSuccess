@@ -48,3 +48,12 @@ vector<double> Network::time_intervals() const {
 	return intervals;
 }
 
+vector<double> Network::set_nodes_to_numbers() const {
+	vector<string> a = Network::list_nodes();
+	vector<double> listed_nodes_numbers;
+	int n= a.size();
+	for(int i=0; i<n; i++){
+		listed_nodes_numbers[i] = i;
+		}
+	return listed_nodes_numbers;
+}
