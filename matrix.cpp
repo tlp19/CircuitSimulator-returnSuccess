@@ -75,18 +75,14 @@ struct Matrix
 	void write_resistor_conductance(Network input_network) {
     	vector<Component> input_components = input_network.components;
 		vector<string> list_of_nodes = input_network.list_nodes();
-		int size = list_of_nodes.size() - 1; //number of nodes excluding ground
 		vector<Component> resistor_list;
-		for (int i=0; i < input_components.size(); i++)
-		{  
+		for (int i=0; i < input_components.size(); i++) {  
 		    Component x = input_components[i]; 
 		    if( x.type=='R'){
 		    resistor_list.push_back(x);
 		    }
 		}
-    	
-        for(int i=0; i < resistor_list.size(); i++)
-        {
+        for(int i=0; i < resistor_list.size(); i++) {
            	vector<string> nodenames = resistor_list[i].nodes;
            	int value = resistor_list[i].num_value;
            	//extract the character at the end of the 2 node names (it corresponds to the node number)
@@ -94,11 +90,11 @@ struct Matrix
            	double G = 1.0/value;
            	cerr << "Conductance value: " << G << endl;
           	//check if it's connected to ground       
-         	if (lastdigit[0]==0 || lastdigit[1] == 0 ){
+         	if (lastdigit[0]==0 || lastdigit[1]==0){
                 //diagonal
-            	int i = lastdigit[0] + lastdigit[1] - 1;
-              	cerr << "In the matrix at the coordinates: (" << i << ";" << i << ") [diagonal]" << endl;
-            	values[i*cols+i] += G;   
+            	int index = lastdigit[0] + lastdigit[1] - 1;
+              	cerr << "In the matrix at the coordinates: (" << index << ";" << index << ") [diagonal]" << endl;
+            	values[index*cols+index] += G;   
 			} else {
 				//between two non-ground nodes
 				int a = lastdigit[0] - 1;
@@ -114,9 +110,29 @@ struct Matrix
         }
     }
     
-    
-    void overwrite_w_voltage_sources(Network input);
-
+    // Overwrites values of the matrix to consider the cases of voltage sources
+    void overwrite_w_voltage_sources(Network input_network) {
+    	vector<Component> voltagesource_list;
+		for (int i=0; i < input_network.components.size(); i++) {  
+			Component x = input_network.components[i]; 
+	    	if( x.type=='V'){
+			voltagesource_list.push_back(x);
+			}
+   		}
+   		for(int i=0; i < voltagesource_list.size(); i++) {
+   			vector<string> nodenames = voltagesource_list[i].nodes;
+   			vector<int> lastdigit = extract_node_number(nodenames);
+   			if (lastdigit[0]==0 || lastdigit[1]==0){
+   				int index = lastdigit[0] + lastdigit[1] - 1;
+   				for(int other_idx = 0 ; other_idx < cols ; other_idx++) {
+   					values[index*cols+other_idx] = 0;
+   				}
+   				values[index*cols+index] = 1;
+   			} else {
+   				
+   			}
+        }
+   	}
 };
 
 
@@ -139,7 +155,6 @@ int main() {
     Matrix conduct;
     conduct.resize(size,size);
     conduct.fill_with_zeros();
-	conduct.print();
     conduct.write_resistor_conductance(x);
 	
    
