@@ -11,14 +11,14 @@ int main() {
 	}
 
 	vector<double> list_of_times = x.time_intervals();
-	for(int i = 0 ; i < list_of_times.size() ; i++) {
+	/*for(int i = 0 ; i < list_of_times.size() ; i++) {
 		cout << list_of_times[i] << endl;
-	}
+	}*/
 	
-//	x.set_nodes_to_numbers();
-	
-	vector<double> list_of_times = x.time_intervals();
-	for(int i = 0 ; i < list_of_times.size() ; i++) {
-		cout << list_of_times[i] << endl;
+
+	x.set_nodes_to_numbers();
+	list_of_nodes = x.list_nodes();
+	for(int i = 0 ; i < list_of_nodes.size() ; i++) {
+		cout << list_of_nodes[i] << endl;
 	}
 }
