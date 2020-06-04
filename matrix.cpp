@@ -4,34 +4,37 @@ using namespace std;
 
 char tab = 9;
 
+
 struct Matrix
 {
     int rows;
     int cols; 
     vector<double> values;
 
-
+	// Resizes a matrix
     void resize(int rows, int cols)
     { 
         this->rows=rows;
         this->cols=cols;
-//NEW: previously wasn't resizing the vector values
         values.resize(rows*cols);
         cerr << "Rows: " << rows << endl;
         cerr << "Columns: " << cols << endl;
         cerr << "-> Size: " << values.size() << endl;
     }
     
+    // Writes the value of a component inside the matrix
     void write(int r, int c, Component v)
     {
         values[r*cols+c] = v.num_value;
     }
 
+	// Returns the value stored in the matrix at a specific location
     double read(int r, int c)
     {
         return values[r*cols+c];
     }
     
+    // Fills a matrix with zeros (of the type double)
     void fill_with_zeros() {
 		for(int i = 0 ; i < rows ; i++) {
 			for(int j = 0 ; j < cols ; j++) {
@@ -41,22 +44,22 @@ struct Matrix
 		}
     }
 
+	// Returns the last digit of the node name
 	vector<int> extract_node_number(vector<string> nodenames){
     	vector<int> lastdigit = {};
         for(int i=0; i < nodenames.size(); i++){
-            //for every node name do this:
             string name = nodenames[i];
             int n = name.length();
             char x = name[n-1]; 
             //convert the char to an int (with ascii shift)
             int a = int(x) - 48;
-            lastdigit.push_back(a);// for every resistor I store the 2 numbers which represent the terminal nodes
+            lastdigit.push_back(a);
 		}
 			cerr << "Between the nodes: " << lastdigit[0] << "-" << lastdigit[1] << endl;
-//NEW: previously wasn't returning anything, hence the weird values
     return lastdigit;
 	}
 	
+	// Prints a matrix to cout
 	void print() const {
     	cerr << endl << "We get the following conductance matrix:" << endl;
 		for(int i = 0 ; i < rows ; i++) {
@@ -68,11 +71,12 @@ struct Matrix
 		cerr << endl;
 	}
 
+	// Fills in the values in the conductance matrix for the resistors present in the circuit
 	void write_resistor_conductance(Network input_network) {
-    	vector<Component> input_components = input_network.components; //list of components
-		vector<string> list_of_nodes = input_network.list_nodes(); //list of nodes in the circuit including ground
+    	vector<Component> input_components = input_network.components;
+		vector<string> list_of_nodes = input_network.list_nodes();
 		int size = list_of_nodes.size() - 1; //number of nodes excluding ground
-		vector<Component> resistor_list; //list of resistors
+		vector<Component> resistor_list;
 		for (int i=0; i < input_components.size(); i++)
 		{  
 		    Component x = input_components[i]; 
@@ -83,26 +87,20 @@ struct Matrix
     	
         for(int i=0; i < resistor_list.size(); i++)
         {
-           	vector<string> nodenames = resistor_list[i].nodes; //vector of strings containing list of nodes.
-           	//for a resistor it should only have 2 strings in it
-           	int value = resistor_list[i].num_value; //value of each resistor
+           	vector<string> nodenames = resistor_list[i].nodes;
+           	int value = resistor_list[i].num_value;
            	//extract the character at the end of the 2 node names (it corresponds to the node number)
            	vector<int> lastdigit = extract_node_number(nodenames);
-//NEW: was initially an int, and then we needed 1.0 otherwise it converted itself again to an int.
            	double G = 1.0/value;
            	cerr << "Conductance value: " << G << endl;
           	//check if it's connected to ground       
          	if (lastdigit[0]==0 || lastdigit[1] == 0 ){
-                    //diagonal
-//NEW: wrong way to think about it
-           	/*	for(int i=1; i<=size; i++){
-                	if(lastdigit[0]==i || lastdigit[1]==i ){ */
-                	int i = lastdigit[0] + lastdigit[1] - 1;
-                	cerr << "In the matrix at the coordinates: (" << i << ";" << i << ") [diagonal]" << endl;
-                    values[i*cols+i] += G;
-             //		}
-             //	}     
+                //diagonal
+            	int i = lastdigit[0] + lastdigit[1] - 1;
+              	cerr << "In the matrix at the coordinates: (" << i << ";" << i << ") [diagonal]" << endl;
+            	values[i*cols+i] += G;   
 			} else {
+				//between two non-ground nodes
 				int a = lastdigit[0] - 1;
 				int b = lastdigit[1] - 1;
 				cerr << "In the matrix at the coordinates: (" << a << ";" << b << ")" << endl;
@@ -115,6 +113,9 @@ struct Matrix
 			cerr << endl;
         }
     }
+    
+    
+    void overwrite_w_voltage_sources(Network input);
 
 };
 
@@ -133,35 +134,14 @@ int main() {
 
     vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit including ground
     int size = list_of_nodes.size() - 1; //number of nodes excluding ground
-/* USELESS NOW
-    vector<Component> resistor_list; //list of resistors
-    for (int i=0; i < input.size(); i++)
-    {  
-        Component x = input[i]; 
-        if( x.type=='R'){
-        resistor_list.push_back(x);
-        }
-    }
-*/
+
     //square matrix of conductance (resistors only)
     Matrix conduct;
     conduct.resize(size,size);
     conduct.fill_with_zeros();
 	conduct.print();
-    conduct.write_resistor_conductance(/*input*/ x);
+    conduct.write_resistor_conductance(x);
 	
-	
-      /*
-    Matrix allvoltages; //vertical matrix v1,v2,v3,v4,v5 ecc... 
-    allvoltages.resize(size,1);
-    
-    for(int i=0; i < size; i++){
-
-        int rr=i;
-        Component vv = //can't define this because uknown voltages aren't components
-        allvoltages.write(rr, 1, vv);
-    }
-    */
    
 //TODO
     /*vector<Component> voltagesource_list; //list of voltagesources
@@ -183,9 +163,11 @@ int main() {
         int rr=i;
         Component vv = voltagesource_list[i];
         vol.write(rr, 1, vv);
-    }
+    } */
+    conduct.overwrite_w_voltage_sources(x);
 
-    vector<Component> currentsource_list; //list of currentsources
+//TODO
+   /* vector<Component> currentsource_list; //list of currentsources
     int n_csources = currentsource_list.size(); //number of currentsurces
 
     for (int i=0; i < input.size(); i++)
