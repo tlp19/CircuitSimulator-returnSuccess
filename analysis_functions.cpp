@@ -52,13 +52,10 @@ vector<string> Network::list_nodes() const {
 
 void Network::set_nodes_to_numbers(){
 	vector<string> a = Network::list_nodes();
-	vector<double> listed_nodes_numbers;
-	int n= a.size();
 	for(int i=0; i< components.size(); i++){
-	int n = components[i].nodes.size();
 		for(int j=0 ; j<components[i].nodes.size() ; j++){
 			for(int k=0 ; k< a.size(); k++){
-				while(components[i].nodes[j] != a[k]){
+				if(components[i].nodes[j] == a[k]){
 					components[i].nodes[j] = k;
 				}
 			}
