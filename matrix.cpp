@@ -46,17 +46,20 @@ struct Matrix
 
 	// Returns the last digit of the node name
 	vector<int> extract_node_number(vector<string> nodenames){
-    	vector<int> lastdigit = {};
+    	vector<int> node_nb = {};
         for(int i=0; i < nodenames.size(); i++){
-            string name = nodenames[i];
+            /*string name = nodenames[i];
             int n = name.length();
-            char x = name[n-1]; 
+            char x = name[n-1];
+            char y = name[n-2]; 
             //convert the char to an int (with ascii shift)
             int a = int(x) - 48;
-            lastdigit.push_back(a);
+            int b = int(y) - 48;
+            node_nb.push_back(b*10+a); */
+            node_nb.push_back((int)get_numerical(nodenames[i]));
 		}
-			cerr << "Between the nodes: " << lastdigit[0] << "-" << lastdigit[1] << endl;
-    return lastdigit;
+			cerr << "Between the nodes: " << node_nb[0] << "-" << node_nb[1] << endl;
+    return node_nb;
 	}
 	
 	// Prints a matrix to cout
@@ -86,19 +89,19 @@ struct Matrix
            	vector<string> nodenames = resistor_list[i].nodes;
            	int value = resistor_list[i].num_value;
            	//extract the character at the end of the 2 node names (it corresponds to the node number)
-           	vector<int> lastdigit = extract_node_number(nodenames);
+           	vector<int> node_nb = extract_node_number(nodenames);
            	double G = 1.0/value;
            	cerr << "Conductance value: " << G << endl;
           	//check if it's connected to ground       
-         	if (lastdigit[0]==0 || lastdigit[1]==0){
+         	if (node_nb[0]==0 || node_nb[1]==0){
                 //diagonal
-            	int index = lastdigit[0] + lastdigit[1] - 1;
+            	int index = node_nb[0] + node_nb[1] - 1;
               	cerr << "In the matrix at the coordinates: (" << index << ";" << index << ") [diagonal]" << endl;
             	values[index*cols+index] += G;   
 			} else {
 				//between two non-ground nodes
-				int a = lastdigit[0] - 1;
-				int b = lastdigit[1] - 1;
+				int a = node_nb[0] - 1;
+				int b = node_nb[1] - 1;
 				cerr << "In the matrix at the coordinates: (" << a << ";" << b << ")" << endl;
 				cerr << "In the matrix at the coordinates: (" << b << ";" << a << ")" << endl;
 				values[a*cols+b] = -G;
@@ -121,9 +124,9 @@ struct Matrix
    		}
    		for(int i=0; i < voltagesource_list.size(); i++) {
    			vector<string> nodenames = voltagesource_list[i].nodes;
-   			vector<int> lastdigit = extract_node_number(nodenames);
-   			if (lastdigit[0]==0 || lastdigit[1]==0){
-   				int index = lastdigit[0] + lastdigit[1] - 1;
+   			vector<int> node_nb = extract_node_number(nodenames);
+   			if (node_nb[0]==0 || node_nb[1]==0){
+   				int index = node_nb[0] + node_nb[1] - 1;
    				for(int other_idx = 0 ; other_idx < cols ; other_idx++) {
    					values[index*cols+other_idx] = 0;
    				}
