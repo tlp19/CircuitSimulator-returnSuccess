@@ -66,7 +66,8 @@ struct Network {
 	
 	vector<string> list_nodes() const;	//Lists all nodes inside a Network in a sorted order [Analysis]
 	vector<double> time_intervals() const;	//Lists all the time intervals that we need to do the analysis at [Analysis] 
-	void set_nodes_to_numbers();  //takes the listed nodes in the right order and simplify their name for clarity at [Analysis]
+	
+	void set_nodes_to_numbers();  //takes the listed nodes in the right order and simplify their name for clarity [Analysis]
 };
 
 
