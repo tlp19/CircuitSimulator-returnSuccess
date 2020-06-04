@@ -3,10 +3,6 @@
 using namespace std;
 
 
-bool get_value_capacitor(Component C, /*current */ int i){
-	C.num_value = i;
-	}
-
 vector<double> Network::time_intervals() const {
 	vector<double> intervals;
 	double counter = 0.0;
