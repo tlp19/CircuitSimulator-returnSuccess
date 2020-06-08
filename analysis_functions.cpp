@@ -100,15 +100,16 @@ vector<int> extract_node_number(vector<string> nodenames){
 }
 	
 	// Prints a matrix to cout
-void Matrix::print() const {
+ostream &operator<<(ostream &output, const Matrix &mat) {
 	cerr << endl << "We get the following conductance matrix:" << endl;
-	for(int i = 0 ; i < rows ; i++) {
-		for(int j = 0 ; j < cols ; j++) {
-			cout << values[i*cols+j] << tab;
+	for(int i = 0 ; i < mat.rows ; i++) {
+		for(int j = 0 ; j < mat.cols ; j++) {
+			cout << mat.values[i*cols+j] << tab;
 		}
 		cout << endl;
 	}
 	cerr << endl;
+	return output;
 }
 
 	// Fills in the values in the conductance matrix for the resistors present in the circuit
