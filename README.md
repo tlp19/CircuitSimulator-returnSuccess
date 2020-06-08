@@ -27,13 +27,13 @@ List of test files:
   	- test\_3\_analysis\_listnodesandtimes.cpp
   	  - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
   - Test circuits:
-	- test_circuit1.txt
+	- test\_circuit\_1.txt
   	  - A simple input file to test the i/o capabilities. [not a tested working circuit]
-    - test_circuit2.txt
+    - test\_circuit\_2.txt
   	  - A more complex input circuit. [not a tested working circuit]
-  	- test_circuit3.txt
+  	- test\_circuit\_3.txt
   	  - A simple test circuit.
-  	- test_circuit4.txt
+  	- test\_circuit\_4.txt
   	  - Full circuit with voltage sources and resistors to test the conductance matrix.
-  	- test_circuit5.txt
+  	- test\_circuit\_5.txt
   	  - Test file using unusual node names.
