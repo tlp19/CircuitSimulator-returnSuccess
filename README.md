@@ -27,9 +27,9 @@ List of test files:
   	  - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
   - Test circuits:
 	- test_circuit1.txt
-  	  - A simple input file to test the i/o capabilities. [Not a tested working circuit]
+  	  - A simple input file to test the i/o capabilities. [not a tested working circuit]
     - test_circuit2.txt
-  	  - A more complex input circuit. [Not a tested working circuit]
+  	  - A more complex input circuit. [not a tested working circuit]
   	- test_circuit3.txt
   	  - A simple test circuit.
   	- test_circuit4.txt
