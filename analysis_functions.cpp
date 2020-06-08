@@ -49,12 +49,11 @@ void Network::set_nodes_to_numbers(){
 		for(int j=0 ; j<components[i].nodes.size() ; j++){
 			for(int k=0 ; k< a.size(); k++){
 				if(components[i].nodes[j] == a[k]){
-					components[i].nodes[j] = k;
+					components[i].nodes[j] = to_string(k);
 				}
 			}
 		}		
 	}
-//	return listed_nodes_numbers;
 }
 
 // Resizes a matrix

@@ -10,6 +10,8 @@ int main() {
 
     vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit including ground
     int size = list_of_nodes.size() - 1; //number of nodes excluding ground
+    
+    x.set_nodes_to_numbers();
 
     //square matrix of conductance
     Matrix conduct;
