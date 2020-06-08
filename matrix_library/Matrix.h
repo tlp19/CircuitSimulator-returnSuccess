@@ -6,36 +6,45 @@
 #include <assert.h>
 #include <cstddef>
 
+#include "../analysis_header.hpp"
+
 using namespace std;
 
 
-class Matrix
+struct Matrix
 {
-public:
     int rows;
     int cols;
 
-    vector<double> data;
+    vector<double> values;
+
+    void write(int r, int c, Component v);
+    double read(int r, int c);
+    void fill_with_zeros();
+    void print() const;
+    void write_resistor_conductance(Network input_network);
+    void overwrite_w_voltage_sources(Network input_network);
+
+
 
     double& at(size_t r, size_t c)
     {
-        return data[ r * cols + c ];
+        return values[ r * cols + c ];
     }
 
     const double& at(size_t r, size_t c) const
     {
-        return data[ r * cols + c];
+        return values[ r * cols + c];
     }
 
-public:
     Matrix () = default;
 
-    Matrix(int r, int c, long long int n = 0 ) : rows(r), cols(c), data(r * c, n)
+    Matrix(int r, int c, long long int n = 0 ) : rows(r), cols(c), values(r * c, n)
     {
         assert(r > 0 && c > 0);
     }
 
-    Matrix(int r, int c, initializer_list<double> values ) : rows(r), cols(c), data(values)
+    Matrix(int r, int c, initializer_list<double> values ) : rows(r), cols(c), values(values)
     {
         assert(r > 0 && c > 0);
         assert(values.size() == size());
@@ -53,7 +62,7 @@ public:
 
     bool operator== (const Matrix& mx) const
     {
-        return data == mx.data;
+        return values == mx.values;
     }
     bool operator!= (const Matrix& mx) const
     {
@@ -91,9 +100,9 @@ public:
 
     void resize(int r, int c, long long int n = 0)
     {
-        data.clear();
+        values.clear();
 
-        data.resize( r * c, n );
+        values.resize( r * c, n );
 
         rows = r;
         cols = c;

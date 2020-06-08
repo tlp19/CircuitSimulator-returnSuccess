@@ -58,14 +58,14 @@ void Network::set_nodes_to_numbers(){
 }
 
 // Resizes a matrix
-void Matrix::resize(int rows, int cols) { 
+/*void Matrix::resize(int rows, int cols) { 
 	this->rows=rows;
 	this->cols=cols;
 	values.resize(rows*cols);
 	cerr << "Rows: " << rows << endl;
 	cerr << "Columns: " << cols << endl;
 	cerr << "-> Size: " << values.size() << endl << endl;
-}
+} */
 
 // Writes the value of a component inside the matrix
 void Matrix::write(int r, int c, Component v)
@@ -104,11 +104,10 @@ ostream &operator<<(ostream &output, const Matrix &mat) {
 	cerr << endl << "We get the following conductance matrix:" << endl;
 	for(int i = 0 ; i < mat.rows ; i++) {
 		for(int j = 0 ; j < mat.cols ; j++) {
-			cout << mat.values[i*cols+j] << tab;
+			cout << mat.values[i*mat.cols+j] << tab;
 		}
 		cout << endl;
 	}
-	cerr << endl;
 	return output;
 }
 
@@ -156,7 +155,7 @@ void Matrix::overwrite_w_voltage_sources(Network input_network) {
 	vector<Component> voltagesource_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
-		if( x.type=='V'){
+		if(x.type=='V' || x.type=='C'){
 			voltagesource_list.push_back(x);
 		}
    	}

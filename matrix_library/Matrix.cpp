@@ -1,5 +1,6 @@
 #include "Matrix.h"
 
+#include <vector>
 #include <iostream>
 #include <assert.h>
 #include <algorithm>
@@ -9,9 +10,10 @@
 
 using namespace std;
 
-Matrix::Matrix(initializer_list<initializer_list<double>> values )
+/*Matrix::Matrix(initializer_list<initializer_list<double>> values )
 {
     int len;
+    double zero
     for(auto iter = values.begin(); iter != values.end(); ++iter)
         if(iter->size() != 0)
         {
@@ -28,15 +30,15 @@ Matrix::Matrix(initializer_list<initializer_list<double>> values )
 
         if(iter->size() == 0)
             for(int i = 0; i < len; ++i)
-                data.push_back(0);
+                values.push_back(0.0);
         else
             for(auto iterj = iter->begin(); iterj != iter->end(); ++iterj)
-                data.push_back(*iterj);
+                values.push_back(*iterj);
     }
 
     rows = values.size();
     cols = len;
-}
+} */
 
 
 Matrix Matrix::operator+(const Matrix& mx) const
@@ -90,7 +92,7 @@ Matrix& Matrix::operator-=(const Matrix& mx)
 {
     assert(rows == mx.rows && cols == mx.cols);
 
-    transform(data.begin(), data.end(), mx.data.begin(), data.end(), minus<double>{});
+    transform(values.begin(), values.end(), mx.values.begin(), values.end(), minus<double>{});
 
     return *this;
 }
@@ -99,7 +101,7 @@ Matrix& Matrix::operator+=(const Matrix& mx)
 {
     assert(rows == mx.rows && cols == mx.cols);
 
-    transform(data.begin(), data.end(), mx.data.begin(), data.end(), plus<double>{});
+    transform(values.begin(), values.end(), mx.values.begin(), values.end(), plus<double>{});
 
     return *this;
 }
@@ -211,7 +213,7 @@ bool Matrix::is_diagonal() const
 
 bool Matrix::is_zero() const
 {
-    return all_of( data.begin(), data.end(), [ ] (const auto& x)
+    return all_of( values.begin(), values.end(), [ ] (const auto& x)
     {
         return x == 0;
     } );
@@ -219,7 +221,7 @@ bool Matrix::is_zero() const
 
 bool Matrix::is_constant() const
 {
-    return adjacent_find( data.begin(), data.end(), not_equal_to<double>{} ) == data.end();
+    return adjacent_find( values.begin(), values.end(), not_equal_to<double>{} ) == values.end();
 }
 
 bool Matrix::is_orthogonal() const
@@ -378,7 +380,7 @@ Matrix Matrix::inverse() const
 
     Matrix mx = *this;
     Matrix inverse = Matrix::Identity(rows);
-
+	
     bool alternative_pivot_1_found;
 
     bool pivot_not_zero_found;

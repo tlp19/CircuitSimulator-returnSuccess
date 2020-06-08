@@ -17,11 +17,14 @@ int main() {
     
     //fill the conductance matrix with the conductance of the resistors
     conduct.write_resistor_conductance(x);
-    conduct.print();
+    cout << conduct << endl;
     
     //overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
-    conduct.print();
+    cout << conduct << endl;
+    cout << "-" << endl;
+    cout << conduct.inverse() << endl;
+    cout << "-" << endl;
 
 //TODO
    /* vector<Component> currentsource_list; //list of currentsources
@@ -46,6 +49,4 @@ int main() {
     }
 
 */
-
-	conduct.print();
 }

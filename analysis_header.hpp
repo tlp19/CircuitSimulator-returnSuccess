@@ -5,8 +5,8 @@
 
 #include "network_header.hpp"
 #include "network_functions.cpp"
-//#include "libraries/matrix/Matrix.h"
-//#include "libraries/matrix/Matrix.cpp"
+#include "matrix_library/Matrix.h"
+#include "matrix_library/Matrix.cpp"
 
 using namespace std;
 
@@ -18,7 +18,7 @@ char tab = 9;
 
 
 // Struct to define a Matrix and its methods
-struct Matrix
+/*struct Matrix
 {
     int rows;
     int cols; 
@@ -31,7 +31,7 @@ struct Matrix
     void print() const;
     void write_resistor_conductance(Network input_network);
     void overwrite_w_voltage_sources(Network input_network);
-};
+}; */
 
 
 
