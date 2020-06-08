@@ -4,6 +4,7 @@ Libraries:
     - Matrix.h - merged header of our Matrix struct and the one from the library
     - Matrix.cpp - definitions for the methods of the library
   - Boost - required for the matrix library
+    - Install using: ```sudo apt-get install libboost-all-dev```
 
 List of program files:
   - network_header.hpp
