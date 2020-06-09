@@ -123,8 +123,8 @@ void Matrix::write_resistor_conductance(const Network input_network) {
 	}
 	for(int i=0; i < resistor_list.size(); i++) {
 	   	vector<string> nodenames = resistor_list[i].nodes;
-	   	int value = resistor_list[i].num_value;
-		vector<int> node_nb = extract_node_number(nodenames);
+	   	vector<int> node_nb = extract_node_number(nodenames);
+	   	double value = resistor_list[i].num_value;
 		double G = 1.0/value;
 		//check if it's connected to ground   
 	   	if (node_nb[0]==0 || node_nb[1]==0){
@@ -182,7 +182,7 @@ void Matrix::overwrite_w_voltage_sources(const Network input_network) {
 	}
 }
 
-//CURRENT: Writes the value of the current sources in the current matrix
+// CURRENT: Writes the value of the current sources in the current matrix
 void Matrix::write_current_sources(const Network input_network) {
 	assert(cols==1);
 	vector<Component> currentsource_list;
@@ -202,7 +202,7 @@ void Matrix::write_current_sources(const Network input_network) {
 	}
 }
 
-//CURRENT: Writes the value of the voltage sources in the current matrix
+// CURRENT: Writes the value of the voltage sources in the current matrix
 void Matrix::write_voltage_sources(const Network input_network) {
 	vector<Component> voltagesource_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
