@@ -218,3 +218,22 @@ void Matrix::write_voltage_sources(const Network input_network) {
 		values[pos*cols+0] += voltagesource_list[i].num_value;
 	}
 }
+void print_CSV_header(const vector<string> nodenames) {
+	cout << "t,";
+	for(int i = 1 ; i < nodenames.size() ; i++) {
+		cout << nodenames[i] << ",";
+	}
+	cout << "\n";
+}
+
+
+void Matrix::print_in_CSV(const double time) {
+	assert(cols==1);
+	cout << time << ",";
+	for(int i = 0 ; i < rows ; i++) {
+		cout << values[i*cols+0] << ",";
+	}
+	cout << "\n";
+}
+
+

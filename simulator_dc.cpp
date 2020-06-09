@@ -59,5 +59,6 @@ int main() {
 	
 	//Print the result matrix to output using CSV format
 	cerr << "And the voltages at each node are:" << endl << result << endl;
-	result.print_in_CSV(0);
+	print_CSV_header(list_of_nodes);
+	result.print_in_CSV(0.0);
 }
