@@ -15,7 +15,7 @@ List of program files:
     - Contains all structs, classes and function declarations regarding the analysis of a network.
   - analysis_functions.cpp
     - Contains all definitions of the functions associated with the analysis of a network.
-  - matrix.cpp
+  - program.cpp
     - Core file of our program.
 
 List of test files:
@@ -37,3 +37,7 @@ List of test files:
   	  - Full circuit with voltage sources and resistors to test the conductance matrix.
   	- test\_circuit\_5.txt
   	  - Same as test\_circuit\_3 but using unusual node names.
+  	- test\_circuit\_6.txt
+  	  - Circuit for debugging purpuses: similar to circuit 4.
+  	- test\_circuit\_7.txt
+  	  - Same as circuit 6, but using an ungrounded current source.
