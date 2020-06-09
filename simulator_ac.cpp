@@ -32,7 +32,7 @@ int main() {
     //Overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
     
-    cerr << "The conductance matrix is:" << endl << conduct << endl;
+    cerr << "The complete conductance matrix is:" << endl << conduct << endl;
     cerr << "And its inverse is:" << endl << conduct.inverse() << endl;
   
   

@@ -31,7 +31,7 @@ int main() {
     //Overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
     
-    cerr << "The conductance matrix is:" << endl << conduct << endl;
+    cerr << "The complete conductance matrix is:" << endl << conduct << endl;
     
 
 //CURRENT MATRIX
@@ -39,7 +39,10 @@ int main() {
 	//Create and initialize the column matrix of currents
 	Matrix current;
 	current.resize(size, 1);
-
+	
+	//If not already DC, find a DC offset for the independant sources
+	x.update_sources_instantaneous_values(0.0);	
+	
 	//Fill in the current matrix with the values of the independant current sources
 	current.write_current_sources(x);
 	
