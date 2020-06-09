@@ -117,9 +117,9 @@ istream &operator>>(istream &input, Component &s) {
 		s.value=_value;
 	}
 	
-	if(s.type!='C' && s.type!='L') {
+//	if(s.type!='C' && s.type!='L') {
 		s.set_num_value();
-	}
+//	}
 	
 	return input;
 }

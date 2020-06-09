@@ -49,12 +49,17 @@ int main() {
 	//Do the analysis at all the time intervals
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
-		x.update_instantaneous_values(x, t, result?);		//For V, I (Sine_function) and C, L (approximate to V or I)
+		
+		//Update the instantaneous value of the independant sources
+		x.update_sources_instantaneous_values(t, result?);		//For V, I with a Sine_function
 		current.write_current_sources(x);
 		current.write_voltage_sources(x);
-		//current.write_capacitors_as_voltages(x);
-		//current.write_inductors_as_currents(x);
 		
+/*		//Approximate capacitors and inductors to sources
+		current.write_capacitors_as_voltages(x, result);
+		current.write_inductors_as_currents(x, result);
+*/
+
 		//Calculate the result matrix
 		result =  current * conduct.inverse();
 		
