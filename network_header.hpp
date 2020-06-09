@@ -31,7 +31,7 @@ class Component {
 	vector<string> nodes;			  //List of the nodes that the component is connected to (2 or 3)
 	string value;					  //Litteral value of the component (in Ohms, Farads, etc.)
 	double num_value;				  //Numerical value extracted from the value variable
-	bool has_function;				  //For V and I: 0 if only DC vlaue, 1 if using a sine function
+	bool has_function;				  //For V and I: 0 if only DC value, 1 if using a sine function
 	Sine_function function;			  //Sine function for V and I components
 	string transistor_type;			  //For Q: either NPN or PNP
 
@@ -39,17 +39,8 @@ class Component {
 	void set_nb_branches();			  //Fills in the nb_branches member variable
 	string function_to_string() const;	//Writes a Sine_function as a string
 	void set_num_value();			//Sets the numerical value or value to num_value for a component
+	void set_nodes_to_numbers();	//Sets all nodes in the network to a number (string)
 };
-
-/*// Derived class of Component
-class VIsource: public Component {
-  public:
-	bool is_v;						//1 if V, 0 if I
-	double dc_value;				//Contains the DC value (if there is one)
-	Sine_function function;			//Contains the Sine function (if there is one)
-	bool is_dc;						//1 if DC, 0 if using a function
-}; */
-
 
 // Struct to store the analysis instruction of the .tran line in the input
 struct Instruction{
@@ -57,7 +48,6 @@ struct Instruction{
 	string stop_time;				//Second argument of the .tran instruction
 	string timestep;				//Fourth argument of the .tran instruction
 };
-
 
 // Struct to store the whole Network as defined in the input SPICE file, as well as the .tran instruction
 struct Network {

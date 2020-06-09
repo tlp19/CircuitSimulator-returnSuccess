@@ -22,8 +22,10 @@ struct Matrix
     double read(int r, int c);
     void fill_with_zeros();
     void print() const;
-    void write_resistor_conductance(Network input_network);
-    void overwrite_w_voltage_sources(Network input_network);
+    void write_resistor_conductance(const Network input_network);
+    void overwrite_w_voltage_sources(const Network input_network);
+    void write_current_sources(const Network input_network);
+    void write_voltage_sources(const Network input_network);
 
 	
 	// Functions from the library

@@ -96,24 +96,22 @@ vector<int> extract_node_number(vector<string> nodenames){
 	for(int i=0; i < nodenames.size(); i++){
 		node_nb.push_back((int)get_numerical(nodenames[i]));
 		}
-		cerr << "Between the nodes: " << node_nb[0] << "-" << node_nb[1] << endl;
 	return node_nb;
 }
 	
-	// Prints a matrix to cout
+// Prints a matrix to cout
 ostream &operator<<(ostream &output, const Matrix &mat) {
-	cerr << endl << "We get the following conductance matrix:" << endl;
 	for(int i = 0 ; i < mat.rows ; i++) {
 		for(int j = 0 ; j < mat.cols ; j++) {
-			cout << mat.values[i*mat.cols+j] << tab;
+			output << mat.values[i*mat.cols+j] << tab;
 		}
-		cout << endl;
+		output << endl;
 	}
 	return output;
 }
 
-	// Fills in the values in the conductance matrix for the resistors present in the circuit
-void Matrix::write_resistor_conductance(Network input_network) {
+// CONDUCTANCE: Fills in the values in the conductance matrix for the resistors present in the circuit
+void Matrix::write_resistor_conductance(const Network input_network) {
 	vector<Component> input_components = input_network.components;
 	vector<string> list_of_nodes = input_network.list_nodes();
 	vector<Component> resistor_list;
@@ -126,33 +124,27 @@ void Matrix::write_resistor_conductance(Network input_network) {
 	for(int i=0; i < resistor_list.size(); i++) {
 	   	vector<string> nodenames = resistor_list[i].nodes;
 	   	int value = resistor_list[i].num_value;
-		//extract the character at the end of the 2 node names (it corresponds to the node number)
 		vector<int> node_nb = extract_node_number(nodenames);
 		double G = 1.0/value;
-		cerr << "Conductance value: " << G << endl;
 		//check if it's connected to ground   
 	   	if (node_nb[0]==0 || node_nb[1]==0){
 			//diagonal
 			int index = node_nb[0] + node_nb[1] - 1;
-			cerr << "In the matrix at the coordinates: (" << index << ";" << index << ") [diagonal]" << endl;
 			values[index*cols+index] += G;   
 		} else {
 			//between two non-ground nodes
 			int a = node_nb[0] - 1;
 			int b = node_nb[1] - 1;
-			cerr << "In the matrix at the coordinates: (" << a << ";" << b << ")" << endl;
-			cerr << "In the matrix at the coordinates: (" << b << ";" << a << ")" << endl;
 			values[a*cols+b] = -G;
 			values[b*cols+a] = -G;
 			values[a*cols+a] += G;
 			values[b*cols+b] += G;
 		}
-		cerr << endl;
 	}
 }
 
-// Overwrites values of the matrix to consider the cases of voltage sources
-void Matrix::overwrite_w_voltage_sources(Network input_network) {
+// CONDUCTANCE: Overwrites values of the matrix to consider the cases of voltage sources
+void Matrix::overwrite_w_voltage_sources(const Network input_network) {
 	vector<Component> voltagesource_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
@@ -187,5 +179,43 @@ void Matrix::overwrite_w_voltage_sources(Network input_network) {
 			values[neg*cols+neg] += row_p[pos];
 			values[neg*cols+pos] = 0;
 		}
+	}
+}
+
+//CURRENT: Writes the value of the current sources in the current matrix
+void Matrix::write_current_sources(const Network input_network) {
+	assert(cols==1);
+	vector<Component> currentsource_list;
+	for (int i=0; i < input_network.components.size(); i++) {  
+		Component x = input_network.components[i]; 
+		if(x.type=='I'){
+			currentsource_list.push_back(x);
+		}
+   	}
+	for(int i=0; i < currentsource_list.size(); i++) {
+		vector<string> nodenames = currentsource_list[i].nodes;
+		vector<int> node_nb = extract_node_number(nodenames);
+		int in = node_nb[0] - 1;
+		int out = node_nb[1] - 1;
+		values[out*cols+0] = currentsource_list[i].num_value;
+		values[in*cols+0] = -currentsource_list[i].num_value;
+	}
+}
+
+//CURRENT: Writes the value of the voltage sources in the current matrix
+void Matrix::write_voltage_sources(const Network input_network) {
+	vector<Component> voltagesource_list;
+	for (int i=0; i < input_network.components.size(); i++) {  
+		Component x = input_network.components[i]; 
+		if(x.type=='V'){
+			voltagesource_list.push_back(x);
+		}
+   	}
+	for(int i=0; i < voltagesource_list.size(); i++) {
+		vector<string> nodenames = voltagesource_list[i].nodes;
+		vector<int> node_nb = extract_node_number(nodenames);
+		int pos = node_nb[0] - 1;
+		int neg = node_nb[1] - 1;
+		values[pos*cols+0] = voltagesource_list[i].num_value;
 	}
 }
