@@ -219,7 +219,7 @@ void Matrix::write_voltage_sources(const Network input_network) {
 	}
 }
 void print_CSV_header(const vector<string> nodenames) {
-	cout << "t,";
+	cout << "Time,";
 	for(int i = 1 ; i < nodenames.size() ; i++) {
 		cout << nodenames[i] << ",";
 	}

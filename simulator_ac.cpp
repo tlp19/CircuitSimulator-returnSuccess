@@ -42,7 +42,8 @@ int main() {
 	vector<double> time_intervals = x.time_intervals();
 
 	Matrix result;
-
+	print_CSV_header(list_of_nodes);
+	
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
 		x.update_instantaneous_values(x, t, result?);		//For V, I (Sine_function) and C, L (approximate to V or I)

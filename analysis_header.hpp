@@ -25,5 +25,8 @@ char tab = 9;
 //Extracts the node number of a node
 vector<int> extract_node_number(vector<string> nodenames);
 
+//Prints the first row of a CSV file
+void print_CSV_header(const vector<string> nodenames);
+
 
 #endif
