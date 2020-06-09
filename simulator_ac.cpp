@@ -38,21 +38,27 @@ int main() {
   
 // CURRENT MATRIX AND ANALYSIS
 
+	//List all the time intervals that we need to do the analysis at
 	double time;
 	vector<double> time_intervals = x.time_intervals();
-
+	
+	//Create a Matrix result, and output the first row of the output CSV file
 	Matrix result;
 	print_CSV_header(list_of_nodes);
 	
+	//Do the analysis at all the time intervals
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
 		x.update_instantaneous_values(x, t, result?);		//For V, I (Sine_function) and C, L (approximate to V or I)
 		current.write_current_sources(x);
 		current.write_voltage_sources(x);
-		current.write_capacitors_as_voltages(x);
-		current.write_inductors_as_currents(x);
+		//current.write_capacitors_as_voltages(x);
+		//current.write_inductors_as_currents(x);
 		
+		//Calculate the result matrix
 		result =  current * conduct.inverse();
+		
+		//Output the result matrix in CSV format
 		result.print_in_CSV(time);
 	}
 }
