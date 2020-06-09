@@ -135,8 +135,8 @@ void Matrix::write_resistor_conductance(const Network input_network) {
 			//between two non-ground nodes
 			int a = node_nb[0] - 1;
 			int b = node_nb[1] - 1;
-			values[a*cols+b] = -G;
-			values[b*cols+a] = -G;
+			values[a*cols+b] += -G;
+			values[b*cols+a] += -G;
 			values[a*cols+a] += G;
 			values[b*cols+b] += G;
 		}
