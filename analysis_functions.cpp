@@ -162,22 +162,25 @@ void Matrix::overwrite_w_voltage_sources(const Network input_network) {
 			}
 			values[index*cols+index] = 1;
 		} else {
-			vector<double> row_p;
 			int pos = node_nb[0] - 1;
 			int neg = node_nb[1] - 1;
+			//First, save the row p
+			vector<double> row_p;
 			for(int idx = 0 ; idx < cols ; idx++) {
 				row_p.push_back(values[pos*cols+idx]);
 				values[pos*cols+idx] = 0;
 			}
+			//Then, set the right values at the row p
 			values[pos*cols+pos] = 1;
 			values[pos*cols+neg] = -1;
+			//Then do the supernode analysis
 			for(int idx = 0 ; idx < cols ; idx++) {
 				if(idx!=pos && idx!=neg) {
 					values[neg*cols+idx] += row_p[idx];
 				}
 			}
-			values[neg*cols+neg] += row_p[pos];
-			values[neg*cols+pos] = 0;
+			values[neg*cols+neg] += row_p[pos];		//Total conductance of the supernode
+			values[neg*cols+pos] = 0.0;				//Conductance inside the voltage source = 0
 		}
 	}
 }

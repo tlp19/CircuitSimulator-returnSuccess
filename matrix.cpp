@@ -27,6 +27,7 @@ int main() {
     
     //Fill the conductance matrix with the conductance of the resistors
     conduct.write_resistor_conductance(x);
+    cerr << "The conductance matrix with only resistors is:" << endl << conduct << endl;
     
     //Overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
