@@ -32,16 +32,18 @@ List of test files:
   	  - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
   - Test circuits:
 	- test\_circuit\_1.txt
-  	  - A simple input file to test the i/o capabilities. [not a tested working circuit]
+  	  - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
     - test\_circuit\_2.txt
-  	  - A more complex input circuit. [not a tested working circuit]
+  	  - [I/O] A more complex input circuit. [not a tested working circuit]
   	- test\_circuit\_3.txt
   	  - A simple test circuit.
   	- test\_circuit\_4.txt
-  	  - Full circuit with voltage sources and resistors to test the conductance matrix.
+  	  - [Analysis] Full circuit with voltage sources and resistors to test the conductance matrix.
   	- test\_circuit\_5.txt
-  	  - Same as test\_circuit\_3 but using unusual node names.
+  	  - [Analysis] Same as test\_circuit\_3 but using unusual node names.
   	- test\_circuit\_6.txt
-  	  - Circuit for debugging purpuses: similar to circuit 4.
+ 	  - [Debug DC] Circuit for debugging purpuses: similar to circuit 4.
   	- test\_circuit\_7.txt
-  	  - Same as circuit 6, but using an ungrounded current source.
+  	  - [DC] - Same as circuit 6, but using an ungrounded current source.
+  	- test\_circuit\_8.txt
+  	  - [AC] - Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions

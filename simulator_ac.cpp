@@ -42,6 +42,10 @@ int main() {
 	double time;
 	vector<double> time_intervals = x.time_intervals();
 	
+	//Create and initialize the column matrix of currents
+	Matrix current;
+	current.resize(size, 1);
+	
 	//Create a Matrix result, and output the first row of the output CSV file
 	Matrix result;
 	print_CSV_header(list_of_nodes);
@@ -51,7 +55,9 @@ int main() {
 		time = time_intervals[t_index];
 		
 		//Update the instantaneous value of the independant sources
-		x.update_sources_instantaneous_values(t, result?);		//For V, I with a Sine_function
+		Matrix current = {};
+		current.resize(size, 1);
+		x.update_sources_instantaneous_values(time);		//For V, I with a Sine_function
 		current.write_current_sources(x);
 		current.write_voltage_sources(x);
 		
@@ -61,7 +67,7 @@ int main() {
 */
 
 		//Calculate the result matrix
-		result =  current * conduct.inverse();
+		result =  conduct.inverse() * current;
 		
 		//Output the result matrix in CSV format
 		result.print_in_CSV(time);

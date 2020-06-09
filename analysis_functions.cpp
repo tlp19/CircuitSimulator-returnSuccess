@@ -218,6 +218,8 @@ void Matrix::write_voltage_sources(const Network input_network) {
 		values[pos*cols+0] += voltagesource_list[i].num_value;
 	}
 }
+
+// OUTPUT: Prints out the first row of the CSV file
 void print_CSV_header(const vector<string> nodenames) {
 	cout << "Time,";
 	for(int i = 1 ; i < nodenames.size() ; i++) {
@@ -226,7 +228,7 @@ void print_CSV_header(const vector<string> nodenames) {
 	cout << "\n";
 }
 
-
+// OUTPUT: Prints out one result row of the CSV file
 void Matrix::print_in_CSV(const double time) {
 	assert(cols==1);
 	cout << time << ",";
@@ -234,6 +236,15 @@ void Matrix::print_in_CSV(const double time) {
 		cout << values[i*cols+0] << ",";
 	}
 	cout << "\n";
+}
+
+// Updates the instantaneous value of voltage and current sources
+void Network::update_sources_instantaneous_values(const double time) {
+	for(int i = 0 ; i < components.size() ; i++) {
+		if(components[i].has_function==true) {
+			components[i].num_value = components[i].function.amplitude * sin(components[i].function.frequency*time) + components[i].function.dc_offset;
+		}
+	}
 }
 
 

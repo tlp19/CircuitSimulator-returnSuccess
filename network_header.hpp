@@ -39,7 +39,6 @@ class Component {
 	void set_nb_branches();			  //Fills in the nb_branches member variable
 	string function_to_string() const;	//Writes a Sine_function as a string
 	void set_num_value();			//Sets the numerical value or value to num_value for a component
-	void set_nodes_to_numbers();	//Sets all nodes in the network to a number (string)
 };
 
 // Struct to store the analysis instruction of the .tran line in the input
@@ -56,8 +55,8 @@ struct Network {
 	
 	vector<string> list_nodes() const;	//Lists all nodes inside a Network in a sorted order [Analysis]
 	vector<double> time_intervals() const;	//Lists all the time intervals that we need to do the analysis at [Analysis] 
-	
 	void set_nodes_to_numbers();  //takes the listed nodes in the right order and simplify their name for clarity [Analysis]
+	void update_sources_instantaneous_values(const double time);	// Updates the instantaneous value of voltage and current sources [Analysis]
 };
 
 
