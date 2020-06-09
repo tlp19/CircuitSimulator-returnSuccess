@@ -36,4 +36,4 @@ List of test files:
   	- test\_circuit\_4.txt
   	  - Full circuit with voltage sources and resistors to test the conductance matrix.
   	- test\_circuit\_5.txt
-  	  - Test file using unusual node names.
+  	  - Same as test\_circuit\_3 but using unusual node names.

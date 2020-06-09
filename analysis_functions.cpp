@@ -173,14 +173,10 @@ void Matrix::overwrite_w_voltage_sources(const Network input_network) {
 			//Then, set the right values at the row p
 			values[pos*cols+pos] = 1;
 			values[pos*cols+neg] = -1;
-			//Then do the supernode analysis
+			//Then sum the two old rows to do the supernode analysis
 			for(int idx = 0 ; idx < cols ; idx++) {
-				if(idx!=pos && idx!=neg) {
 					values[neg*cols+idx] += row_p[idx];
-				}
 			}
-			values[neg*cols+neg] += row_p[pos];		//Total conductance of the supernode
-			values[neg*cols+pos] = 0.0;				//Conductance inside the voltage source = 0
 		}
 	}
 }
@@ -200,8 +196,8 @@ void Matrix::write_current_sources(const Network input_network) {
 		vector<int> node_nb = extract_node_number(nodenames);
 		int in = node_nb[0] - 1;
 		int out = node_nb[1] - 1;
-		values[out*cols+0] = currentsource_list[i].num_value;
-		values[in*cols+0] = -currentsource_list[i].num_value;
+		values[out*cols+0] += currentsource_list[i].num_value;
+		values[in*cols+0] += -currentsource_list[i].num_value;
 	}
 }
 
@@ -219,6 +215,6 @@ void Matrix::write_voltage_sources(const Network input_network) {
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
 		int neg = node_nb[1] - 1;
-		values[pos*cols+0] = voltagesource_list[i].num_value;
+		values[pos*cols+0] += voltagesource_list[i].num_value;
 	}
 }
