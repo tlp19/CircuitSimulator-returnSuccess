@@ -15,8 +15,8 @@ List of program files:
     - Contains all structs, classes and function declarations regarding the analysis of a network.
   - analysis_functions.cpp
     - Contains all definitions of the functions associated with the analysis of a network.
-  - program.cpp
-    - Core file of our program.
+  - simulator_dc.cpp
+    - Simple DC simulator.
 
 List of test files:
   - Test programs:
