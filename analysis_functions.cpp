@@ -3,6 +3,7 @@
 using namespace std;
 
 
+//List all the times at which we need to analyze the circuit
 vector<double> Network::time_intervals() const {
 	vector<double> intervals;
 	double counter = 0.0;
@@ -43,6 +44,7 @@ vector<string> Network::list_nodes() const {
 	return node_list;
 }
 
+//Changes all the nodenames in a circuit to numbers (string)
 void Network::set_nodes_to_numbers(){
 	vector<string> a = Network::list_nodes();
 	for(int i=0; i< components.size(); i++){

@@ -15,9 +15,9 @@ struct Matrix
 {
     int rows;
     int cols;
-
     vector<double> values;
 
+	// Our functions
     void write(int r, int c, Component v);
     double read(int r, int c);
     void fill_with_zeros();
@@ -25,7 +25,8 @@ struct Matrix
     void write_resistor_conductance(Network input_network);
     void overwrite_w_voltage_sources(Network input_network);
 
-
+	
+	// Functions from the library
 
     double& at(size_t r, size_t c)
     {

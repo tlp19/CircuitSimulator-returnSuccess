@@ -27,6 +27,7 @@ int main() {
     cout << "-" << endl;
     cout << conduct.inverse() << endl;
     cout << "-" << endl;
+    cout << conduct.inverse()*conduct << endl;
 
 //TODO
    /* vector<Component> currentsource_list; //list of currentsources
