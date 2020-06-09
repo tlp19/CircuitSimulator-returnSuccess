@@ -1,10 +1,12 @@
 # returnSuccess // ELEC40006 Project
-Libraries:
+Libraries and other files:
   - Matrix library - by hbtalha [https://github.com/hbtalha/Matrix-Library]
     - Matrix.h - merged header of our Matrix struct and the one from the library
     - Matrix.cpp - definitions for the methods of the library
   - Boost - required for the matrix library
     - Install using: ```sudo apt-get install libboost-all-dev```
+    
+  - plotsim.m - MatLab program given to plot the results of our simulation
 
 List of program files:
   - network_header.hpp
