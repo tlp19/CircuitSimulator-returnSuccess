@@ -34,30 +34,24 @@ int main() {
     
     cerr << "The conductance matrix is:" << endl << conduct << endl;
     cerr << "And its inverse is:" << endl << conduct.inverse() << endl;
-    
+  
+  
+// CURRENT MATRIX AND ANALYSIS
 
-//CURRENT MATRIX
+	double time;
+	vector<double> time_intervals = x.time_intervals();
 
-	//Create and initialize the column matrix of currents
-	Matrix current;
-	current.resize(size, 1);
-
-	//Fill in the current matrix with the values of the independant current sources
-	current.write_current_sources(x);
-	
-	//Fill in the current matrix with the values of the independant current sources
-	current.write_voltage_sources(x);
-	
-	cerr << "The current matrix is:" << endl << current << endl;
-	
-	
-//SOLVE THE CIRCUIT TO FIND THE NODE VOLTAGES
-	
-	//Create and calculate the matrix containing the results
 	Matrix result;
-	result = conduct.inverse() * current;
-	
-	//Print the result matrix to output using CSV format
-	cerr << "And the voltages at each node are:" << endl << result << endl;
-	result.print_in_CSV(0);
+
+	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
+		time = time_intervals[t_index];
+		x.update_instantaneous_values(x, t, result?);		//For V, I (Sine_function) and C, L (approximate to V or I)
+		current.write_current_sources(x);
+		current.write_voltage_sources(x);
+		current.write_capacitors_as_voltages(x);
+		current.write_inductors_as_currents(x);
+		
+		result =  current * conduct.inverse();
+		result.print_in_CSV(time);
+	}
 }
