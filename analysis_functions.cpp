@@ -69,28 +69,6 @@ void Network::set_nodes_to_numbers(){
 	}
 }
 
-// Writes the value of a component inside the matrix
-void Matrix::write(int r, int c, Component v)
-{
-	values[r*cols+c] = v.num_value;
-}
-
-// Returns the value stored in the matrix at a specific location
-double Matrix::read(int r, int c)
-{
-	return values[r*cols+c];
-}
-
-// Fills a matrix with zeros (of the type double)
-void Matrix::fill_with_zeros() {
-	for(int i = 0 ; i < rows ; i++) {
-		for(int j = 0 ; j < cols ; j++) {
-			double zero = 0;
-			values[i*cols+j] = zero;
-		}
-	}
-}
-
 // Extracts the node number of a node
 vector<int> extract_node_number(vector<string> nodenames){
 	vector<int> node_nb = {};
@@ -113,6 +91,7 @@ ostream &operator<<(ostream &output, const Matrix &mat) {
 
 // CONDUCTANCE: Fills in the values in the conductance matrix for the resistors present in the circuit
 void Matrix::write_resistor_conductance(const Network input_network) {
+	//List all the resistors present in a circuit
 	vector<Component> input_components = input_network.components;
 	vector<string> list_of_nodes = input_network.list_nodes();
 	vector<Component> resistor_list;
@@ -122,12 +101,13 @@ void Matrix::write_resistor_conductance(const Network input_network) {
 		resistor_list.push_back(x);
 		}
 	}
+	//For each resistor, complete the current matrix with the appropriate values
 	for(int i=0; i < resistor_list.size(); i++) {
 	   	vector<string> nodenames = resistor_list[i].nodes;
 	   	vector<int> node_nb = extract_node_number(nodenames);
 	   	double value = resistor_list[i].num_value;
 		double G = 1.0/value;
-		//check if it's connected to ground   
+		//Check if it's connected to ground   
 	   	if (node_nb[0]==0 || node_nb[1]==0){
 			//diagonal
 			int index = node_nb[0] + node_nb[1] - 1;
@@ -146,6 +126,7 @@ void Matrix::write_resistor_conductance(const Network input_network) {
 
 // CONDUCTANCE: Overwrites values of the matrix to consider the cases of voltage sources
 void Matrix::overwrite_w_voltage_sources(const Network input_network) {
+	//List all the voltage sources (and capacitors) present in the circuit
 	vector<Component> voltagesource_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
@@ -153,6 +134,7 @@ void Matrix::overwrite_w_voltage_sources(const Network input_network) {
 			voltagesource_list.push_back(x);
 		}
    	}
+   	//For each voltage source, complete the conductance matrix with the appropriate values
 	for(int i=0; i < voltagesource_list.size(); i++) {
 		vector<string> nodenames = voltagesource_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
@@ -185,6 +167,7 @@ void Matrix::overwrite_w_voltage_sources(const Network input_network) {
 // CURRENT: Writes the value of the current sources in the current matrix
 void Matrix::write_current_sources(const Network input_network) {
 	assert(cols==1);
+	//List all the current sources present in the circuit
 	vector<Component> currentsource_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
@@ -192,6 +175,7 @@ void Matrix::write_current_sources(const Network input_network) {
 			currentsource_list.push_back(x);
 		}
    	}
+   	//For each current source, complete the current matrix with the appropriate values
 	for(int i=0; i < currentsource_list.size(); i++) {
 		vector<string> nodenames = currentsource_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
@@ -205,6 +189,7 @@ void Matrix::write_current_sources(const Network input_network) {
 // CURRENT: Writes the value of the voltage sources in the current matrix
 void Matrix::write_voltage_sources(const Network input_network) {
 	assert(cols==1);
+	//List all the voltage sources present in the circuit
 	vector<Component> voltagesource_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
@@ -212,6 +197,7 @@ void Matrix::write_voltage_sources(const Network input_network) {
 			voltagesource_list.push_back(x);
 		}
    	}
+   	//For each voltage source, complete the current matrix with the appropriate values
 	for(int i=0; i < voltagesource_list.size(); i++) {
 		vector<string> nodenames = voltagesource_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
@@ -319,6 +305,8 @@ double find_current_through(const char type, const string name, const Network x,
 //Writes capacitors in the current matrix as voltage sources
 void Matrix::write_capacitors_as_voltage_sources(const Network input_network, const Matrix prev_v, const vector<double> prev_c) {
 	assert(cols==1);
+	vector<string> nodelist = input_network.list_nodes();
+	//List all the capacitors present in the circuit
 	vector<Component> capacitors_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
@@ -326,9 +314,16 @@ void Matrix::write_capacitors_as_voltage_sources(const Network input_network, co
 			capacitors_list.push_back(x);
 		}
    	}
+   	//For each capacitor, complete the current matrix with the appropriate value
 	for(int i=0; i < capacitors_list.size(); i++) {
-   		double C_as_voltage_value;
-   		//find the value
+		//Previous values are:
+		double vol_0 = find_voltage_at(capacitors_list[i].nodes[0], nodelist, prev_v);
+		double vol_1 = find_voltage_at(capacitors_list[i].nodes[1], nodelist, prev_v);
+		double prev_c_through_C = find_current_through(capacitors_list[i].type, capacitors_list[i].name, input_network, prev_c);
+		//Find the value of the equivalent voltage source
+   		double integral = (vol_0 - vol_1) + prev_c_through_C/get_numerical(input_network.instruction.timestep); //define the integral here
+   		double C_as_voltage_value = 1/capacitors_list[i].num_value * integral;
+   		//Add this value in the current matrix
 		vector<string> nodenames = capacitors_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
@@ -340,6 +335,8 @@ void Matrix::write_capacitors_as_voltage_sources(const Network input_network, co
 //Writes inductors in the current matrix as current sources
 void Matrix::write_inductors_as_current_sources(const Network input_network, const Matrix prev_v, const vector<double> prev_c) {
 	assert(cols==1);
+	vector<string> nodelist = input_network.list_nodes();
+	//List all the inductors present in the circuit
 	vector<Component> inductors_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
@@ -347,14 +344,21 @@ void Matrix::write_inductors_as_current_sources(const Network input_network, con
 			inductors_list.push_back(x);
 		}
    	}
+   	//For each inductor, complete the current matrix with the appropriate value
 	for(int i=0; i < inductors_list.size(); i++) {
-		double I_as_current_value;
-		//find the value
+		//Previous values are:
+		double vol_0 = find_voltage_at(inductors_list[i].nodes[0], nodelist, prev_v);
+		double vol_1 = find_voltage_at(inductors_list[i].nodes[1], nodelist, prev_v);
+		double prev_c_through_L = find_current_through(inductors_list[i].type, inductors_list[i].name, input_network, prev_c);
+		//Find the value of the equivalent current source
+		double integral = prev_c_through_L + (vol_0 - vol_1)/get_numerical(input_network.instruction.timestep); //define the integral here
+		double L_as_current_value = 1/inductors_list[i].num_value * integral;
+		//Add this value in the current matrix
 		vector<string> nodenames = inductors_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
 		int in = node_nb[0] - 1;
 		int out = node_nb[1] - 1;
-		values[out*cols+0] += I_as_current_value;
-		values[in*cols+0] += - I_as_current_value;
+		values[out*cols+0] += L_as_current_value;
+		values[in*cols+0] += - L_as_current_value;
 	}
 }
