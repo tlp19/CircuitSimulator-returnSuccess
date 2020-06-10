@@ -215,6 +215,7 @@ void Matrix::write_current_sources(const Network input_network) {
 
 // CURRENT: Writes the value of the voltage sources in the current matrix
 void Matrix::write_voltage_sources(const Network input_network) {
+	assert(cols==1);
 	vector<Component> voltagesource_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
@@ -258,9 +259,10 @@ void print_in_CSV(const double time, const Matrix mat, const vector<double> vec)
 
 // Updates the instantaneous value of voltage and current sources
 void Network::update_sources_instantaneous_values(const double time) {
+	double omega = 2 * pi * time;
 	for(int i = 0 ; i < components.size() ; i++) {
 		if(components[i].has_function==true) {
-			components[i].num_value = components[i].function.amplitude * sin(components[i].function.frequency * time * 2*pi) + components[i].function.dc_offset;
+			components[i].num_value = components[i].function.amplitude * sin(components[i].function.frequency * omega) + components[i].function.dc_offset;
 		}
 	}
 }
@@ -309,3 +311,43 @@ vector<double> find_current_through_components(const double time, const Network 
 	return currents;
 }
 
+//Writes capacitors in the current matrix as voltage sources
+void Matrix::write_capacitors_as_voltage_sources(const Network input_network, const Matrix prev_v, const vector<double> prev_c) {
+	assert(cols==1);
+	vector<Component> capacitors_list;
+	for (int i=0; i < input_network.components.size(); i++) {  
+		Component x = input_network.components[i]; 
+		if(x.type=='C'){
+			capacitors_list.push_back(x);
+		}
+   	}
+/*   for(int i=0; i < voltagesource_list.size(); i++) {
+		vector<string> nodenames = voltagesource_list[i].nodes;
+		vector<int> node_nb = extract_node_number(nodenames);
+		int pos = node_nb[0] - 1;
+		int neg = node_nb[1] - 1;
+		values[pos*cols+0] += voltagesource_list[i].num_value;
+	}
+	*/
+}
+
+//Writes inductors in the current matrix as current sources
+void Matrix::write_inductors_as_current_sources(const Network input_network, const Matrix prev_v, const vector<double> prev_c) {
+	assert(cols==1);
+	vector<Component> inductors_list;
+	for (int i=0; i < input_network.components.size(); i++) {  
+		Component x = input_network.components[i]; 
+		if(x.type=='L'){
+			inductors_list.push_back(x);
+		}
+   	}
+/*	for(int i=0; i < currentsource_list.size(); i++) {
+		vector<string> nodenames = currentsource_list[i].nodes;
+		vector<int> node_nb = extract_node_number(nodenames);
+		int in = node_nb[0] - 1;
+		int out = node_nb[1] - 1;
+		values[out*cols+0] += currentsource_list[i].num_value;
+		values[in*cols+0] += -currentsource_list[i].num_value;
+	}
+	*/
+}

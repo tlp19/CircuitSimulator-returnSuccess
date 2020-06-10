@@ -65,10 +65,10 @@ int main() {
 		current.write_current_sources(x);
 		current.write_voltage_sources(x);
 		
-/*		//Approximate capacitors and inductors to sources
-		current.write_capacitors_as_voltages(x, result);
-		current.write_inductors_as_currents(x, result);
-*/
+		//Approximate capacitors and inductors to sources
+		current.write_capacitors_as_voltage_sources(x, result, components_currents);
+		current.write_inductors_as_current_sources(x, result, components_currents);
+
 
 		//Calculate the result matrix
 		result =  conduct.inverse() * current;
