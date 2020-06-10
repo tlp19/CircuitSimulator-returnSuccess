@@ -44,6 +44,19 @@ vector<string> Network::list_nodes() const {
 	return node_list;
 }
 
+//Lists all components inside a Network in a sorted order
+vector<string> Network::list_components() const {
+	vector<string> name_list;
+	for(int i=0 ; i<components.size() ; i++) {
+		string component_name = "";
+		component_name += components[i].type;
+		component_name += components[i].name;
+		name_list.push_back(component_name);
+	}
+	sort(name_list.begin(), name_list.end());
+	return name_list;
+}
+
 //Changes all the nodenames in a circuit to numbers (string)
 void Network::set_nodes_to_numbers(){
 	vector<string> a = Network::list_nodes();
@@ -220,20 +233,23 @@ void Matrix::write_voltage_sources(const Network input_network) {
 }
 
 // OUTPUT: Prints out the first row of the CSV file
-void print_CSV_header(const vector<string> nodenames) {
-	cout << "Time,";
+void print_CSV_header(const vector<string> nodenames, const vector<string> compnames) {
+	cout << "Time" << tab;
 	for(int i = 1 ; i < nodenames.size() ; i++) {
-		cout << nodenames[i] << ",";
+		cout << nodenames[i] << tab;
+	}
+	for(int i = 0 ; i < compnames.size() ; i++) {
+		cout << compnames[i] << tab;
 	}
 	cout << "\n";
 }
 
 // OUTPUT: Prints out one result row of the CSV file
-void Matrix::print_in_CSV(const double time) {
-	assert(cols==1);
-	cout << time << ",";
-	for(int i = 0 ; i < rows ; i++) {
-		cout << values[i*cols+0] << ",";
+void print_in_CSV(const double time, const Matrix mat, const vector<double> vec) {
+	assert(mat.cols==1);
+	cout << time << tab;
+	for(int i = 0 ; i < mat.rows ; i++) {
+		cout << mat.values[i*mat.cols+0] << tab;
 	}
 	cout << "\n";
 }

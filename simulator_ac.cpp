@@ -11,7 +11,10 @@ int main() {
     Network x;
 	cin >> x;
 	cerr << "The input netlist is:" << endl << x << endl << endl;
-
+	
+	//Save the list of names of components
+	vector<string> list_of_components = x.list_components();
+	
 	//Save the list of node names
     vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit (including ground)
     int size = list_of_nodes.size() - 1; //number of nodes (excluding ground)
@@ -41,6 +44,7 @@ int main() {
 
 	//List all the time intervals that we need to do the analysis at
 	double time;
+	double omega;
 	vector<double> time_intervals = x.time_intervals();
 	
 	//Create and initialize the column matrix of currents
@@ -49,11 +53,14 @@ int main() {
 	
 	//Create a Matrix result, and output the first row of the output CSV file
 	Matrix result;
-	print_CSV_header(list_of_nodes);
+	print_CSV_header(list_of_nodes, list_of_components);
 	
 	//Do the analysis at all the time intervals
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
+		
+		//To find the impedance, and then current through-, of each C or I.
+		omega = 2*pi*time;
 		
 		//Update the instantaneous value of the independant sources
 		Matrix current = {};
@@ -70,7 +77,9 @@ int main() {
 		//Calculate the result matrix
 		result =  conduct.inverse() * current;
 		
+//		vector<double> components_currents = x.find_current_through_components(omega);
+		
 		//Output the result matrix in CSV format
-		result.print_in_CSV(time);
+		print_in_CSV(time, result, components_currents);
 	}
 }

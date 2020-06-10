@@ -26,7 +26,6 @@ struct Matrix
     void overwrite_w_voltage_sources(const Network input_network);
     void write_current_sources(const Network input_network);
     void write_voltage_sources(const Network input_network);
-    void print_in_CSV(const double time);
 
 	
 	// Functions from the library

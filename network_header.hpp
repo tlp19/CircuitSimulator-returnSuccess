@@ -54,9 +54,11 @@ struct Network {
 	Instruction instruction;		//Specification of the .tran instruction to analyse the circuit
 	
 	vector<string> list_nodes() const;	//Lists all nodes inside a Network in a sorted order [Analysis]
+	vector<string> list_components() const;	//Lists all components inside a Network
 	vector<double> time_intervals() const;	//Lists all the time intervals that we need to do the analysis at [Analysis] 
-	void set_nodes_to_numbers();  //takes the listed nodes in the right order and simplify their name for clarity [Analysis]
-	void update_sources_instantaneous_values(const double time);	// Updates the instantaneous value of voltage and current sources [Analysis]
+	void set_nodes_to_numbers();  //Takes the listed nodes in the right order and simplify their name for clarity [Analysis]
+	void update_sources_instantaneous_values(const double time);	//Updates the instantaneous value of voltage and current sources [Analysis]
+	vector<double> find_current_through_components(const double omega);	//Find the current through each component
 };
 
 
