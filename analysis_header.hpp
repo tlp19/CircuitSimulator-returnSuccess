@@ -10,6 +10,8 @@
 
 using namespace std;
 
+
+/* --- CONSTANTS --- */
 const char tab = 9;
 const double pi = 3.141592653589793238463;
 
@@ -21,8 +23,8 @@ const double pi = 3.141592653589793238463;
 //with all of it's methods' declarations
 
 
-/* -- ANALYSIS FUNCTIONS (not linked to either Matrix or Network) -- */
 
+/* -- ANALYSIS FUNCTIONS (not linked to either Matrix or Network) -- */
 
 //Extracts the node number of a node
 vector<int> extract_node_number(vector<string> nodenames);
