@@ -31,7 +31,7 @@ class Component {
 	vector<string> nodes;			  //List of the nodes that the component is connected to (2 or 3)
 	string value;					  //Litteral value of the component (in Ohms, Farads, etc.)
 	double num_value;				  //Numerical value extracted from the value variable
-	bool has_function;				  //For V and I: 0 if only DC vlaue, 1 if using a sine function
+	bool has_function;				  //For V and I: 0 if only DC value, 1 if using a sine function
 	Sine_function function;			  //Sine function for V and I components
 	string transistor_type;			  //For Q: either NPN or PNP
 
@@ -41,16 +41,6 @@ class Component {
 	void set_num_value();			//Sets the numerical value or value to num_value for a component
 };
 
-/*// Derived class of Component
-class VIsource: public Component {
-  public:
-	bool is_v;						//1 if V, 0 if I
-	double dc_value;				//Contains the DC value (if there is one)
-	Sine_function function;			//Contains the Sine function (if there is one)
-	bool is_dc;						//1 if DC, 0 if using a function
-}; */
-
-
 // Struct to store the analysis instruction of the .tran line in the input
 struct Instruction{
 	bool is_end;					//1 if it's the .end instruction, 0 otherwise
@@ -58,16 +48,16 @@ struct Instruction{
 	string timestep;				//Fourth argument of the .tran instruction
 };
 
-
 // Struct to store the whole Network as defined in the input SPICE file, as well as the .tran instruction
 struct Network {
 	vector<Component> components;	//List of the components in the network
 	Instruction instruction;		//Specification of the .tran instruction to analyse the circuit
 	
 	vector<string> list_nodes() const;	//Lists all nodes inside a Network in a sorted order [Analysis]
+	vector<string> list_components() const;	//Lists all components inside a Network
 	vector<double> time_intervals() const;	//Lists all the time intervals that we need to do the analysis at [Analysis] 
-	
-	void set_nodes_to_numbers();  //takes the listed nodes in the right order and simplify their name for clarity [Analysis]
+	void set_nodes_to_numbers();  //Takes the listed nodes in the right order and simplify their name for clarity [Analysis]
+	void update_sources_instantaneous_values(const double time);	//Updates the instantaneous value of voltage and current sources [Analysis]
 };
 
 
