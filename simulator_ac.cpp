@@ -44,7 +44,6 @@ int main() {
 
 	//List all the time intervals that we need to do the analysis at
 	double time;
-	double omega;
 	vector<double> time_intervals = x.time_intervals();
 	
 	//Create and initialize the column matrix of currents
@@ -58,9 +57,6 @@ int main() {
 	//Do the analysis at all the time intervals
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
-		
-		//To find the impedance, and then current through-, of each C or I.
-		omega = 2*pi*time;
 		
 		//Update the instantaneous value of the independant sources
 		Matrix current = {};
@@ -77,7 +73,7 @@ int main() {
 		//Calculate the result matrix
 		result =  conduct.inverse() * current;
 		
-//		vector<double> components_currents = x.find_current_through_components(omega);
+		vector<double> components_currents = find_current_through_components(time, x, result);
 		
 		//Output the result matrix in CSV format
 		print_in_CSV(time, result, components_currents);

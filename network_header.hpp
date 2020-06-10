@@ -58,7 +58,6 @@ struct Network {
 	vector<double> time_intervals() const;	//Lists all the time intervals that we need to do the analysis at [Analysis] 
 	void set_nodes_to_numbers();  //Takes the listed nodes in the right order and simplify their name for clarity [Analysis]
 	void update_sources_instantaneous_values(const double time);	//Updates the instantaneous value of voltage and current sources [Analysis]
-	vector<double> find_current_through_components(const double omega);	//Find the current through each component
 };
 
 

@@ -53,7 +53,6 @@ vector<string> Network::list_components() const {
 		component_name += components[i].name;
 		name_list.push_back(component_name);
 	}
-	sort(name_list.begin(), name_list.end());
 	return name_list;
 }
 
@@ -263,4 +262,32 @@ void Network::update_sources_instantaneous_values(const double time) {
 	}
 }
 
+double find_voltage_at(const string nodename, const vector<string> nodelist, const Matrix voltages) {
+	return 0.0;
+};
+
+vector<double> find_current_through_components(const double time, const Network net, const Matrix mat) {
+	vector<string> nodelist = net.list_nodes();
+	vector<double> currents;
+	double omega = 2 * pi * time;
+	for(int i = 0 ; i < net.components.size() ; i++) {
+		if(net.components[i].type == 'V') {
+			currents.push_back(0);
+		} else if(net.components[i].type == 'I') {
+			currents.push_back(net.components[i].num_value);
+		} else if(net.components[i].type == 'R') {
+			double current_r = (find_voltage_at(net.components[i].nodes[0], nodelist, mat) - find_voltage_at(net.components[i].nodes[1], nodelist, mat)) / net.components[i].num_value ;
+			currents.push_back(current_r);
+		} else if(net.components[i].type == 'C') {
+			double current_c = (find_voltage_at(net.components[i].nodes[0], nodelist, mat) - find_voltage_at(net.components[i].nodes[1], nodelist, mat)) * (omega * get_numerical(net.components[i].value));
+			currents.push_back(current_c);
+		} else if(net.components[i].type == 'L') {
+			double current_l = (find_voltage_at(net.components[i].nodes[0], nodelist, mat) - find_voltage_at(net.components[i].nodes[1], nodelist, mat)) / (omega * get_numerical(net.components[i].value));
+			currents.push_back(current_l);
+		} else {
+			currents.push_back(0);
+		}
+	}
+	return currents;
+}
 

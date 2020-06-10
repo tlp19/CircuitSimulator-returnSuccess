@@ -35,5 +35,11 @@ void print_CSV_header(const vector<string> nodenames);
 //Prints a row of the CSV file for a specific time
 void print_in_CSV(const double time, const Matrix mat, const vector<double> vec);
 
+//Find the voltage at a given node
+double find_voltage_at(const string nodename, const vector<string> nodelist, const Matrix voltages);
+
+//Find the current through each component of a network at instant omega
+vector<double> find_current_through_components(const double time, const Network net, const Matrix mat);
+
 
 #endif
