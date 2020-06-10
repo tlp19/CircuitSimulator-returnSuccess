@@ -235,10 +235,10 @@ void Matrix::write_voltage_sources(const Network input_network) {
 void print_CSV_header(const vector<string> nodenames, const vector<string> compnames) {
 	cout << "Time" << tab;
 	for(int i = 1 ; i < nodenames.size() ; i++) {
-		cout << nodenames[i] << tab;
+		cout << "V(" << nodenames[i] << ")" << tab;
 	}
 	for(int i = 0 ; i < compnames.size() ; i++) {
-		cout << compnames[i] << tab;
+		cout << "I(" <<compnames[i] << ")" << tab;
 	}
 	cout << "\n";
 }
@@ -249,6 +249,9 @@ void print_in_CSV(const double time, const Matrix mat, const vector<double> vec)
 	cout << time << tab;
 	for(int i = 0 ; i < mat.rows ; i++) {
 		cout << mat.values[i*mat.cols+0] << tab;
+	}
+	for(int i = 0 ; i < vec.size() ; i++) {
+		cout << vec[i] << tab;
 	}
 	cout << "\n";
 }
@@ -262,10 +265,19 @@ void Network::update_sources_instantaneous_values(const double time) {
 	}
 }
 
+//Returns the voltage at a given node, by finding the value of the node in the result matrix
 double find_voltage_at(const string nodename, const vector<string> nodelist, const Matrix voltages) {
-	return 0.0;
+	assert(voltages.cols==1);
+	double voltage;
+	int i = 0;
+	while(nodename != nodelist[i]) {
+		i++;
+	}
+	voltage = voltages.values[i*voltages.cols-1];
+	return voltage;
 };
 
+//Finds all the current through the components
 vector<double> find_current_through_components(const double time, const Network net, const Matrix mat) {
 	vector<string> nodelist = net.list_nodes();
 	vector<double> currents;
@@ -276,13 +288,19 @@ vector<double> find_current_through_components(const double time, const Network 
 		} else if(net.components[i].type == 'I') {
 			currents.push_back(net.components[i].num_value);
 		} else if(net.components[i].type == 'R') {
-			double current_r = (find_voltage_at(net.components[i].nodes[0], nodelist, mat) - find_voltage_at(net.components[i].nodes[1], nodelist, mat)) / net.components[i].num_value ;
+			double vol_0 = find_voltage_at(net.components[i].nodes[0], nodelist, mat);
+			double vol_1 = find_voltage_at(net.components[i].nodes[1], nodelist, mat);
+			double current_r = (vol_0 - vol_1) / net.components[i].num_value ;
 			currents.push_back(current_r);
 		} else if(net.components[i].type == 'C') {
-			double current_c = (find_voltage_at(net.components[i].nodes[0], nodelist, mat) - find_voltage_at(net.components[i].nodes[1], nodelist, mat)) * (omega * get_numerical(net.components[i].value));
+			double vol_0 = find_voltage_at(net.components[i].nodes[0], nodelist, mat);
+			double vol_1 = find_voltage_at(net.components[i].nodes[1], nodelist, mat);
+			double current_c = (vol_0 - vol_1) * (omega * get_numerical(net.components[i].value));
 			currents.push_back(current_c);
 		} else if(net.components[i].type == 'L') {
-			double current_l = (find_voltage_at(net.components[i].nodes[0], nodelist, mat) - find_voltage_at(net.components[i].nodes[1], nodelist, mat)) / (omega * get_numerical(net.components[i].value));
+			double vol_0 = find_voltage_at(net.components[i].nodes[0], nodelist, mat);
+			double vol_1 = find_voltage_at(net.components[i].nodes[1], nodelist, mat);
+			double current_l = (vol_0 - vol_1) / (omega * get_numerical(net.components[i].value));
 			currents.push_back(current_l);
 		} else {
 			currents.push_back(0);

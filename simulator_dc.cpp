@@ -13,7 +13,7 @@ int main() {
 	cerr << "The input netlist is:" << endl << x << endl << endl;
 	
 	//Save the list of names of components
-	vector<string> list_of_names = x.list_components();
+	vector<string> list_of_components = x.list_components();
 	
 	//Save the list of node names
     vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit (including ground)
@@ -56,17 +56,19 @@ int main() {
 	cerr << "The current matrix is:" << endl << current << endl;
 	
 	
-//SOLVE THE CIRCUIT TO FIND THE NODE VOLTAGES
+//SOLVE THE CIRCUIT TO FIND THE NODE VOLTAGES AND COMPONENT CURRENTS
 	
 	//Create and calculate the matrix containing the results
 	Matrix result;
 	result = conduct.inverse() * current;
 	
-	vector<double> components_currents = x.find_current_through_components(time);
+	cerr << "And the voltages at each node are:" << endl << result << endl;
+	
+	//Calculate all the currents through the components of the circuit
+	vector<double> components_currents = find_current_through_components(0.0, x, result);
 	
 	//Print the result matrix to output using CSV format
-	cerr << "And the voltages at each node are:" << endl << result << endl;
-	print_CSV_header(list_of_nodes, list_of_names);
+	print_CSV_header(list_of_nodes, list_of_components);
 	print_in_CSV(0.0, result, components_currents);
 
 }
