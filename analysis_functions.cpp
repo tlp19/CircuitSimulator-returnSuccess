@@ -304,6 +304,7 @@ double find_current_through(const char type, const string name, const Network x,
 
 //Writes capacitors in the current matrix as voltage sources
 void Matrix::write_capacitors_as_voltage_sources(const Network input_network, const Matrix prev_v, const vector<double> prev_c) {
+	//TODO: add initial case when time = 0.0
 	assert(cols==1);
 	vector<string> nodelist = input_network.list_nodes();
 	//List all the capacitors present in the circuit
@@ -334,6 +335,7 @@ void Matrix::write_capacitors_as_voltage_sources(const Network input_network, co
 
 //Writes inductors in the current matrix as current sources
 void Matrix::write_inductors_as_current_sources(const Network input_network, const Matrix prev_v, const vector<double> prev_c) {
+	//TODO: add initial case when time = 0.0
 	assert(cols==1);
 	vector<string> nodelist = input_network.list_nodes();
 	//List all the inductors present in the circuit
