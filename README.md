@@ -45,8 +45,10 @@ List of test files:
   	- test\_circuit\_6.txt
  	  - [Debug DC] Circuit for debugging purpuses: similar to circuit 4.
   	- test\_circuit\_7.txt
-  	  - [DC] - Same as circuit 6, but using an ungrounded current source.
+  	  - [DC] Same as circuit 6, but using an ungrounded current source.
   	- test\_circuit\_8.txt
-  	  - [DC] - Similar to circuit 4, but with a current source and testing edge cases.
+  	  - [DC] Similar to circuit 4, but with a current source and testing edge cases.
   	- test\_circuit\_9.txt
-  	  - [AC] - Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions.
+  	  - [AC] Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions.
+  	- test\_circuit\_10.txt
+  	  - [AC w/C&L] Similar to circuit 9, but with C and L instead of some resistors 
