@@ -22,15 +22,15 @@ vector<double> Network::time_intervals() const {
 vector<string> Network::list_nodes() const {
 	vector<string> all_nodes;
 	vector<string> node_list;
-	
+	//Store all the nodes of the network in a vector
 	for(int i=0 ; i<components.size() ; i++) {
 		for(int j=0 ; j<components[i].nodes.size() ; j++) {
 			all_nodes.push_back(components[i].nodes[j]);
 		}
 	}
-	
+	//Sort the vector
 	sort(all_nodes.begin(), all_nodes.end());
-	
+	//Delete duplicates
 	string node_n = all_nodes[0];
 	node_list.push_back(node_n);
 	for(int k=1 ; k<all_nodes.size() ; k++) {
@@ -40,7 +40,6 @@ vector<string> Network::list_nodes() const {
 		}
 		node_n = all_nodes[k];
 	}
-	
 	return node_list;
 }
 
@@ -69,16 +68,6 @@ void Network::set_nodes_to_numbers(){
 		}		
 	}
 }
-
-// Resizes a matrix
-/*void Matrix::resize(int rows, int cols) { 
-	this->rows=rows;
-	this->cols=cols;
-	values.resize(rows*cols);
-	cerr << "Rows: " << rows << endl;
-	cerr << "Columns: " << cols << endl;
-	cerr << "-> Size: " << values.size() << endl << endl;
-} */
 
 // Writes the value of a component inside the matrix
 void Matrix::write(int r, int c, Component v)
@@ -228,7 +217,7 @@ void Matrix::write_voltage_sources(const Network input_network) {
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
 		int neg = node_nb[1] - 1;
-		values[pos*cols+0] += voltagesource_list[i].num_value;
+		values[pos*cols+0] = voltagesource_list[i].num_value;
 	}
 }
 
@@ -311,6 +300,22 @@ vector<double> find_current_through_components(const double time, const Network 
 	return currents;
 }
 
+//Returns the current through a given component, by finding the value in the current vector
+double find_current_through(const char type, const string name, const Network x, const vector<double> currents) {
+	double current;
+	string comp_name = type + name;
+	vector<string> comp_list;
+	for(int i = 0 ; i < x.components.size() ; i++) {
+		comp_list.push_back(x.components[i].type + x.components[i].name);
+	}
+	int j = 0;
+	while(comp_name != comp_list[j]) {
+		j++;
+	}
+	current = currents[j];
+	return current;
+};
+
 //Writes capacitors in the current matrix as voltage sources
 void Matrix::write_capacitors_as_voltage_sources(const Network input_network, const Matrix prev_v, const vector<double> prev_c) {
 	assert(cols==1);
@@ -321,14 +326,15 @@ void Matrix::write_capacitors_as_voltage_sources(const Network input_network, co
 			capacitors_list.push_back(x);
 		}
    	}
-/*   for(int i=0; i < voltagesource_list.size(); i++) {
-		vector<string> nodenames = voltagesource_list[i].nodes;
+	for(int i=0; i < capacitors_list.size(); i++) {
+   		double C_as_voltage_value;
+   		//find the value
+		vector<string> nodenames = capacitors_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
 		int neg = node_nb[1] - 1;
-		values[pos*cols+0] += voltagesource_list[i].num_value;
+		values[pos*cols+0] = C_as_voltage_value;
 	}
-	*/
 }
 
 //Writes inductors in the current matrix as current sources
@@ -341,13 +347,14 @@ void Matrix::write_inductors_as_current_sources(const Network input_network, con
 			inductors_list.push_back(x);
 		}
    	}
-/*	for(int i=0; i < currentsource_list.size(); i++) {
-		vector<string> nodenames = currentsource_list[i].nodes;
+	for(int i=0; i < inductors_list.size(); i++) {
+		double I_as_current_value;
+		//find the value
+		vector<string> nodenames = inductors_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
 		int in = node_nb[0] - 1;
 		int out = node_nb[1] - 1;
-		values[out*cols+0] += currentsource_list[i].num_value;
-		values[in*cols+0] += -currentsource_list[i].num_value;
+		values[out*cols+0] += I_as_current_value;
+		values[in*cols+0] += - I_as_current_value;
 	}
-	*/
 }

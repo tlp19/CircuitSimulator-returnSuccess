@@ -50,8 +50,11 @@ int main() {
 	Matrix current;
 	current.resize(size, 1);
 	
-	//Create a Matrix result, and output the first row of the output CSV file
+	//Create a Matrix result and a vector for the currents through each components
 	Matrix result;
+	vector<double> components_currents;
+	
+	//Output the first row of the output CSV file
 	print_CSV_header(list_of_nodes, list_of_components);
 	
 	//Do the analysis at all the time intervals
@@ -73,7 +76,7 @@ int main() {
 		//Calculate the result matrix
 		result =  conduct.inverse() * current;
 		
-		vector<double> components_currents = find_current_through_components(time, x, result);
+		components_currents = find_current_through_components(time, x, result);
 		
 		//Output the result matrix in CSV format
 		print_in_CSV(time, result, components_currents);
