@@ -242,7 +242,7 @@ void Matrix::print_in_CSV(const double time) {
 void Network::update_sources_instantaneous_values(const double time) {
 	for(int i = 0 ; i < components.size() ; i++) {
 		if(components[i].has_function==true) {
-			components[i].num_value = components[i].function.amplitude * sin(components[i].function.frequency*time) + components[i].function.dc_offset;
+			components[i].num_value = components[i].function.amplitude * sin(components[i].function.frequency * time * 2*pi) + components[i].function.dc_offset;
 		}
 	}
 }

@@ -10,6 +10,7 @@ int main() {
     //Read a network from input
     Network x;
 	cin >> x;
+	cerr << "The input netlist is:" << endl << x << endl << endl;
 
 	//Save the list of node names
     vector<string> list_of_nodes = x.list_nodes(); //list of nodes in the circuit (including ground)

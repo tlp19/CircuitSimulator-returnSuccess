@@ -10,16 +10,18 @@
 
 using namespace std;
 
-char tab = 9;
+const char tab = 9;
+const double pi = 3.141592653589793238463;
 
 
 
 /* -- CLASSES AND STRUCTURES -- */
 
+//Matrix struct is in matrix_library/Matrix.h
+//with all of it's methods' declarations
 
 
-
-/* --- ANALYSIS FUNCTIONS --- */
+/* -- ANALYSIS FUNCTIONS (not linked to either Matrix or Network) -- */
 
 
 //Extracts the node number of a node
