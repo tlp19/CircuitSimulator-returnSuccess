@@ -10,7 +10,7 @@ int main() {
     //Read a network from input
     Network x;
 	cin >> x;
-	x.add_resistance_to_capacitors();
+	x.add_resistance_to_C_and_L_and_V();
 	cerr << endl << "The input netlist is:" << endl << x << endl << endl;
 	
 	//Save the list of names of components

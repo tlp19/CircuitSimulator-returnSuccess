@@ -80,25 +80,98 @@ void Network::set_nodes_to_numbers(){
 }
 
 //Adds a small resistance in series with all capacitors to find the current through them
-void Network::add_resistance_to_capacitors(){
+void Network::add_resistance_to_C_and_L_and_V(){
 	for(int i = 0 ; i < components.size() ; i++) {
 		if(components[i].type == 'C') {
 			string node0 = components[i].nodes[0];
-			string new_node = "ZZ_" + components[i].nodes[0] + components[i].nodes[1];
+			string node1 = components[i].nodes[1];
+			
+			string new_node = "ZZ_" + node0 + "_" + node1;
 			Component new_resistor;
 			new_resistor.type = 'T';
 			new_resistor.name = components[i].name;
+			new_resistor.set_nb_branches();
 			new_resistor.nodes.resize(2);
 			new_resistor.nodes[0] = node0;
 			new_resistor.nodes[1] = new_node;
-			new_resistor.num_value = 0.0000000000001;
+			new_resistor.num_value = 1;
+			new_resistor.has_function = 0;
 			components[i].nodes[0] = new_node;
 			components.push_back(new_resistor);
+			
+			string new_node2 = "ZZ__" + node0 + "_" + node1;
+			Component new_resistor2;
+			new_resistor2.type = 'T';
+			new_resistor2.name = components[i].name + "_";
+			new_resistor2.set_nb_branches();
+			new_resistor2.nodes.resize(2);
+			new_resistor2.nodes[0] = new_node2;
+			new_resistor2.nodes[1] = node1;
+			new_resistor2.num_value = -1;
+			new_resistor2.has_function = 0;
+			components[i].nodes[1] = new_node2;
+			components.push_back(new_resistor2); 
+		} else if(components[i].type == 'L') {
+			string node0 = components[i].nodes[0];
+			string node1 = components[i].nodes[1];
+			
+			string new_node = "YY_" + node0 + "_" + node1;
+			Component new_resistor;
+			new_resistor.type = 't';
+			new_resistor.name = components[i].name;
+			new_resistor.set_nb_branches();
+			new_resistor.nodes.resize(2);
+			new_resistor.nodes[0] = node0;
+			new_resistor.nodes[1] = new_node;
+			new_resistor.num_value = 1;
+			new_resistor.has_function = 0;
+			components[i].nodes[0] = new_node;
+			components.push_back(new_resistor);
+			
+			string new_node2 = "YY__" + node0 + "_" + node1;
+			Component new_resistor2;
+			new_resistor2.type = 't';
+			new_resistor2.name = components[i].name + "_";
+			new_resistor2.set_nb_branches();
+			new_resistor2.nodes.resize(2);
+			new_resistor2.nodes[0] = new_node2;
+			new_resistor2.nodes[1] = node1;
+			new_resistor2.num_value = -1;
+			new_resistor2.has_function = 0;
+			components[i].nodes[1] = new_node2;
+			components.push_back(new_resistor2); 
+		} else if(components[i].type == 'V') {
+			string node0 = components[i].nodes[0];
+			string node1 = components[i].nodes[1];
+			
+			string new_node = "XX_" + node0 + "_" + node1;
+			Component new_resistor;
+			new_resistor.type = 'S';
+			new_resistor.name = components[i].name;
+			new_resistor.set_nb_branches();
+			new_resistor.nodes.resize(2);
+			new_resistor.nodes[0] = node0;
+			new_resistor.nodes[1] = new_node;
+			new_resistor.num_value = 1;
+			new_resistor.has_function = 0;
+			components[i].nodes[0] = new_node;
+			components.push_back(new_resistor);
+			
+			string new_node2 = "XX__" + node0 + "_" + node1;
+			Component new_resistor2;
+			new_resistor2.type = 'S';
+			new_resistor2.name = components[i].name + "_";
+			new_resistor2.set_nb_branches();
+			new_resistor2.nodes.resize(2);
+			new_resistor2.nodes[0] = new_node2;
+			new_resistor2.nodes[1] = node1;
+			new_resistor2.num_value = -1;
+			new_resistor2.has_function = 0;
+			components[i].nodes[1] = new_node2;
+			components.push_back(new_resistor2); 
 		}
 	}
 }
-
-
 
 // Extracts the node number of a node
 vector<int> extract_node_number(vector<string> nodenames){
@@ -128,7 +201,7 @@ void Matrix::write_resistor_conductance(const Network input_network) {
 	vector<Component> resistor_list;
 	for (int i=0; i < input_components.size(); i++) {  
 		Component x = input_components[i]; 
-		if(x.type=='R' || x.type=='T'){
+		if(x.type=='R' || x.type=='T' || x.type=='t' || x.type=='S'){
 		resistor_list.push_back(x);
 		}
 	}
@@ -242,12 +315,12 @@ void Matrix::write_voltage_sources(const Network input_network) {
 void print_CSV_header(const vector<string> nodenames, const vector<string> compnames) {
 	cout << "Time" << tab;
 	for(int i = 1 ; i < nodenames.size() ; i++) {
-		if(nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') {
+		if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='Y' && nodenames[i].at(1)!='Y') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
 			cout << "V(" << nodenames[i] << ")" << tab;
 		}
 	}
 	for(int i = 0 ; i < compnames.size() ; i++) {
-		if(compnames[i].at(0) != 'T') {
+		if((compnames[i].at(0) != 'T')&&(compnames[i].at(0)!='t')&&(compnames[i].at(0)!='S')) {
 			cout << "I(" <<compnames[i] << ")" << tab;
 		}
 	}
@@ -260,13 +333,13 @@ void print_in_CSV(const double time, const Matrix mat, const vector<double> vec,
 	cout << time << tab;
 	//Output the voltages of the nodes
 	for(int i = 1 ; i < nodenames.size() ; i++) {
-		if(nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') {
+		if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='Y' && nodenames[i].at(1)!='Y') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
 			cout << find_voltage_at(nodenames[i], nodenames, mat) << tab;
 		}
 	}
 	//Output the currents through the components
 	for(int i = 0 ; i < compnames.size() ; i++) {
-		if(compnames[i].at(0) != 'T') {
+		if((compnames[i].at(0)!='T')&&(compnames[i].at(0)!='t')&&(compnames[i].at(0)!='S')) {
 			cout << find_current_through(compnames[i], net, vec) << tab;
 		}
 	}
@@ -285,13 +358,16 @@ void Network::update_sources_instantaneous_values(const double time) {
 
 //Returns the voltage at a given node, by finding the value of the node in the result matrix
 double find_voltage_at(const string nodename, const vector<string> nodelist, const Matrix voltages) {
+	if(nodename=="0") {return 0;}
 	assert(voltages.cols==1);
 	double voltage;
-	int i = 0;
-	while(nodename != nodelist[i]) {
+	int i = 1;
+	while(i<nodelist.size() && nodename != nodelist[i]) {
 		i++;
 	}
-	voltage = voltages.values[i*voltages.cols-1];
+	assert(voltages.size()==nodelist.size()-1);
+	if(i>=nodelist.size()) {assert(false);}
+	voltage = voltages.values[i-1];
 	return voltage;
 };
 
@@ -301,19 +377,39 @@ vector<double> find_current_through_components(const double time, const Network 
 	vector<double> currents;
 	for(int i = 0 ; i < net.components.size() ; i++) {
 		if(net.components[i].type == 'V') {
-			currents.push_back(0);
+			//List the components of the circuit
+			vector<string> comp_list;
+			for(int k = 0 ; k < net.components.size() ; k++) {
+					comp_list.push_back(net.components[k].type + net.components[k].name);
+			}
+			//Find the resistor that we want the current of
+			string comp_name = 'S' + net.components[i].name;
+			int j = 0;
+			while(comp_name != comp_list[j]) {
+				j++;
+			}
+			Component resistor_s = net.components[j];
+			//Calculate it's current
+			double vol_0 = find_voltage_at(resistor_s.nodes[0], nodelist, voltage_mat);
+			double vol_1 = find_voltage_at(resistor_s.nodes[1], nodelist, voltage_mat);
+			double current_s = (vol_0 - vol_1) / resistor_s.num_value ;
+			//This is the same current as the one through the voltage source
+			currents.push_back(current_s);
+			
 		} else if(net.components[i].type == 'I') {
 			currents.push_back(net.components[i].num_value);
-		} else if(net.components[i].type == 'R') {
+			
+		} else if(net.components[i].type == 'R' || net.components[i].type == 'T' || net.components[i].type == 't' || net.components[i].type == 'S') {
 			double vol_0 = find_voltage_at(net.components[i].nodes[0], nodelist, voltage_mat);
 			double vol_1 = find_voltage_at(net.components[i].nodes[1], nodelist, voltage_mat);
 			double current_r = (vol_0 - vol_1) / net.components[i].num_value ;
 			currents.push_back(current_r);
+			
 		} else if(net.components[i].type == 'C') {
 			//List the components of the circuit
 			vector<string> comp_list;
 			for(int k = 0 ; k < net.components.size() ; k++) {
-				comp_list.push_back(net.components[k].type + net.components[k].name);
+					comp_list.push_back(net.components[k].type + net.components[k].name);
 			}
 			//Find the resistor that we want the current of
 			string comp_name = 'T' + net.components[i].name;
@@ -325,10 +421,10 @@ vector<double> find_current_through_components(const double time, const Network 
 			//Calculate it's current
 			double vol_0 = find_voltage_at(resistor_t.nodes[0], nodelist, voltage_mat);
 			double vol_1 = find_voltage_at(resistor_t.nodes[1], nodelist, voltage_mat);
-			double current_t = (vol_0 - vol_1) / net.components[i].num_value ;
+			double current_t = (vol_0 - vol_1) / resistor_t.num_value ;
 			//This is the same current as the one through the capacitor
-			double current_c = current_t;
-			currents.push_back(current_c);
+			currents.push_back(current_t);
+			
 		} else if(net.components[i].type == 'L') {
 			vector<string> comp_list;
 			for(int k = 0 ; k < net.components.size() ; k++) {
@@ -341,6 +437,7 @@ vector<double> find_current_through_components(const double time, const Network 
 			}
 			double current_l = current_mat.values[j*current_mat.cols+0];
 			currents.push_back(current_l);
+			
 		} else {
 			currents.push_back(0);
 		}
@@ -423,7 +520,7 @@ void Matrix::write_inductors_as_current_sources(const Network input_network, con
 		vector<int> node_nb = extract_node_number(nodenames);
 		int in = node_nb[0] - 1;
 		int out = node_nb[1] - 1;
-		values[out*cols+0] += L_as_current_value;
-		values[in*cols+0] += - L_as_current_value;
+		values[out] += L_as_current_value;
+		values[in] -= L_as_current_value;
 	}
 }

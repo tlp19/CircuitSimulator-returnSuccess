@@ -105,7 +105,7 @@ struct Matrix
     {
         values.clear();
 
-        values.resize( r * c, n );
+        values.resize( r * c, n);
 
         rows = r;
         cols = c;
