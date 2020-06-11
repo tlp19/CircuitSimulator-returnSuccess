@@ -20,7 +20,7 @@ vector<double> Network::time_intervals() const {
 	double _stop_time = get_numerical(instruction.stop_time);
 	double _timestep = get_numerical(instruction.timestep);
 	intervals.reserve(_stop_time/_timestep+1);
-	while(counter < (_stop_time-_timestep/2) //THis ) {
+	while(counter < (_stop_time-_timestep/2)) {
 		intervals.push_back(counter);
 		counter += _timestep;
 	}
@@ -528,8 +528,10 @@ void Matrix::write_inductors_as_current_sources(const Network input_network, con
 		//Previous values are:
 		double prev_vol_0 = find_voltage_at(inductors_list[i].nodes[0], nodelist, prev_v);
 		double prev_vol_1 = find_voltage_at(inductors_list[i].nodes[1], nodelist, prev_v);
+	cerr << prev_vol_0 << "  " << prev_vol_1 << endl;
 		string name = inductors_list[i].type + inductors_list[i].name;
 		double prev_c_through_L = find_current_through(name, input_network, prev_c);
+	cerr << prev_c_through_L << endl;
 		//Find the value of the equivalent current source
 		double L_as_current_value = prev_c_through_L + ((prev_vol_0 - prev_vol_1)/inductance) * _timestep;
 		//Add this value in the current matrix
@@ -539,5 +541,6 @@ void Matrix::write_inductors_as_current_sources(const Network input_network, con
 		int out = node_nb[1] - 1;
 		values[out] += L_as_current_value;
 		values[in] -= L_as_current_value;
+	cerr << L_as_current_value << endl << endl;
 	}
 }
