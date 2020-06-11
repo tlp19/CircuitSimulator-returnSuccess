@@ -1,6 +1,6 @@
 # returnSuccess // ELEC40006 Project
 
-Libraries and other files:
+Libraries and other external files:
   - Matrix library - by hbtalha [https://github.com/hbtalha/Matrix-Library]
     - Matrix.h - merged header of our Matrix struct and the one from the library
     - Matrix.cpp - definitions for the methods of the library
@@ -8,8 +8,6 @@ Libraries and other files:
     - Install using: ```sudo apt-get install libboost-all-dev```
     
   - plotsim.m - MatLab program given to plot the results of our simulation
-  
-  - debug.sh - Debugging script that compiles simulator_ac.cpp with debugging instruction for runtime
 
 List of program files:
   - network_header.hpp
@@ -60,3 +58,6 @@ List of test files:
   	  - [AC] RC test circuit
   	- test\_circuit\_13.txt
   	  - [AC] RL test circuit
+  	  
+Debugging files:
+  - debug.sh - Debugging script that compiles simulator_ac.cpp with debugging instruction for runtime
