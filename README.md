@@ -1,13 +1,13 @@
 # returnSuccess // ELEC40006 Project
 
 Libraries and other external files:
-  - Matrix library - by hbtalha [https://github.com/hbtalha/Matrix-Library]
+  - Matrix library [matrix_library/] - by hbtalha [https://github.com/hbtalha/Matrix-Library]
     - Matrix.h - merged header of our Matrix struct and the one from the library
     - Matrix.cpp - definitions for the methods of the library
   - Boost - required for the matrix library
     - Install using: ```sudo apt-get install libboost-all-dev```
     
-  - plotsim.m - MatLab program given to plot the results of our simulation
+  - plotsim.m [matlab/] - MatLab program given to plot the results of our simulation
 
 List of program files:
   - network_header.hpp
@@ -24,14 +24,14 @@ List of program files:
     - AC simulator: our final program.
 
 List of test files:
-  - Test programs:
+  - Test programs [test_programs/]:
     - test\_1\_network\_output.cpp
   	  - Test program that establishes a Network and then tests the output capability of the main code.
     - test\_2\_network\_io.cpp
   	  - Simple test program that reads a Networks and prints it directly.
   	- test\_3\_analysis\_listnodesandtimes.cpp
   	  - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
-  - Test circuits:
+  - Test circuits [test_circuits/]:
 	- test\_circuit\_1.txt
   	  - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
     - test\_circuit\_2.txt
@@ -59,5 +59,5 @@ List of test files:
   	- test\_circuit\_13.txt
   	  - [AC] RL test circuit
   	  
-Debugging files:
+Debugging files [debugging/]:
   - debug.sh - Debugging script that compiles simulator_ac.cpp with debugging instruction for runtime
