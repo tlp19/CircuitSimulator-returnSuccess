@@ -34,7 +34,6 @@ string Component::value_or_type() const {
 		return function_to_string();
 	} else {
 		return to_string(num_value);
-		//return value;
 	}
 }
 
@@ -58,41 +57,42 @@ void Component::set_num_value() {
 
 // Overloading the >> operator to read a Sine_function from input
 istream &operator>>(istream &input, Sine_function &s) {
+	//Read the "SINE(dc_offstet" part
 	string _dc_offset;
 	cin >> _dc_offset;
 	s.dc_offset = get_numerical(_dc_offset);
-		
+	//Read the amplitude
 	string _amplitude;
 	cin >> _amplitude;
 	s.amplitude = get_numerical(_amplitude);
-	
+	//Read the "frequency)" part
 	string _frequency;
 	cin >> _frequency;
 	s.frequency = get_numerical(_frequency);
-			
+	
 	return input;
 }
 
 // Overloading the >> operator to read a Component from input
 istream &operator>>(istream &input, Component &s) {
+	//Read the type of the component
 	char _type;
 	input >> _type;
 	s.type=_type;
-	
+	//Read the name of the component
 	string _name;
 	input >> _name;
 	s.name = _name;
-	
+	//Read its nodes
 	s.nodes = {};
 	s.set_nb_branches();
-	
 	string _node;
 	for(int i=0 ; i<s.nb_branches ; i++) {
 		input >> _node;
 		s.nodes.push_back(_node);
 	}
 	assert(s.nodes.size()==s.nb_branches);
-	
+	//Read either it's value, either it's AC function (when required for V and I)
 	s.has_function = false;
 	if((s.type=='V')||(s.type=='I')) {
 		input.ignore(1);
@@ -116,7 +116,7 @@ istream &operator>>(istream &input, Component &s) {
 		input >> _value;
 		s.value=_value;
 	}
-
+	//Set the numerical value of the component (member variable num_value)
 	s.set_num_value();
 	
 	return input;
@@ -136,16 +136,22 @@ ostream &operator<<(ostream &output, const Component &s) {
 istream &operator>>(istream &input, Instruction &s) {
 	string _name;
 	cin >> _name;
+	//Check if the name of the instruction is .end
 	if(_name==".end") {
 		s.is_end=true;
 	} else {
+		//If not, it's a .tran instruction, so read it's arguments
 		s.is_end=false;
+		//The first argument we expect to read is a 0, so just read it and ignore it
 		float arg0;
 		cin >> arg0;
+		//Then read the stop_time
 		string _stop_time;
 		cin >> _stop_time;
 		s.stop_time=_stop_time;
+		//Read another 0
 		cin >> arg0;
+		//Read the timestep
 		string _timestep;
 		cin >> _timestep;
 		s.timestep = _timestep;
@@ -195,6 +201,7 @@ It is used in the sine function operator to isolate the member variables, digits
 and to detect the multipliers following a number.
 Allows you to split a string into different respective categories: number letter and symbol */
 double get_numerical(string value){
+	//Seperate the input string into it's different characters and sort them in their categories
 	string num , letter , symbol;
 	for (int i=0; i<value.length() ; i++){
 		if ( isdigit(value[i]) || value[i]=='.'){
@@ -210,31 +217,33 @@ double get_numerical(string value){
 	int n = letter.length();
 	string new_letter;
 	if (letter[n-1] == 's'){
+		//If we read an 's' (for example in the .tran instruction), ignore it and start the process again
 		value.pop_back();
 		double x = get_numerical(value);
 		return x;
-		} else if (letter[n-1] == 'p'){
-			total = num_list * pow(10, -12);
-			return total;
-		} else if (letter[n-1] == 'n'){
-			total = num_list * pow(10,-9);
-			return total;
-		} else if (letter[n-1] == 'u'){
-			total = num_list * pow(10,-6);
-			return total;
-		} else if (letter[n-1] == 'm'){
-			total = num_list *  pow(10,-3);
-			return total;
-		} else if (letter[n-1] == 'k'){
-			total = num_list * pow(10,3);
-			return total;
-		} else if (letter[n-1] == 'g'){
-			total = num_list * pow(10,6);
-			return total;
-		} else if (letter[n-1] == 'G'){
-			total = num_list * pow(10,9);
-			return total;
-		} else {
-			return num_list;
-		}
+	//Multiply the numerical part by the correct factor of ten based on the last letter of the string
+	} else if (letter[n-1] == 'p'){
+		total = num_list * pow(10, -12);
+		return total;
+	} else if (letter[n-1] == 'n'){
+		total = num_list * pow(10,-9);
+		return total;
+	} else if (letter[n-1] == 'u'){
+		total = num_list * pow(10,-6);
+		return total;
+	} else if (letter[n-1] == 'm'){
+		total = num_list *  pow(10,-3);
+		return total;
+	} else if (letter[n-1] == 'k'){
+		total = num_list * pow(10,3);
+		return total;
+	} else if (letter[n-1] == 'g'){		//Note: Here we have 'g' for "Meg"
+		total = num_list * pow(10,6);
+		return total;
+	} else if (letter[n-1] == 'G'){
+		total = num_list * pow(10,9);
+		return total;
+	} else {
+		return num_list;
+	}
 }

@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-/* -- CLASSES AND STRUCTURES -- */
+/* ---- CLASSES AND STRUCTURES ---- */
 
 
 // Struct to define a sine function (for components V and I)
@@ -64,7 +64,7 @@ struct Network {
 
 
 
-/* --- NETWORK FUNCTIONS --- */
+/* --- GENERAL NETWORK FUNCTIONS --- */
 
 
 // Overloading the >> operator to read a Sine_function from input

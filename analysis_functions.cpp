@@ -20,7 +20,7 @@ vector<double> Network::time_intervals() const {
 	double _stop_time = get_numerical(instruction.stop_time);
 	double _timestep = get_numerical(instruction.timestep);
 	intervals.reserve(_stop_time/_timestep+1);
-	while(counter < (_stop_time-_timestep/2)) {
+	while(counter < (_stop_time-_timestep/2) //THis ) {
 		intervals.push_back(counter);
 		counter += _timestep;
 	}
@@ -79,13 +79,13 @@ void Network::set_nodes_to_numbers(){
 	}
 }
 
-//Adds a small resistance in series with all capacitors to find the current through them
+//Adds a small resistance in series with all C, L and V to find the current through them
 void Network::add_resistance_to_C_and_L_and_V(){
 	for(int i = 0 ; i < components.size() ; i++) {
 		if(components[i].type == 'C') {
 			string node0 = components[i].nodes[0];
 			string node1 = components[i].nodes[1];
-			
+			//Add a resistor in series with the first terminal of the capacitor
 			string new_node = "ZZ_" + node0 + "_" + node1;
 			Component new_resistor;
 			new_resistor.type = 'T';
@@ -98,7 +98,7 @@ void Network::add_resistance_to_C_and_L_and_V(){
 			new_resistor.has_function = 0;
 			components[i].nodes[0] = new_node;
 			components.push_back(new_resistor);
-			
+			//Add a resistor in series with the first terminal of the capacitor to cancel it out
 			string new_node2 = "ZZ__" + node0 + "_" + node1;
 			Component new_resistor2;
 			new_resistor2.type = 'T';
@@ -114,7 +114,7 @@ void Network::add_resistance_to_C_and_L_and_V(){
 		} else if(components[i].type == 'L') {
 			string node0 = components[i].nodes[0];
 			string node1 = components[i].nodes[1];
-			
+			//Add a resistor in series with the first terminal of the inductor
 			string new_node = "YY_" + node0 + "_" + node1;
 			Component new_resistor;
 			new_resistor.type = 't';
@@ -127,7 +127,7 @@ void Network::add_resistance_to_C_and_L_and_V(){
 			new_resistor.has_function = 0;
 			components[i].nodes[0] = new_node;
 			components.push_back(new_resistor);
-			
+			//Add a resistor in series with the second terminal of the inductor to cancel it out
 			string new_node2 = "YY__" + node0 + "_" + node1;
 			Component new_resistor2;
 			new_resistor2.type = 't';
@@ -143,7 +143,7 @@ void Network::add_resistance_to_C_and_L_and_V(){
 		} else if(components[i].type == 'V') {
 			string node0 = components[i].nodes[0];
 			string node1 = components[i].nodes[1];
-			
+			//Add a resistor in series with the first terminal of the voltage source
 			string new_node = "XX_" + node0 + "_" + node1;
 			Component new_resistor;
 			new_resistor.type = 'S';
@@ -156,7 +156,7 @@ void Network::add_resistance_to_C_and_L_and_V(){
 			new_resistor.has_function = 0;
 			components[i].nodes[0] = new_node;
 			components.push_back(new_resistor);
-			
+			//Add a resistor in series with the second terminal of the voltage source to cancel it out
 			string new_node2 = "XX__" + node0 + "_" + node1;
 			Component new_resistor2;
 			new_resistor2.type = 'S';
@@ -213,11 +213,11 @@ void Matrix::write_resistor_conductance(const Network input_network) {
 		double G = 1.0/value;
 		//Check if it's connected to ground   
 	   	if (node_nb[0]==0 || node_nb[1]==0){
-			//diagonal
+			//connected to groud: add values only in diagonal
 			int index = node_nb[0] + node_nb[1] - 1;
 			values[index*cols+index] += G;   
 		} else {
-			//between two non-ground nodes
+			//between two un-grounded nodes
 			int a = node_nb[0] - 1;
 			int b = node_nb[1] - 1;
 			values[a*cols+b] += -G;
@@ -243,12 +243,14 @@ void Matrix::overwrite_w_voltage_sources(const Network input_network) {
 		vector<string> nodenames = voltagesource_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);
 		if (node_nb[0]==0 || node_nb[1]==0){
+			//connected to ground
 			int index = node_nb[0] + node_nb[1] - 1;
 			for(int other_idx = 0 ; other_idx < cols ; other_idx++) {
 				values[index*cols+other_idx] = 0;
 			}
 			values[index*cols+index] = 1;
 		} else {
+			//between two un-grounded nodes
 			int pos = node_nb[0] - 1;
 			int neg = node_nb[1] - 1;
 			//First, save the row p
@@ -307,6 +309,7 @@ void Matrix::write_voltage_sources(const Network input_network) {
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
 		int neg = node_nb[1] - 1;
+		//if the positive terminal is connected to ground, set it as a negative voltage source the other way around
 		if(pos<=0) {
 			values[neg] = -voltagesource_list[i].num_value;
 		} else {
@@ -317,13 +320,16 @@ void Matrix::write_voltage_sources(const Network input_network) {
 
 // OUTPUT: Prints out the first row of the CSV file
 void print_CSV_header(const vector<string> nodenames, const vector<string> compnames) {
+	//The first column of the CSV file constains the time
 	cout << "Time" << tab;
 	for(int i = 1 ; i < nodenames.size() ; i++) {
+		//If not a node created only for analysis, output the name of the node
 		if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='Y' && nodenames[i].at(1)!='Y') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
 			cout << "V(" << nodenames[i] << ")" << tab;
 		}
 	}
 	for(int i = 0 ; i < compnames.size() ; i++) {
+		//If not a resistor created only for analysis, output the name of the component
 		if((compnames[i].at(0) != 'T')&&(compnames[i].at(0)!='t')&&(compnames[i].at(0)!='S')) {
 			cout << "I(" <<compnames[i] << ")" << tab;
 		}
@@ -362,15 +368,19 @@ void Network::update_sources_instantaneous_values(const double time) {
 
 //Returns the voltage at a given node, by finding the value of the node in the result matrix
 double find_voltage_at(const string nodename, const vector<string> nodelist, const Matrix voltages) {
+	//If asked for ground, just return 0
 	if(nodename=="0") {return 0;}
 	assert(voltages.cols==1);
 	double voltage;
+	//Go through the list of nodes until we find our node
 	int i = 1;
 	while(i<nodelist.size() && nodename != nodelist[i]) {
 		i++;
 	}
+	//Debugging for memory management
 	assert(voltages.size()==nodelist.size()-1);
 	if(i>=nodelist.size()) {assert(false);}
+	//Return the corresponding value at the same index from the result matrix
 	voltage = voltages.values[i-1];
 	return voltage;
 };
@@ -393,7 +403,7 @@ vector<double> find_current_through_components(const double time, const Network 
 				j++;
 			}
 			Component resistor_s = net.components[j];
-			//Calculate it's current
+			//Calculate its current
 			double vol_0 = find_voltage_at(resistor_s.nodes[0], nodelist, voltage_mat);
 			double vol_1 = find_voltage_at(resistor_s.nodes[1], nodelist, voltage_mat);
 			double current_s = (vol_0 - vol_1) / resistor_s.num_value ;
@@ -401,6 +411,7 @@ vector<double> find_current_through_components(const double time, const Network 
 			currents.push_back(current_s);
 			
 		} else if(net.components[i].type == 'I') {
+			//Simply take the value of the current source
 			currents.push_back(net.components[i].num_value);
 			
 		} else if(net.components[i].type == 'R' || net.components[i].type == 'T' || net.components[i].type == 't' || net.components[i].type == 'S') {
@@ -422,7 +433,7 @@ vector<double> find_current_through_components(const double time, const Network 
 				j++;
 			}
 			Component resistor_t = net.components[j];
-			//Calculate it's current
+			//Calculate its current
 			double vol_0 = find_voltage_at(resistor_t.nodes[0], nodelist, voltage_mat);
 			double vol_1 = find_voltage_at(resistor_t.nodes[1], nodelist, voltage_mat);
 			double current_t = (vol_0 - vol_1) / resistor_t.num_value ;
@@ -430,6 +441,7 @@ vector<double> find_current_through_components(const double time, const Network 
 			currents.push_back(current_t);
 			
 		} else if(net.components[i].type == 'L') {
+			//Find the value previously calculated of the current in the current matrix (could be more optmized, but we can't store the value when building the current matrix)
 			vector<string> comp_list;
 			for(int k = 0 ; k < net.components.size() ; k++) {
 				comp_list.push_back(net.components[k].type + net.components[k].name);
@@ -441,15 +453,12 @@ vector<double> find_current_through_components(const double time, const Network 
 			}
 			double current_l = current_mat.values[j*current_mat.cols+0];
 			currents.push_back(current_l);
-			
-		} else {
-			currents.push_back(0);
 		}
 	}
 	return currents;
 }
 
-//Returns the current through a given component, by finding the value in the current vector
+//Returns the current through a given component, by finding the value in the current result vector
 double find_current_through(const string comp_name, const Network x, const vector<double> currents) {
 	double current;
 	vector<string> comp_list;
