@@ -8,6 +8,8 @@ Libraries and other files:
     - Install using: ```sudo apt-get install libboost-all-dev```
     
   - plotsim.m - MatLab program given to plot the results of our simulation
+  
+  - debug.sh - Debugging script that compiles simulator_ac.cpp with debugging instruction for runtime
 
 List of program files:
   - network_header.hpp
@@ -37,7 +39,7 @@ List of test files:
     - test\_circuit\_2.txt
   	  - [I/O] A more complex input circuit. [not a tested working circuit]
   	- test\_circuit\_3.txt
-  	  - A simple test circuit.
+  	  - [General] A simple test circuit.
   	- test\_circuit\_4.txt
   	  - [Analysis] Full circuit with voltage sources and resistors to test the conductance matrix.
   	- test\_circuit\_5.txt
@@ -49,6 +51,12 @@ List of test files:
   	- test\_circuit\_8.txt
   	  - [DC] Similar to circuit 4, but with a current source and testing edge cases.
   	- test\_circuit\_9.txt
-  	  - [AC] Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions.
+  	  - [AC (only R)] Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions.
   	- test\_circuit\_10.txt
-  	  - [AC w/C&L] Similar to circuit 9, but with C and L instead of some resistors 
+  	  - [AC] Similar to circuit 9, but with C and L instead of some resistors 
+  	- test\_circuit\_11.txt
+  	  - [AC] RCL test circuit
+  	- test\_circuit\_12.txt
+  	  - [AC] RC test circuit
+  	- test\_circuit\_13.txt
+  	  - [AC] RL test circuit
