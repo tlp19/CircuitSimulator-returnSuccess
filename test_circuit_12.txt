@@ -1,0 +1,6 @@
+*RCL test circuit
+V1 N001 0 SINE(0 5 10)
+R1 N002 N001 1k
+C1 0 N002 1m
+.tran 0 2s 0 0.01s
+.end
