@@ -307,7 +307,11 @@ void Matrix::write_voltage_sources(const Network input_network) {
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
 		int neg = node_nb[1] - 1;
-		values[pos*cols+0] = voltagesource_list[i].num_value;
+		if(pos<=0) {
+			values[neg] = -voltagesource_list[i].num_value;
+		} else {
+			values[pos] = voltagesource_list[i].num_value;
+		}
 	}
 }
 
@@ -488,7 +492,11 @@ void Matrix::write_capacitors_as_voltage_sources(const Network input_network, co
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
 		int neg = node_nb[1] - 1;
-		values[pos*cols+0] = C_as_voltage_value;
+		if(pos<=0) {
+			values[neg] = -C_as_voltage_value;
+		} else {
+			values[pos] = C_as_voltage_value;
+		}
 	}
 }
 
