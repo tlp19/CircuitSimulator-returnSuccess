@@ -116,10 +116,8 @@ istream &operator>>(istream &input, Component &s) {
 		input >> _value;
 		s.value=_value;
 	}
-	
-//	if(s.type!='C' && s.type!='L') {
-		s.set_num_value();
-//	}
+
+	s.set_num_value();
 	
 	return input;
 }
