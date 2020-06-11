@@ -11,7 +11,7 @@ int main() {
     Network x;
 	cin >> x;
 	x.add_resistance_to_capacitors();
-	cerr << "The input netlist is:" << endl << x << endl << endl;
+	cerr << endl << "The input netlist is:" << endl << x << endl << endl;
 	
 	//Save the list of names of components
 	vector<string> list_of_components = x.list_components();
@@ -54,7 +54,6 @@ int main() {
 	//Create a Matrix result and a vector for the currents through each components (init. at 0)
 	Matrix result;
 	result.resize(size, 1);
-	cerr << result << endl; 
 	vector<double> components_currents;
 	components_currents.resize(list_of_components.size());
 	
@@ -62,8 +61,11 @@ int main() {
 	print_CSV_header(list_of_nodes, list_of_components);
 	
 	//Do the analysis at all the time intervals
+	cerr << endl << " - start of transient analysis - " << endl << endl;
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
+		
+		cerr << "t = " << time << endl;
 		
 		//Save the previous results, and reset the matrices for the new calculations
 		Matrix prev_result = result;
@@ -73,26 +75,23 @@ int main() {
 		components_currents = {};
 		
 		//Update the instantaneous value of the independant sources
-		x.update_sources_instantaneous_values(time);		//For V, I with a Sine_function
+		x.update_sources_instantaneous_values(time);		//For V and I with a Sine_function
 		current.write_current_sources(x);
 		current.write_voltage_sources(x);
 
 		//Approximate capacitors and inductors to sources
 		current.write_capacitors_as_voltage_sources(x, prev_result, prev_currents);
 		current.write_inductors_as_current_sources(x, prev_result, prev_currents);
-		
-		//cerr << current << endl;
 
 		//Calculate the result matrix
 		result =  conduct.inverse() * current;
 		
+		//List all the currents through all the components
 		components_currents = find_current_through_components(time, x, result, current);
 		
 		//Output the result matrix in CSV format
-		print_in_CSV(time, result, components_currents);
-		cerr << time << endl << endl;
-		//cerr << result << endl << endl;
+		print_in_CSV(time, result, components_currents, x, list_of_nodes, list_of_components);
 	}
 	
-	cerr << "end of analysis" << endl;
+	cerr << endl << " - end of transient analysis - " << endl << endl;
 }

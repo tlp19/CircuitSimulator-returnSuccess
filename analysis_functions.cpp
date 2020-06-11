@@ -242,29 +242,35 @@ void Matrix::write_voltage_sources(const Network input_network) {
 void print_CSV_header(const vector<string> nodenames, const vector<string> compnames) {
 	cout << "Time" << tab;
 	for(int i = 1 ; i < nodenames.size() ; i++) {
-		cout << "V(" << nodenames[i] << ")" << tab;
+		if(nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') {
+			cout << "V(" << nodenames[i] << ")" << tab;
+		}
 	}
 	for(int i = 0 ; i < compnames.size() ; i++) {
-		cout << "I(" <<compnames[i] << ")" << tab;
+		if(compnames[i].at(0) != 'T') {
+			cout << "I(" <<compnames[i] << ")" << tab;
+		}
 	}
 	cout << "\n";
-	
-	//ADD EXCEPTIONS FOR THE NODE AND INTERNAL RESISTORS CREATED DURING ANALYSIS
 }
 
 // OUTPUT: Prints out one result row of the CSV file
-void print_in_CSV(const double time, const Matrix mat, const vector<double> vec) {
+void print_in_CSV(const double time, const Matrix mat, const vector<double> vec, const Network net, const vector<string> nodenames, const vector<string> compnames) {
 	assert(mat.cols==1);
 	cout << time << tab;
-	for(int i = 0 ; i < mat.rows ; i++) {
-		cout << mat.values[i*mat.cols+0] << tab;
+	//Output the voltages of the nodes
+	for(int i = 1 ; i < nodenames.size() ; i++) {
+		if(nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') {
+			cout << find_voltage_at(nodenames[i], nodenames, mat) << tab;
+		}
 	}
-	for(int i = 0 ; i < vec.size() ; i++) {
-		cout << vec[i] << tab;
+	//Output the currents through the components
+	for(int i = 0 ; i < compnames.size() ; i++) {
+		if(compnames[i].at(0) != 'T') {
+			cout << find_current_through(compnames[i], net, vec) << tab;
+		}
 	}
 	cout << "\n";
-	
-	//ADD EXCEPTIONS FOR THE NODE AND INTERNAL RESISTORS CREATED DURING ANALYSIS
 }
 
 // Updates the instantaneous value of voltage and current sources
@@ -343,9 +349,8 @@ vector<double> find_current_through_components(const double time, const Network 
 }
 
 //Returns the current through a given component, by finding the value in the current vector
-double find_current_through(const char type, const string name, const Network x, const vector<double> currents) {
+double find_current_through(const string comp_name, const Network x, const vector<double> currents) {
 	double current;
-	string comp_name = type + name;
 	vector<string> comp_list;
 	for(int i = 0 ; i < x.components.size() ; i++) {
 		comp_list.push_back(x.components[i].type + x.components[i].name);
@@ -377,7 +382,8 @@ void Matrix::write_capacitors_as_voltage_sources(const Network input_network, co
 		//Previous values are:
 		double prev_vol_0 = find_voltage_at(capacitors_list[i].nodes[0], nodelist, prev_v);
 		double prev_vol_1 = find_voltage_at(capacitors_list[i].nodes[1], nodelist, prev_v);
-		double prev_c_through_C = find_current_through(capacitors_list[i].type, capacitors_list[i].name, input_network, prev_c);
+		string name = capacitors_list[i].type + capacitors_list[i].name;
+		double prev_c_through_C = find_current_through(name, input_network, prev_c);
 		//Find the value of the equivalent voltage source
    		double C_as_voltage_value = (prev_vol_0 - prev_vol_1) + (prev_c_through_C/capacitance) * _timestep;
    		//Add this value in the current matrix
@@ -408,10 +414,10 @@ void Matrix::write_inductors_as_current_sources(const Network input_network, con
 		//Previous values are:
 		double prev_vol_0 = find_voltage_at(inductors_list[i].nodes[0], nodelist, prev_v);
 		double prev_vol_1 = find_voltage_at(inductors_list[i].nodes[1], nodelist, prev_v);
-		double prev_c_through_L = find_current_through(inductors_list[i].type, inductors_list[i].name, input_network, prev_c);
+		string name = inductors_list[i].type + inductors_list[i].name;
+		double prev_c_through_L = find_current_through(name, input_network, prev_c);
 		//Find the value of the equivalent current source
 		double L_as_current_value = prev_c_through_L + ((prev_vol_0 - prev_vol_1)/inductance) * _timestep;
-		cerr << prev_c_through_L << " " << prev_vol_0 << " " << L_as_current_value << endl;
 		//Add this value in the current matrix
 		vector<string> nodenames = inductors_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);

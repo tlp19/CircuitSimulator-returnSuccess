@@ -33,13 +33,16 @@ vector<int> extract_node_number(vector<string> nodenames);
 void print_CSV_header(const vector<string> nodenames);
 
 //Prints a row of the CSV file for a specific time
-void print_in_CSV(const double time, const Matrix mat, const vector<double> vec);
+void print_in_CSV(const double time, const Matrix mat, const vector<double> vec, const Network net, const vector<string> nodenames, const vector<string> compnames);
 
-//Find the voltage at a given node
+//Find the voltage at a given node (from previous results)
 double find_voltage_at(const string nodename, const vector<string> nodelist, const Matrix voltages);
 
-//Find the current through each component of a network at instant omega
+//Find the current through each component of a network in one instant
 vector<double> find_current_through_components(const double time, const Network net, const Matrix voltage_mat, const Matrix current_mat);
+
+//Find current through a given component (from previous results)
+double find_current_through(const string name, const Network x, const vector<double> currents);
 
 
 #endif

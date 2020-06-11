@@ -375,6 +375,8 @@ Matrix Matrix::inverse() const
     if( ! is_invertible())
     {
         cerr << "\aNOT INVERTIBLE\n";
+        cout << "ERROR: Conductance matrix not invertible" << endl;
+        assert(is_invertible());
         return *this;
     }
 
