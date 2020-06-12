@@ -39,9 +39,7 @@ List of program files:
     - Contains all structs, classes and function declarations regarding the analysis of a network.
   - analysis_functions.cpp
     - Contains all definitions of the functions associated with the analysis of a network.
-  - simulator_dc.cpp
-    - Simple DC simulator (one interation with t=0).
-  - simulator_ac.cpp
+  - simulator.cpp
     - AC simulator: our final program.
 
 List of test files:
@@ -52,6 +50,8 @@ List of test files:
   	  - Simple test program that reads a Networks and prints it directly.
   	- test\_3\_analysis\_listnodesandtimes.cpp
   	  - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
+    - simulator_dc.cpp
+      - Simple DC simulator (one interation with t=0).
   - Test circuits [test_circuits/]:
 	- test\_circuit\_1.txt
   	  - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
