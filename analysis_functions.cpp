@@ -100,7 +100,7 @@ void Network::add_resistance_to_C_and_V(){
 			string node1 = components[i].nodes[1];
 			
 			//Add a resistor in series with the first terminal of the capacitor
-			string new_node = "ZZ_" + node0;
+			string new_node = "ZZ_" + node0 + node1;
 			Component new_resistor;
 			new_resistor.type = 'T';
 			new_resistor.name = components[i].name;
@@ -114,17 +114,17 @@ void Network::add_resistance_to_C_and_V(){
 			components.push_back(new_resistor);
 			
 			//Add a resistor in series with the first terminal of the capacitor to cancel it out
-			string new_node2 = "ZZ_" + node0 + "_";
+			string new_node2 = "ZZ_" + node0 + node1 +"_";
 			Component new_resistor2;
 			new_resistor2.type = 'T';
 			new_resistor2.name = components[i].name + "_";
 			new_resistor2.set_nb_branches();
 			new_resistor2.nodes.resize(2);
 			new_resistor2.nodes[0] = new_node2;
-			new_resistor2.nodes[1] = new_node;
+			new_resistor2.nodes[1] = node1;
 			new_resistor2.num_value = -1;
 			new_resistor2.has_function = 0;
-			components[i].nodes[0] = new_node2;
+			components[i].nodes[1] = new_node2;
 			components.push_back(new_resistor2); 
 			
 		} else if(components[i].type == 'V') {
@@ -325,7 +325,7 @@ void Matrix::write_voltage_sources(const Network &input_network) {
 
 // DEBUGGING ONLY: set to false for normal output, set to true to output all the values for all nodes and components (including the ones created by the program for the analysis
 //--------------------------------------------
-bool debug = true;
+bool debug = false;
 //--------------------------------------------
 
 
