@@ -201,7 +201,7 @@ ostream &operator<<(ostream &output, const Network &s) {
 It is used in the sine function operator to isolate the member variables, digits from letter
 and to detect the multipliers following a number.
 Allows you to split a string into different respective categories: number letter and symbol */
-double get_numerical(string value){
+double get_numerical(const string &value){
 	//Seperate the input string into it's different characters and sort them in their categories
 	string num , letter , symbol;
 	for (int i=0; i<value.length() ; i++){

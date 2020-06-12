@@ -30,7 +30,7 @@ const double pi = 3.141592653589793238463;
 vector<int> extract_node_number(const vector<string> &nodenames);
 
 //Prints the first row of a CSV file
-void print_CSV_header(const vector<string> nodenames);
+void print_CSV_header(const vector<string> &nodenames, const vector<string> &compnames);
 
 //Prints a row of the CSV file for a specific time
 void print_in_CSV(const double time, const Matrix mat, const vector<double> vec, const Network net, const vector<string> nodenames, const vector<string> compnames);

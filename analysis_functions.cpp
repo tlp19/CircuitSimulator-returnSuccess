@@ -325,7 +325,7 @@ bool debug = true;
 
 
 // OUTPUT: Prints out the first row of the CSV file
-void print_CSV_header(const vector<string> nodenames, const vector<string> compnames) {
+void print_CSV_header(const vector<string> &nodenames, const vector<string> &compnames) {
 	//The first column of the CSV file constains the time
 	cout << "Time" << tab;
 	for(int i = 1 ; i < nodenames.size() ; i++) {
@@ -380,7 +380,7 @@ void print_in_CSV(const double time, const Matrix mat, const vector<double> vec,
 }
 
 // Updates the instantaneous value of voltage and current sources
-void Network::update_sources_instantaneous_values(const double time) {
+void Network::update_sources_instantaneous_values(const double &time) {
 	double omega = 2 * pi * time;
 	for(int i = 0 ; i < components.size() ; i++) {
 		if(components[i].has_function==true) {
