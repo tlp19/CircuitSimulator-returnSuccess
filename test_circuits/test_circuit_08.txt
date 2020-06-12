@@ -1,6 +1,5 @@
 * This is a simple test circuit
 V1 N1 0 10
-*V2 N1 0 10
 R1 N1 N2 5
 R6 N1 N2 5
 R2 N2 0 5

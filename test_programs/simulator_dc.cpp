@@ -1,4 +1,4 @@
-#include "analysis_functions.cpp"
+#include "../analysis_functions.cpp"
 
 using namespace std;
 
@@ -11,6 +11,10 @@ int main() {
     Network x;
 	cin >> x;
 	cerr << "The input netlist is:" << endl << x << endl << endl;
+	
+	//Add resistances with opposite values in series to Capacitors and Voltage sources to find the current through them
+	x.add_resistance_to_C_and_V();
+	cerr << "The complete netlist (with automaticaly added resistors) is:" << endl << x << endl << endl;
 	
 	//Save the list of names of components
 	vector<string> list_of_components = x.list_components();
@@ -31,6 +35,8 @@ int main() {
     
     //Fill the conductance matrix with the conductance of the resistors
     conduct.write_resistor_conductance(x);
+    
+    cerr << "The conductance matrix with only resistors is:" << endl << conduct << endl;
     
     //Overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
@@ -65,10 +71,8 @@ int main() {
 	cerr << "And the voltages at each node are:" << endl << result << endl;
 	
 	//Calculate all the currents through the components of the circuit
-	vector<double> components_currents = find_current_through_components(0.0, x, result);
+	vector<double> components_currents = find_current_through_components(0.0, x, result, current);
 	
-	//Print the result matrix to output using CSV format
-	print_CSV_header(list_of_nodes, list_of_components);
-	print_in_CSV(0.0, result, components_currents);
-
+	cerr << "And the currents through each component are:" << endl;
+	cerr << components_currents << endl;
 }

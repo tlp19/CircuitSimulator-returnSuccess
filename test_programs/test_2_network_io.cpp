@@ -1,4 +1,4 @@
-#include "network_functions.cpp"
+#include "../network_functions.cpp"
 
 int main() {
 	Network x;

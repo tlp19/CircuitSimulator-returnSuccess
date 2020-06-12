@@ -1,4 +1,4 @@
-#include "analysis_functions.cpp"
+#include "../analysis_functions.cpp"
 
 int main() {
 	Network x;
