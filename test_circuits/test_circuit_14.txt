@@ -1,0 +1,6 @@
+*RC test circuit
+V1 N001 0 5
+R1 N002 N001 1k
+C1 0 N002 1m
+.tran 0 5s 0 0.001s
+.end

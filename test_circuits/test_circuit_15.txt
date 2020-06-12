@@ -1,0 +1,7 @@
+*CRR test circuit
+V1 N001 0 5
+R1 N002 N001 1k
+C1 0 N001 1
+R2 N002 0 1k
+.tran 0 5s 0 0.001s
+.end
