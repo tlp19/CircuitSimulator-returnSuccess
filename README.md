@@ -1,4 +1,15 @@
-# returnSuccess // ELEC40006 Project
+# Introduction
+
+returnSuccess // ELEC40006 Project
+
+
+# Pre-requisites
+
+Boost 1.71.0 was used to write the Matrix library that we use. Therefore, it is required in order to compile our simulator.
+The rest of the files were written using standard C++ libraries on Ubuntu and compiled using GCC 7.5.0
+
+
+# Project files
 
 Libraries and other external files:
   - Matrix library [matrix_library/] - by hbtalha [https://github.com/hbtalha/Matrix-Library]
