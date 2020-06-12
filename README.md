@@ -2,11 +2,21 @@
 
 This is the GitHub repository containing all our files for our Final Project of EEE/EIE Year 1 at Imperial College London (2019/2020).
 
+Code written by :
+	- Bertil de Germay de Cirfontaine
+	- Daniel Romano
+	- Tanguy Perron
+
 
 # Prerequisites
 
 Boost 1.71.0 was used to write the Matrix library that we use. Therefore, it is required in order to compile our simulator.
-The rest of the files were written using standard C++ libraries on Ubuntu and compiled using GCC 7.5.0
+The rest of the files were written using standard C++ libraries on Ubuntu and compiled using GCC 7.5.0.
+
+
+# Important notes
+
+When using inductors and capacitors, make sure to use a timestep a lot smaller than the smaller period of the sources in the circuit (about 100 times smaller works fine).
 
 
 # Project files
