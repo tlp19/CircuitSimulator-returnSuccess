@@ -20,7 +20,7 @@ const double pi = 3.141592653589793238463;
 
 /* ---- CLASSES AND STRUCTURES ---- */
 
-//Matrix struct is in matrix_library/Matrix.h with all of it's methods' declarations
+//Matrix struct is declared in "matrix_library/Matrix.h" with all of it's methods' declarations
 
 
 
