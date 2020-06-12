@@ -20,7 +20,6 @@ struct Matrix
 	// Our functions
 	
 	void fill_with_zeros();
-    void print() const;
     void write_resistor_conductance(const Network &input_network);
     void overwrite_w_voltage_sources(const Network &input_network);
     void write_current_sources(const Network &input_network);

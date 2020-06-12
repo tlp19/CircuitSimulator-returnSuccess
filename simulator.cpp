@@ -11,8 +11,12 @@ int main() {
     //Read a network from input
     Network x;
 	cin >> x;
+	
+	cerr << endl << "The input netlist is:" << endl << x << endl << endl;
+
+	//Add resistances with opposite values in series to Capacitors and Voltage sources to find the current through them
 	x.add_resistance_to_C_and_V();
-//	cerr << endl << "The input netlist is:" << endl << x << endl << endl;
+
 	
 	//Save the list of names of components
 	vector<string> list_of_components = x.list_components();
@@ -37,7 +41,7 @@ int main() {
     //Overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
     
-//	cerr << "The complete conductance matrix is:" << endl << conduct << endl;
+	cerr << "The complete conductance matrix (with added resistors) is:" << endl << conduct << endl;
   
   
 // CURRENT MATRIX AND ANALYSIS
@@ -60,7 +64,7 @@ int main() {
 	print_CSV_header(list_of_nodes, list_of_components);
 	
 	//Do the analysis at all the time intervals
-	cerr << "start of transient analysis" << endl;
+	cerr << "Start of transient analysis" << endl;
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
 		
@@ -94,7 +98,7 @@ int main() {
 		print_in_CSV(time, result, components_currents, x, list_of_nodes, list_of_components);
 	}
 	
-	cerr << endl << "end of transient analysis" << endl;
+	cerr << endl << "End of transient analysis" << endl;
 }
 
 

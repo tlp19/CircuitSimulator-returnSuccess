@@ -1,4 +1,4 @@
-*CRR test circuit
+*DOESN'T WORK
 V1 N001 0 5
 R1 N002 N001 1k
 C1 0 N001 1

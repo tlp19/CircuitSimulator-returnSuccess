@@ -1,3 +1,3 @@
 #!/bin/bash
 
-g++ simulator_ac.cpp -fsanitize=address -g -o AC_simulator
+g++ simulator.cpp -fsanitize=address -g -o Simulator_debug
