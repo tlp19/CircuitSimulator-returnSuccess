@@ -10,8 +10,8 @@ int main() {
     //Read a network from input
     Network x;
 	cin >> x;
-	x.add_resistance_to_C_and_L_and_V();
-	cerr << endl << "The input netlist is:" << endl << x << endl << endl;
+	x.add_resistance_to_C_and_V();
+//	cerr << endl << "The input netlist is:" << endl << x << endl << endl;
 	
 	//Save the list of names of components
 	vector<string> list_of_components = x.list_components();
@@ -32,13 +32,11 @@ int main() {
     
     //Fill the conductance matrix with the conductance of the resistors
     conduct.write_resistor_conductance(x);
-    cerr << "The conductance matrix with only resistors is:" << endl << conduct << endl;
     
     //Overwrite the previous matrix to support voltage sources
     conduct.overwrite_w_voltage_sources(x);
     
-    cerr << "The complete conductance matrix is:" << endl << conduct << endl;
-    cerr << "And its inverse is:" << endl << conduct.inverse() << endl;
+//	cerr << "The complete conductance matrix is:" << endl << conduct << endl;
   
   
 // CURRENT MATRIX AND ANALYSIS
@@ -61,11 +59,9 @@ int main() {
 	print_CSV_header(list_of_nodes, list_of_components);
 	
 	//Do the analysis at all the time intervals
-	cerr << endl << " - start of transient analysis - " << endl << endl;
+	cerr << "start of transient analysis" << endl;
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
-		
-		cerr << "t = " << time << endl;
 		
 		//Save the previous results, and reset the matrices for the new calculations
 		Matrix prev_result = result;
@@ -82,8 +78,6 @@ int main() {
 		//Approximate capacitors and inductors to sources
 		current.write_capacitors_as_voltage_sources(x, prev_result, prev_currents);
 		current.write_inductors_as_current_sources(x, prev_result, prev_currents);
-		
-		cerr << "the current matrix is:" << endl << current << endl;
 
 		//Calculate the result matrix
 		result =  conduct.inverse() * current;
@@ -91,13 +85,9 @@ int main() {
 		//List all the currents through all the components
 		components_currents = find_current_through_components(time, x, result, current);
 		
-		cerr << "the currents through components are:" << endl << components_currents << endl; 
-		
 		//Output the result matrix in CSV format
 		print_in_CSV(time, result, components_currents, x, list_of_nodes, list_of_components);
-		
-		cerr << "_________________________________ " << endl;
 	}
 	
-	cerr << endl << " - end of transient analysis - " << endl << endl;
+	cerr << "end of transient analysis" << endl;
 }

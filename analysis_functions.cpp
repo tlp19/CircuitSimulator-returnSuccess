@@ -90,8 +90,8 @@ void Network::set_nodes_to_numbers(){
 }
 
 
-//Adds a small resistance in series with all C, L and V to find the current through them
-void Network::add_resistance_to_C_and_L_and_V(){
+//Adds a small resistance in series with all C and V to find the current through them
+void Network::add_resistance_to_C_and_V(){
 
 	for(int i = 0 ; i < components.size() ; i++) {
 	
@@ -117,38 +117,6 @@ void Network::add_resistance_to_C_and_L_and_V(){
 			string new_node2 = "ZZ__" + node0 + "_" + node1;
 			Component new_resistor2;
 			new_resistor2.type = 'T';
-			new_resistor2.name = components[i].name + "_";
-			new_resistor2.set_nb_branches();
-			new_resistor2.nodes.resize(2);
-			new_resistor2.nodes[0] = new_node2;
-			new_resistor2.nodes[1] = node1;
-			new_resistor2.num_value = -1;
-			new_resistor2.has_function = 0;
-			components[i].nodes[1] = new_node2;
-			components.push_back(new_resistor2); 
-			
-		} else if(components[i].type == 'L') {
-			string node0 = components[i].nodes[0];
-			string node1 = components[i].nodes[1];
-			
-			//Add a resistor in series with the first terminal of the inductor
-			string new_node = "YY_" + node0 + "_" + node1;
-			Component new_resistor;
-			new_resistor.type = 't';
-			new_resistor.name = components[i].name;
-			new_resistor.set_nb_branches();
-			new_resistor.nodes.resize(2);
-			new_resistor.nodes[0] = node0;
-			new_resistor.nodes[1] = new_node;
-			new_resistor.num_value = 1;
-			new_resistor.has_function = 0;
-			components[i].nodes[0] = new_node;
-			components.push_back(new_resistor);
-			
-			//Add a resistor in series with the second terminal of the inductor to cancel it out
-			string new_node2 = "YY__" + node0 + "_" + node1;
-			Component new_resistor2;
-			new_resistor2.type = 't';
 			new_resistor2.name = components[i].name + "_";
 			new_resistor2.set_nb_branches();
 			new_resistor2.nodes.resize(2);
@@ -319,8 +287,8 @@ void Matrix::write_current_sources(const Network &input_network) {
 		vector<int> node_nb = extract_node_number(nodenames);
 		int in = node_nb[0] - 1;
 		int out = node_nb[1] - 1;
-		values[out*cols+0] += currentsource_list[i].num_value;
-		values[in*cols+0] += -currentsource_list[i].num_value;
+		if(out>=0){values[out] += currentsource_list[i].num_value;}
+		if(in>=0){values[in] += -currentsource_list[i].num_value;}
 	}
 }
 
@@ -426,10 +394,10 @@ void print_in_CSV(const double &time, const Matrix &mat, const vector<double> &v
 
 // Updates the instantaneous value of voltage and current sources
 void Network::update_sources_instantaneous_values(const double &time) {
-	double omega = 2 * pi * time;
 	for(int i = 0 ; i < components.size() ; i++) {
+		double omega =  components[i].function.frequency;
 		if(components[i].has_function==true) {
-			components[i].num_value = components[i].function.amplitude * sin(components[i].function.frequency * omega) + components[i].function.dc_offset;
+			components[i].num_value = components[i].function.amplitude * sin(omega * time) + components[i].function.dc_offset;
 		}
 	}
 }
@@ -583,7 +551,7 @@ void Matrix::write_capacitors_as_voltage_sources(const Network &input_network, c
 		vector<int> node_nb = extract_node_number(nodenames);
 		int pos = node_nb[0] - 1;
 		int neg = node_nb[1] - 1;
-		if(pos<=0) {
+		if(pos<0) {
 			values[neg] = -C_as_voltage_value;
 		} else {
 			values[pos] = C_as_voltage_value;
@@ -616,14 +584,10 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
 		//Previous values are:
 		double prev_vol_0 = find_voltage_at(inductors_list[i].nodes[0], nodelist, prev_v);
 		double prev_vol_1 = find_voltage_at(inductors_list[i].nodes[1], nodelist, prev_v);
-	cerr << "previous voltages around L:  " << prev_vol_0 << "   " << prev_vol_1 << endl;
 		string name = inductors_list[i].type + inductors_list[i].name;
 		double prev_c_through_L = find_current_through(name, input_network, prev_c);
-	cerr << "prev_c_through_L = "<< prev_c_through_L << endl;
 	
 		//Find the value of the equivalent current source
-	cerr << "inductance = "<< inductance << endl;
-	cerr << "timestep = "<< _timestep << endl;
 		double L_as_current_value = prev_c_through_L + (((prev_vol_0 - prev_vol_1)/inductance) * _timestep);
 		
 		//Add this value in the current matrix
@@ -631,8 +595,8 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
 		vector<int> node_nb = extract_node_number(nodenames);
 		int in = node_nb[0] - 1;
 		int out = node_nb[1] - 1;
-		values[out] += L_as_current_value;
-		values[in] += - L_as_current_value;
+		if(out>=0){values[out] += L_as_current_value;}
+		if(in>=0){values[in] += - L_as_current_value;}
 		
 		//Not optimized - Store the value calculated back into the buffer of the inductor
 		string comp_name = 'L' + inductors_list[i].name;
@@ -640,8 +604,6 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
 		while(comp_name != (input_network.components[j].type+input_network.components[j].name)) {
 			j++;
 		}
-		cerr << (input_network.components[j].type+input_network.components[j].name);
 		input_network.components[j].buffer = L_as_current_value;
-	cerr << " buffer set to " << input_network.components[j].buffer << endl << endl;
 	}
 }
