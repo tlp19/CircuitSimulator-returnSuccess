@@ -18,6 +18,7 @@ struct Matrix
     vector<double> values;
 
 	// Our functions
+	
 	void fill_with_zeros();
     void print() const;
     void write_resistor_conductance(const Network &input_network);
@@ -27,6 +28,7 @@ struct Matrix
     void write_capacitors_as_voltage_sources(const Network &input_network, const Matrix &prev_v, const vector<double> &prev_c);
     void write_inductors_as_current_sources(Network &input_network, const Matrix &prev_v, const vector<double> &prev_c);			//Modifies buffer
 
+	
 	
 	// Functions from the library
 
