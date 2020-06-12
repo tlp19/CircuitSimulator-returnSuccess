@@ -88,7 +88,7 @@ istream &operator>>(istream &input, Network &s);
 ostream &operator<<(ostream &output, const Network &s);
 
 //Convert the litteral value from string to double
-double get_numerical(const string &value);
+double get_numerical(string value);
 
 
 #endif

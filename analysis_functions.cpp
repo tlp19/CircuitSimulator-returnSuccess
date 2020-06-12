@@ -353,7 +353,7 @@ void print_CSV_header(const vector<string> &nodenames, const vector<string> &com
 
 
 // OUTPUT: Prints out one result row of the CSV file
-void print_in_CSV(const double time, const Matrix mat, const vector<double> vec, const Network net, const vector<string> nodenames, const vector<string> compnames) {
+void print_in_CSV(const double &time, const Matrix &mat, const vector<double> &vec, const Network &net, const vector<string> &nodenames, const vector<string> &compnames) {
 	assert(mat.cols==1);
 	cout << time << tab;
 	//Output the voltages of the nodes
@@ -390,7 +390,7 @@ void Network::update_sources_instantaneous_values(const double &time) {
 }
 
 //Returns the voltage at a given node, by finding the value of the node in the result matrix
-double find_voltage_at(const string nodename, const vector<string> nodelist, const Matrix voltages) {
+double find_voltage_at(const string &nodename, const vector<string> &nodelist, const Matrix &voltages) {
 	//If asked for ground, just return 0
 	if(nodename=="0") {return 0;}
 	assert(voltages.cols==1);
@@ -409,7 +409,7 @@ double find_voltage_at(const string nodename, const vector<string> nodelist, con
 };
 
 //Finds all the current through the components
-vector<double> find_current_through_components(const double time, const Network net, const Matrix voltage_mat, const Matrix current_mat) {
+vector<double> find_current_through_components(const double &time, const Network &net, const Matrix &voltage_mat, const Matrix &current_mat) {
 	vector<string> nodelist = net.list_nodes();
 	vector<double> currents;
 	for(int i = 0 ; i < net.components.size() ; i++) {
@@ -475,7 +475,7 @@ vector<double> find_current_through_components(const double time, const Network 
 }
 
 //Returns the current through a given component, by finding the value in the current result vector
-double find_current_through(const string comp_name, const Network x, const vector<double> currents) {
+double find_current_through(const string &comp_name, const Network &x, const vector<double> &currents) {
 	double current;
 	vector<string> comp_list;
 	for(int i = 0 ; i < x.components.size() ; i++) {
