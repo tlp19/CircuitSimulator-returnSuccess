@@ -82,6 +82,8 @@ int main() {
 		//Approximate capacitors and inductors to sources
 		current.write_capacitors_as_voltage_sources(x, prev_result, prev_currents);
 		current.write_inductors_as_current_sources(x, prev_result, prev_currents);
+		
+		cerr << "the current matrix is:" << endl << current << endl;
 
 		//Calculate the result matrix
 		result =  conduct.inverse() * current;
@@ -89,8 +91,12 @@ int main() {
 		//List all the currents through all the components
 		components_currents = find_current_through_components(time, x, result, current);
 		
+		cerr << "the currents through components are:" << endl << components_currents << endl; 
+		
 		//Output the result matrix in CSV format
 		print_in_CSV(time, result, components_currents, x, list_of_nodes, list_of_components);
+		
+		cerr << "_________________________________ " << endl;
 	}
 	
 	cerr << endl << " - end of transient analysis - " << endl << endl;

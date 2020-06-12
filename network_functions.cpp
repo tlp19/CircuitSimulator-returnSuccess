@@ -7,8 +7,9 @@ using namespace std;
 /* --- DEBUGGING FUNCTIONS --- */
 
 
-// Overloading to print a vector<string> to cout
-ostream &operator<<(ostream &output, const vector<string> &s) {
+// Overloading to print a vector<T> to cout
+template <typename T>
+ostream &operator<<(ostream &output, const vector<T> &s) {
 	for(int i=0 ; i < s.size() ; i++) {
 		output << s[i] << " ";
 	}

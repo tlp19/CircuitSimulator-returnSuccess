@@ -27,7 +27,7 @@ const double pi = 3.141592653589793238463;
 /* -- GENERAL ANALYSIS FUNCTIONS -- */
 
 //Extracts the node number of a node
-vector<int> extract_node_number(vector<string> nodenames);
+vector<int> extract_node_number(const vector<string> &nodenames);
 
 //Prints the first row of a CSV file
 void print_CSV_header(const vector<string> nodenames);
