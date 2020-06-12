@@ -568,7 +568,7 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
 		input_network.components[j].buffer = L_as_current_value;
 	cerr << " buffer set to " << input_network.components[j].buffer << endl << endl;
 	}
-	//Maybe: Recursive loop : using the current to find prev current, but this current sets the new current so current become infinitely big??
+	//Maybe: Recursive loop : using the current to find prev current, but this current sets the new current so current becomes infinitely big??
 	//Almost certain: the problem is in this function, and it's only numerical, the logic of the code should work, and i don't think added resistors are posing a problem, but not sure
 	//Note : the prev_c_through_L seems to follow a sinusoidal function (it is the V1 function), which it is supposed to do, but somhow this isn't reflected in the rest of the values : they all go to diverging infinity
 }
