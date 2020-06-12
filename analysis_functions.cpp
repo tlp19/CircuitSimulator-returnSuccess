@@ -539,13 +539,17 @@ void Matrix::write_capacitors_as_voltage_sources(const Network &input_network, c
 		//Previous values are:
 		double prev_vol_0 = find_voltage_at(capacitors_list[i].nodes[0], nodelist, prev_v);
 		double prev_vol_1 = find_voltage_at(capacitors_list[i].nodes[1], nodelist, prev_v);
-		
+	
 		string name = capacitors_list[i].type + capacitors_list[i].name;
+	cerr << name << endl;
 		double prev_c_through_C = find_current_through(name, input_network, prev_c);
-		
+	cerr << "prev voltages = " << prev_vol_0 << "  " << prev_vol_1 << endl;
+	cerr << "prev current through C = " << prev_c_through_C << endl;
+	
 		//Find the value of the equivalent voltage source
    		double C_as_voltage_value = (prev_vol_0 - prev_vol_1) + ((prev_c_through_C/capacitance) * _timestep);
-   		
+   	cerr << "Eq voltage source = " << C_as_voltage_value << endl;
+   	
    		//Add this value in the current matrix
 		vector<string> nodenames = capacitors_list[i].nodes;
 		vector<int> node_nb = extract_node_number(nodenames);

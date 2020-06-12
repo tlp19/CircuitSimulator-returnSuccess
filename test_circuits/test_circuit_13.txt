@@ -1,4 +1,4 @@
-*RCL test circuit
+*RL test circuit
 V1 N001 0 SINE(0 5 10)
 R1 N002 N001 1k
 L1 0 N002 1

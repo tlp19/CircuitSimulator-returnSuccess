@@ -63,6 +63,8 @@ int main() {
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
 		
+		cerr << "t = " << time << endl;
+		
 		//Save the previous results, and reset the matrices for the new calculations
 		Matrix prev_result = result;
 		vector<double> prev_currents = components_currents;
@@ -87,6 +89,8 @@ int main() {
 		
 		//Output the result matrix in CSV format
 		print_in_CSV(time, result, components_currents, x, list_of_nodes, list_of_components);
+		
+		cerr << "_________________________" << endl;
 	}
 	
 	cerr << "end of transient analysis" << endl;
