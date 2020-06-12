@@ -2,5 +2,5 @@
 V1 N001 0 SINE(0 5 10)
 R1 N002 N001 1k
 L1 0 N002 1
-.tran 0 1s 0 0.001s
+.tran 0 2s 0 0.001s
 .end
