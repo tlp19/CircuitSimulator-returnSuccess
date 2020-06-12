@@ -30,7 +30,7 @@ List of program files:
   - analysis_functions.cpp
     - Contains all definitions of the functions associated with the analysis of a network.
   - simulator_dc.cpp
-    - Simple DC simulator.
+    - Simple DC simulator (one interation with t=0).
   - simulator_ac.cpp
     - AC simulator: our final program.
 
