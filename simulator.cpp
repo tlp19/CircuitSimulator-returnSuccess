@@ -2,6 +2,7 @@
 
 using namespace std;
 
+void show_progress(float progress);
 
 int main() {
 
@@ -63,7 +64,9 @@ int main() {
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
 		
-		cerr << "t = " << time << endl;
+		//Display a progress bar of the transient analysis
+		if(t_index%(time_intervals.size()/100)==0) {
+			show_progress(time/get_numerical(x.instruction.stop_time)); }
 		
 		//Save the previous results, and reset the matrices for the new calculations
 		Matrix prev_result = result;
@@ -89,9 +92,27 @@ int main() {
 		
 		//Output the result matrix in CSV format
 		print_in_CSV(time, result, components_currents, x, list_of_nodes, list_of_components);
-		
-		cerr << "_________________________" << endl;
 	}
 	
-	cerr << "end of transient analysis" << endl;
+	cerr << endl << "end of transient analysis" << endl;
 }
+
+
+void show_progress(float progress) {
+	int bar_width = 70;
+	cerr << "[";
+	int pos = bar_width*progress;
+	for(int i=0 ; i < bar_width ; i++) {
+		if(i<pos){
+			cerr << "=";
+		} else if(i==pos) {
+			cerr << "|";
+		} else {
+			cerr << " ";
+		}
+	}
+	cerr << "]" << int(progress*100) << "%\r";
+	cerr.flush();	
+}
+
+

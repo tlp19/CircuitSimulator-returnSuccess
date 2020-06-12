@@ -90,7 +90,7 @@ void Network::set_nodes_to_numbers(){
 }
 
 
-//Adds a small resistance in series with all C and V to find the current through them
+//Add to all C and V two resistances in series with opposite value so that they cancel out (no influence on current nor voltage) to find the current through the C and V.
 void Network::add_resistance_to_C_and_V(){
 
 	for(int i = 0 ; i < components.size() ; i++) {
@@ -194,7 +194,7 @@ void Matrix::write_resistor_conductance(const Network &input_network) {
 	vector<Component> resistor_list;
 	for (int i=0; i < input_components.size(); i++) {  
 		Component x = input_components[i]; 
-		if(x.type=='R' || x.type=='T' || x.type=='t' || x.type=='S'){
+		if(x.type=='R' || x.type=='T' || x.type=='S'){
 		resistor_list.push_back(x);
 		}
 	}
@@ -338,7 +338,7 @@ void print_CSV_header(const vector<string> &nodenames, const vector<string> &com
 	for(int i = 1 ; i < nodenames.size() ; i++) {
 		//If not a node created only for analysis, output the name of the node
 		if(debug==false) {
-			if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='Y' && nodenames[i].at(1)!='Y') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
+			if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
 				cout << "V(" << nodenames[i] << ")" << tab;
 			}
 		} else {
@@ -349,7 +349,7 @@ void print_CSV_header(const vector<string> &nodenames, const vector<string> &com
 	for(int i = 0 ; i < compnames.size() ; i++) {
 		//If not a resistor created only for analysis, output the name of the component
 		if(debug==false) {
-			if((compnames[i].at(0) != 'T')&&(compnames[i].at(0)!='t')&&(compnames[i].at(0)!='S')) {
+			if((compnames[i].at(0) != 'T')&&(compnames[i].at(0)!='S')) {
 				cout << "I(" <<compnames[i] << ")" << tab;
 			}
 		} else {
@@ -370,7 +370,7 @@ void print_in_CSV(const double &time, const Matrix &mat, const vector<double> &v
 	//Output the voltages of the nodes
 	for(int i = 1 ; i < nodenames.size() ; i++) {
 		if(debug==false){
-			if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='Y' && nodenames[i].at(1)!='Y') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
+			if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
 				cout << find_voltage_at(nodenames[i], nodenames, mat) << tab;
 			}
 		} else {
@@ -381,7 +381,7 @@ void print_in_CSV(const double &time, const Matrix &mat, const vector<double> &v
 	//Output the currents through the components
 	for(int i = 0 ; i < compnames.size() ; i++) {
 		if(debug==false) {
-			if((compnames[i].at(0)!='T')&&(compnames[i].at(0)!='t')&&(compnames[i].at(0)!='S')) {
+			if((compnames[i].at(0)!='T')&&(compnames[i].at(0)!='S')) {
 				cout << find_current_through(compnames[i], net, vec) << tab;
 			}
 		} else {
@@ -459,7 +459,7 @@ vector<double> find_current_through_components(const double &time, const Network
 			//Simply take the value of the current source
 			currents.push_back(net.components[i].num_value);
 			
-		} else if(net.components[i].type == 'R' || net.components[i].type == 'T' || net.components[i].type == 't' || net.components[i].type == 'S') {
+		} else if(net.components[i].type == 'R' || net.components[i].type == 'T' || net.components[i].type == 'S') {
 			double vol_0 = find_voltage_at(net.components[i].nodes[0], nodelist, voltage_mat);
 			double vol_1 = find_voltage_at(net.components[i].nodes[1], nodelist, voltage_mat);
 			double current_r = (vol_0 - vol_1) / net.components[i].num_value ;
@@ -539,14 +539,9 @@ void Matrix::write_capacitors_as_voltage_sources(Network &input_network, const M
 		double prev_vol = capacitors_list[i].buffer;
 		string name = capacitors_list[i].type + capacitors_list[i].name;
 		double prev_c_through_C = find_current_through(name, input_network, prev_c);
-		
-	cerr << name << endl;
-	cerr << "prev voltage = " << prev_vol << endl;	
-	cerr << "prev current through C = " << prev_c_through_C << endl;
 	
 		//Find the value of the equivalent voltage source
    		double C_as_voltage_value = prev_vol + ((prev_c_through_C/capacitance) * _timestep);
-   	cerr << "Eq voltage source = " << C_as_voltage_value << endl;
    	
    		//Add this value in the current matrix
 		vector<string> nodenames = capacitors_list[i].nodes;

@@ -13,7 +13,7 @@ using namespace std;
 
 /* ----- CONSTANTS ----- */
 
-const char tab = 9;
+const char tab = '\t';
 const double pi = 3.141592653589793238463;
 
 
