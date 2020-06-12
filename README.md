@@ -72,13 +72,21 @@ List of test files:
   	- test\_circuit\_9.txt
   	  - [AC (only R)] Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions.
   	- test\_circuit\_10.txt
-  	  - [AC] Similar to circuit 9, but with C and L instead of some resistors 
+  	  - [AC] Similar to circuit 9, but with C and L instead of some resistors.
   	- test\_circuit\_11.txt
   	  - [AC] RCL test circuit
   	- test\_circuit\_12.txt
   	  - [AC] RC test circuit
   	- test\_circuit\_13.txt
   	  - [AC] RL test circuit
+  	- test\_circuit\_14.txt
+  	  - [DC] RC test circuit
+  	- test\_circuit\_15.txt
+  	  - [DC] Two capacitors in parallel : doesn't work (conductance matrix not invertible).
+  	- test\_circuit\_16.txt
+  	  - [DC] RCC circuit - A resistor and two capacitors in parallel.
+  	- test\_circuit\_17.txt
+  	  - [AC] RCC circuit - A resistor and two capacitors in parallel.
   	  
 Debugging files [debugging/]:
   - debug.sh - Debugging script that compiles simulator_ac.cpp with debugging instruction for runtime
