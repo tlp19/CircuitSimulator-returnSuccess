@@ -100,7 +100,7 @@ void Network::add_resistance_to_C_and_V(){
 			string node1 = components[i].nodes[1];
 			
 			//Add a resistor in series with the first terminal of the capacitor
-			string new_node = "ZZ_" + node0 + "_" + node1;
+			string new_node = "ZZ_" + node0;
 			Component new_resistor;
 			new_resistor.type = 'T';
 			new_resistor.name = components[i].name;
@@ -114,17 +114,17 @@ void Network::add_resistance_to_C_and_V(){
 			components.push_back(new_resistor);
 			
 			//Add a resistor in series with the first terminal of the capacitor to cancel it out
-			string new_node2 = "ZZ__" + node0 + "_" + node1;
+			string new_node2 = "ZZ_" + node0 + "_";
 			Component new_resistor2;
 			new_resistor2.type = 'T';
 			new_resistor2.name = components[i].name + "_";
 			new_resistor2.set_nb_branches();
 			new_resistor2.nodes.resize(2);
 			new_resistor2.nodes[0] = new_node2;
-			new_resistor2.nodes[1] = node1;
+			new_resistor2.nodes[1] = new_node;
 			new_resistor2.num_value = -1;
 			new_resistor2.has_function = 0;
-			components[i].nodes[1] = new_node2;
+			components[i].nodes[0] = new_node2;
 			components.push_back(new_resistor2); 
 			
 		} else if(components[i].type == 'V') {
@@ -158,7 +158,7 @@ void Network::add_resistance_to_C_and_V(){
 			new_resistor2.has_function = 0;
 			components[i].nodes[1] = new_node2;
 			components.push_back(new_resistor2); 
-		}
+		} 
 	}
 }
 
@@ -325,7 +325,7 @@ void Matrix::write_voltage_sources(const Network &input_network) {
 
 // DEBUGGING ONLY: set to false for normal output, set to true to output all the values for all nodes and components (including the ones created by the program for the analysis
 //--------------------------------------------
-bool debug = false;
+bool debug = true;
 //--------------------------------------------
 
 
@@ -395,7 +395,7 @@ void print_in_CSV(const double &time, const Matrix &mat, const vector<double> &v
 // Updates the instantaneous value of voltage and current sources
 void Network::update_sources_instantaneous_values(const double &time) {
 	for(int i = 0 ; i < components.size() ; i++) {
-		double omega =  components[i].function.frequency;
+		double omega =  components[i].function.frequency * 2 * pi;
 		if(components[i].has_function==true) {
 			components[i].num_value = components[i].function.amplitude * sin(omega * time) + components[i].function.dc_offset;
 		}
@@ -433,7 +433,6 @@ vector<double> find_current_through_components(const double &time, const Network
 	vector<double> currents;
 	for(int i = 0 ; i < net.components.size() ; i++) {
 		if(net.components[i].type == 'V') {
-		
 			//List the components of the circuit
 			vector<string> comp_list;
 			for(int k = 0 ; k < net.components.size() ; k++) {
@@ -454,7 +453,7 @@ vector<double> find_current_through_components(const double &time, const Network
 			double current_s = (vol_0 - vol_1) / resistor_s.num_value ;
 			
 			//This is the same current as the one through the voltage source
-			currents.push_back(current_s);
+			currents.push_back(current_s); 
 			
 		} else if(net.components[i].type == 'I') {
 			//Simply take the value of the current source
@@ -516,7 +515,7 @@ double find_current_through(const string &comp_name, const Network &x, const vec
 
 
 //Writes capacitors in the current matrix as voltage sources
-void Matrix::write_capacitors_as_voltage_sources(const Network &input_network, const Matrix &prev_v, const vector<double> &prev_c) {
+void Matrix::write_capacitors_as_voltage_sources(Network &input_network, const Matrix &prev_v, const vector<double> &prev_c) {
 
 	assert(prev_v.cols==1);
 	vector<string> nodelist = input_network.list_nodes();
@@ -537,17 +536,16 @@ void Matrix::write_capacitors_as_voltage_sources(const Network &input_network, c
 		double capacitance = capacitors_list[i].num_value;
 		
 		//Previous values are:
-		double prev_vol_0 = find_voltage_at(capacitors_list[i].nodes[0], nodelist, prev_v);
-		double prev_vol_1 = find_voltage_at(capacitors_list[i].nodes[1], nodelist, prev_v);
-	
+		double prev_vol = capacitors_list[i].buffer;
 		string name = capacitors_list[i].type + capacitors_list[i].name;
-	cerr << name << endl;
 		double prev_c_through_C = find_current_through(name, input_network, prev_c);
-	cerr << "prev voltages = " << prev_vol_0 << "  " << prev_vol_1 << endl;
+		
+	cerr << name << endl;
+	cerr << "prev voltage = " << prev_vol << endl;	
 	cerr << "prev current through C = " << prev_c_through_C << endl;
 	
 		//Find the value of the equivalent voltage source
-   		double C_as_voltage_value = (prev_vol_0 - prev_vol_1) + ((prev_c_through_C/capacitance) * _timestep);
+   		double C_as_voltage_value = prev_vol + ((prev_c_through_C/capacitance) * _timestep);
    	cerr << "Eq voltage source = " << C_as_voltage_value << endl;
    	
    		//Add this value in the current matrix
@@ -560,6 +558,14 @@ void Matrix::write_capacitors_as_voltage_sources(const Network &input_network, c
 		} else {
 			values[pos] = C_as_voltage_value;
 		}
+		
+		//Store the value calculated back into the buffer of the capacitor
+		string comp_name = 'C' + capacitors_list[i].name;
+		int j = 0;
+		while(comp_name != (input_network.components[j].type+input_network.components[j].name)) {
+			j++;
+		}
+		input_network.components[j].buffer = C_as_voltage_value;
 	}
 }
 

@@ -25,7 +25,7 @@ struct Matrix
     void overwrite_w_voltage_sources(const Network &input_network);
     void write_current_sources(const Network &input_network);
     void write_voltage_sources(const Network &input_network);
-    void write_capacitors_as_voltage_sources(const Network &input_network, const Matrix &prev_v, const vector<double> &prev_c);
+    void write_capacitors_as_voltage_sources(Network &input_network, const Matrix &prev_v, const vector<double> &prev_c);
     void write_inductors_as_current_sources(Network &input_network, const Matrix &prev_v, const vector<double> &prev_c);			//Modifies buffer
 
 	
