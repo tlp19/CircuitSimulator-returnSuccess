@@ -3,9 +3,9 @@
 This is the GitHub repository containing all our files for our Final Project of EEE/EIE Year 1 at Imperial College London (2019/2020).
 
 Code written by :
-	- Bertil de Germay de Cirfontaine
-	- Daniel Romano
-	- Tanguy Perron
+  - Bertil de Germay de Cirfontaine
+  - Daniel Romano
+  - Tanguy Perron
 
 
 # Prerequisites
@@ -16,7 +16,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
 
 # Important notes
 
-When using inductors and capacitors, make sure to use a timestep a lot smaller than the smaller period of the sources in the circuit (about 100 times smaller works fine).
+  - When using inductors and capacitors, make sure to use a timestep a lot smaller than the smaller period of the sources in the circuit (about 100 times smaller works fine).
 
 
 # Project files
