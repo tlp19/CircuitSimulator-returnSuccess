@@ -37,7 +37,7 @@ class Component {
 	
 	double buffer;					//Buffer to store a useful value in a component (e.g. the previous current through an inductor)
 
-	string value_or_type() const;	  //Returns the transis. type if Q, returns the value otherwise
+	string value_or_type() const;	  	//Returns the transis. type if Q, returns the value otherwise
 	void set_nb_branches();			  //Fills in the nb_branches member variable
 	string function_to_string() const;	//Writes a Sine_function as a string
 	void set_num_value();			//Sets the numerical value or value to num_value for a component
@@ -52,18 +52,17 @@ struct Instruction{
 
 // Struct to store the whole Network as defined in the input SPICE file, as well as the .tran instruction
 struct Network {
-	vector<Component> components;	//List of the components in the network
-	Instruction instruction;		//Specification of the .tran instruction to analyse the circuit
+	vector<Component> components;					//List of the components in the network
+	Instruction instruction;					//Specification of the .tran instruction to analyse the circuit
 	
 	//ANALYSIS FUNCTIONS
-	vector<string> list_nodes() const;	//Lists all nodes inside a Network in a sorted order [Analysis]
-	vector<string> list_components() const;	//Lists all components inside a Network
-	vector<double> time_intervals() const;	//Lists all the time intervals that we need to do the analysis at [Analysis] 
-	void set_nodes_to_numbers();  //Takes the listed nodes in the right order and simplify their name for clarity [Analysis]
+	vector<string> list_nodes() const;				//Lists all nodes inside a Network in a sorted order [Analysis]
+	vector<string> list_components() const;				//Lists all components inside a Network
+	vector<double> time_intervals() const;				//Lists all the time intervals that we need to do the analysis at [Analysis] 
+	void set_nodes_to_numbers();  					//Takes the listed nodes in the right order and simplify their name for clarity [Analysis]
 	void update_sources_instantaneous_values(const double &time);	//Updates the instantaneous value of voltage and current sources [Analysis]
 	void add_resistance_to_C_and_V();	//Adds a small resistance in series with all capacitors
 };
-
 
 
 /* --- GENERAL NETWORK FUNCTIONS --- */

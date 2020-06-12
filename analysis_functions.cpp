@@ -598,7 +598,7 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
 		if(out>=0){values[out] += L_as_current_value;}
 		if(in>=0){values[in] += - L_as_current_value;}
 		
-		//Not optimized - Store the value calculated back into the buffer of the inductor
+		//Store the value calculated back into the buffer of the inductor
 		string comp_name = 'L' + inductors_list[i].name;
 		int j = 0;
 		while(comp_name != (input_network.components[j].type+input_network.components[j].name)) {
