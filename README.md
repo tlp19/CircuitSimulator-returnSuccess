@@ -49,23 +49,23 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
     - AC simulator: our final program.
 
 ## List of test files:
-###### Test programs [test_programs/] :
+Test programs [test_programs/] :
   - test\_1\_network\_output.cpp
-   - Test program that establishes a Network and then tests the output capability of the main code.
+    - Test program that establishes a Network and then tests the output capability of the main code.
   - test\_2\_network\_io.cpp
-   - Simple test program that reads a Networks and prints it directly.
+    - Simple test program that reads a Networks and prints it directly.
   - test\_3\_analysis\_listnodesandtimes.cpp
-   - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
+    - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
   - simulator_dc.cpp
     - Simple DC simulator (one interation with t=0).
     
-###### Test circuits [test_circuits/] :
+Test circuits [test_circuits/] :
   - test\_circuit\_1.txt
     - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
   - test\_circuit\_2.txt
-   - [I/O] A more complex input circuit. [not a tested working circuit]
+    - [I/O] A more complex input circuit. [not a tested working circuit]
   - test\_circuit\_3.txt
-   - [General] A simple test circuit.
+    - [General] A simple test circuit.
   - test\_circuit\_4.txt
   	- [Analysis] Full circuit with voltage sources and resistors to test the conductance matrix.
   - test\_circuit\_5.txt
@@ -77,7 +77,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
   - test\_circuit\_8.txt
     - [DC] Similar to circuit 4, but with a current source and testing edge cases.
   - test\_circuit\_9.txt
-  	  - [AC (only R)] Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions.
+  	- [AC (only R)] Similar to circuit 4, but with a sine voltage source, a current source and more sensible .tran instructions.
   - test\_circuit\_10.txt
     - [AC] Similar to circuit 9, but with C and L instead of some resistors.
   - test\_circuit\_11.txt
