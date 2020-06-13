@@ -541,11 +541,11 @@ void Matrix::write_capacitors_as_voltage_sources(Network &input_network, const M
    	//For each capacitor, complete the current matrix with the appropriate value
 	for(int i=0; i < capacitors_list.size(); i++) {
 	
+		string name = 'C' + capacitors_list[i].name;
 		double capacitance = capacitors_list[i].num_value;
 		
 		//Previous values are:
 		double prev_vol = capacitors_list[i].buffer;
-		string name = capacitors_list[i].type + capacitors_list[i].name;
 		double prev_c_through_C = find_current_through(name, input_network, prev_c);
 	
 		//Find the value of the equivalent voltage source
@@ -563,9 +563,8 @@ void Matrix::write_capacitors_as_voltage_sources(Network &input_network, const M
 		}
 		
 		//Store the value calculated back into the buffer of the capacitor
-		string comp_name = 'C' + capacitors_list[i].name;
 		int j = 0;
-		while(comp_name != (input_network.components[j].type+input_network.components[j].name)) {
+		while(name != (input_network.components[j].type+input_network.components[j].name)) {
 			j++;
 		}
 		input_network.components[j].buffer = C_as_voltage_value;
@@ -592,12 +591,12 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
    	//For each inductor, complete the current matrix with the appropriate value
 	for(int i=0; i < inductors_list.size(); i++) {
 	
+		string name = 'L' + inductors_list[i].name;
 		double inductance = inductors_list[i].num_value;
 		
 		//Previous values are:
 		double prev_vol_0 = find_voltage_at(inductors_list[i].nodes[0], nodelist, prev_v);
 		double prev_vol_1 = find_voltage_at(inductors_list[i].nodes[1], nodelist, prev_v);
-		string name = inductors_list[i].type + inductors_list[i].name;
 		double prev_c_through_L = find_current_through(name, input_network, prev_c);
 	
 		//Find the value of the equivalent current source
@@ -612,9 +611,8 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
 		if(in>=0){values[in] += - L_as_current_value;}
 		
 		//Store the value calculated back into the buffer of the inductor
-		string comp_name = 'L' + inductors_list[i].name;
 		int j = 0;
-		while(comp_name != (input_network.components[j].type+input_network.components[j].name)) {
+		while(name != (input_network.components[j].type+input_network.components[j].name)) {
 			j++;
 		}
 		input_network.components[j].buffer = L_as_current_value;
