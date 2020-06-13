@@ -580,7 +580,7 @@ void Matrix::write_inductors_as_current_sources(Network &input_network, const Ma
 	vector<string> nodelist = input_network.list_nodes();
 	double _timestep = get_numerical(input_network.instruction.timestep);
 	
-	//List all the inductors present in the circuit, and also store all the components
+	//List all the inductors present in the circuit
 	vector<Component> inductors_list;
 	for (int i=0; i < input_network.components.size(); i++) {  
 		Component x = input_network.components[i]; 
