@@ -14,7 +14,7 @@ void Matrix::fill_with_zeros() {
 }
 
 
-//List all the times at which we need to analyze the circuit
+//List all the times at which we need to analyse the circuit
 vector<double> Network::time_intervals() const {
 	vector<double> intervals;
 	double counter = 0.0;
