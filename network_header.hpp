@@ -35,7 +35,7 @@ class Component {
 	Sine_function function;				//Sine function for V and I components
 	string transistor_type;				//For Q: either NPN or PNP
 	
-	double buffer;					//Buffer to store a useful value in a component (e.g. the previous current through an inductor)
+	double buffer = 0;					//Buffer to store a useful value in a component (e.g. the previous current through an inductor)
 
 	string value_or_type() const;	  		//Returns the transis. type if Q, returns the value otherwise
 	void set_nb_branches();			 	 //Fills in the nb_branches member variable
