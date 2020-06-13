@@ -54,7 +54,7 @@ struct Matrix
         assert(values.size() == size());
     }
 
-    Matrix(initializer_list<initializer_list<double>> values );
+    /* Matrix(initializer_list<initializer_list<double>> values ); */
 
     friend ostream& operator<<(ostream& out, const Matrix& mx);
     friend ostream& operator<<(ostream& out, const vector<double>& diag);

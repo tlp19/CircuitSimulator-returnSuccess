@@ -1,5 +1,5 @@
 *This is a more complex circuit to test the capabilities of our program
-V1 N001 0 SINE(5 5 1k)
+V1 N001 0 SINE(0 5 1k)
 R1 N002 N001 2k
 R2 N003 N002 1k
 R3 N003 N002 500
