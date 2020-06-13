@@ -35,16 +35,17 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
     - Install using: `$ sudo apt-get install libboost-all-dev`
     
   - plotsim.m [matlab/] - MatLab script given to plot the results of our simulation
+    - The matlab/ directory also contains a few selected test outputs and MatLab graphs.
 
 ## List of program files:
   - network_header.hpp
-  	- Contains all network structures and classes, as well as all important function declarations.
+  	- Contains all network structures and classes, as well as important function declarations.
   - network_functions.cpp	
-  	- Contains all definitions of the functions associated with the reading of a network.
+  	- Contains all definitions of the functions associated with parsing the input circuit.
   - analysis_header.hpp
-    - Contains all structs, classes and function declarations regarding the analysis of a network.
+    - Contains important general function declarations regarding the analysis of a circuit.
   - analysis_functions.cpp
-    - Contains all definitions of the functions associated with the analysis of a network.
+    - Contains all definitions of the functions associated with the analysis of a circuit.
   - simulator.cpp
     - AC simulator: our final program.
 
@@ -61,9 +62,9 @@ Test programs [test_programs/] :
     
 Test circuits [test_circuits/] :
   - test\_circuit\_1.txt
-    - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
+    - [I/O] A simple input file to test the i/o capabilities. (not a tested working circuit)
   - test\_circuit\_2.txt
-    - [I/O] A more complex input circuit. [not a tested working circuit]
+    - [I/O] A more complex input circuit. (not a tested working circuit)
   - test\_circuit\_3.txt
     - [General] A simple test circuit.
   - test\_circuit\_4.txt
@@ -89,7 +90,7 @@ Test circuits [test_circuits/] :
   - test\_circuit\_14.txt
     - [DC] RC test circuit
   - test\_circuit\_15.txt
-    - [DC] Two capacitors in parallel : doesn't work (conductance matrix not invertible).
+    - [DC] Two capacitors in parallel: doesn't work (conductance matrix not invertible).
   - test\_circuit\_16.txt
     - [DC] RCC circuit - A resistor and two capacitors in parallel.
   - test\_circuit\_17.txt
