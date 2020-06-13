@@ -35,6 +35,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
     - Install using: `$ sudo apt-get install libboost-all-dev`
     
   - plotsim.m [matlab/] - MatLab script given to plot the results of our simulation
+    - The matlab/ directory also contains a few selected test outputs and MatLab graphs.
 
 ## List of program files:
   - network_header.hpp
