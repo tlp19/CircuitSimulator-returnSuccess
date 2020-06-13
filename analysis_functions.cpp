@@ -173,7 +173,7 @@ vector<int> extract_node_number(const vector<string> &nodenames){
 }
 
 
-// Prints a matrix to cout
+// Prints a matrix to output stream
 ostream &operator<<(ostream &output, const Matrix &mat) {
 	for(int i = 0 ; i < mat.rows ; i++) {
 		for(int j = 0 ; j < mat.cols ; j++) {
