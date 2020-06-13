@@ -1,0 +1,12 @@
+*This is a more complex circuit to test the capabilities of our program
+V1 N001 0 SINE(5 5 1k)
+R1 N002 N001 2k
+R2 N003 N002 1k
+R3 N003 N002 500
+C1 N004 N003 10m
+R4 N006 N004 1k
+R5 N004 N005 2k
+L1 N005 0 5
+I1 0 N006 SINE(5 5 10)
+.tran 0 0.5s 0 0.00001
+.end
