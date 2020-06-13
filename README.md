@@ -49,7 +49,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
     - AC simulator: our final program.
 
 ## List of test files:
-### Test programs [test_programs/]:
+### Test programs [test_programs/] :
   - test\_1\_network\_output.cpp
    - Test program that establishes a Network and then tests the output capability of the main code.
   - test\_2\_network\_io.cpp
@@ -58,7 +58,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
    - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
   - simulator_dc.cpp
     - Simple DC simulator (one interation with t=0).
-### Test circuits [test_circuits/]:
+### Test circuits [test_circuits/] :
   - test\_circuit\_1.txt
     - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
   - test\_circuit\_2.txt
