@@ -39,13 +39,13 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
 
 ## List of program files:
   - network_header.hpp
-  	- Contains all network structures and classes, as well as all important function declarations.
+  	- Contains all network structures and classes, as well as important function declarations.
   - network_functions.cpp	
-  	- Contains all definitions of the functions associated with the reading of a network.
+  	- Contains all definitions of the functions associated with parsing the input circuit.
   - analysis_header.hpp
-    - Contains all structs, classes and function declarations regarding the analysis of a network.
+    - Contains important general function declarations regarding the analysis of a circuit.
   - analysis_functions.cpp
-    - Contains all definitions of the functions associated with the analysis of a network.
+    - Contains all definitions of the functions associated with the analysis of a circuit.
   - simulator.cpp
     - AC simulator: our final program.
 
