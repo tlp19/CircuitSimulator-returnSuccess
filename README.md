@@ -28,7 +28,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
 # Project files
 
 ## Libraries and other external files:
-  - Matrix library \[matrix_library/\] - by hbtalha [Library GitHub Repository](https://github.com/hbtalha/Matrix-Library)
+  - Matrix library \[matrix_library/\] - by hbtalha \[[Library GitHub Repository](https://github.com/hbtalha/Matrix-Library)\]
     - Matrix.h - merged header of our Matrix struct and the one from the library
     - Matrix.cpp - definitions for the methods of the library
   - Boost - required for the matrix library
