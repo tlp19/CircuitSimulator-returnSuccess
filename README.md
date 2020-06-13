@@ -62,9 +62,9 @@ Test programs [test_programs/] :
     
 Test circuits [test_circuits/] :
   - test\_circuit\_1.txt
-    - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
+    - [I/O] A simple input file to test the i/o capabilities. (not a tested working circuit)
   - test\_circuit\_2.txt
-    - [I/O] A more complex input circuit. [not a tested working circuit]
+    - [I/O] A more complex input circuit. (not a tested working circuit)
   - test\_circuit\_3.txt
     - [General] A simple test circuit.
   - test\_circuit\_4.txt
@@ -90,7 +90,7 @@ Test circuits [test_circuits/] :
   - test\_circuit\_14.txt
     - [DC] RC test circuit
   - test\_circuit\_15.txt
-    - [DC] Two capacitors in parallel : doesn't work (conductance matrix not invertible).
+    - [DC] Two capacitors in parallel: doesn't work (conductance matrix not invertible).
   - test\_circuit\_16.txt
     - [DC] RCC circuit - A resistor and two capacitors in parallel.
   - test\_circuit\_17.txt
