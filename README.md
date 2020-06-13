@@ -31,7 +31,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
   - Matrix library \[matrix_library/\] - by hbtalha \[[Library GitHub Repository](https://github.com/hbtalha/Matrix-Library)\]
     - Matrix.h - merged header of our Matrix struct and the one from the library
     - Matrix.cpp - definitions for the methods of the library
-  - Boost - required for the matrix library
+  - Boost - required by the matrix library to compile the program
     - Install using: `$ sudo apt-get install libboost-all-dev`
     
   - plotsim.m [matlab/] - MatLab program given to plot the results of our simulation
