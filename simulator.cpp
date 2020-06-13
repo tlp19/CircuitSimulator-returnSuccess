@@ -100,6 +100,7 @@ int main() {
 	}
 	
 	cerr << endl << "End of transient analysis" << endl;
+	cerr << endl << "note: the result of the simulation is in simdata.txt" << endl;
 }
 
 
