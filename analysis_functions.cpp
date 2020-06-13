@@ -90,7 +90,7 @@ void Network::set_nodes_to_numbers(){
 }
 
 
-//Add to all C and V two resistances in series with opposite value so that they cancel out (no influence on current nor voltage) to find the current through the C and V.
+//Add to all C and V two resistors in series with opposite value so that they cancel out (no influence on current nor voltage) to find the current through the C and V.
 void Network::add_resistance_to_C_and_V(){
 
 	for(int i = 0 ; i < components.size() ; i++) {
