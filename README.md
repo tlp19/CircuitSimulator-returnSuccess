@@ -10,27 +10,33 @@ Code written by :
 
 # Prerequisites
 
-Boost 1.71.0 was used to write the Matrix library that we use. Therefore, it is required in order to compile our simulator.
+Boost 1.71.0 was used to write the Matrix library that we use. Therefore, it is required in order to compile our simulator (see below in "Project files" for installation command).
 The rest of the files were written using standard C++ libraries on Ubuntu and compiled using GCC 7.5.0.
 
 
-# Important notes
+# Guidelines to use the simulator
 
-  - When using inductors and capacitors, make sure to use a timestep a lot smaller than the smaller period of the sources in the circuit (about 100 times smaller works fine).
+  - There is already a compiled version of our simulator called "Simulator".
+  - To compile the simulator again, use `$ g++ simulator.cpp -o Simulator` in the main directory of the project folder.
+  - To run the simulator, use the command `$ ./Simulator < input_circuit.txt`
+  - The output is automatically recorded in a file simdata.txt (if it previously exists, it will be overwritten).
+
+#### Note
+  - When using inductors and capacitors, make sure to use a timestep a lot smaller than the smaller period of the sources in the circuit (around at least 100 times smaller works best).
 
 
 # Project files
 
-Libraries and other external files:
-  - Matrix library [matrix_library/] - by hbtalha [https://github.com/hbtalha/Matrix-Library]
+## Libraries and other external files:
+  - Matrix library \[matrix_library/\] - by hbtalha [Library GitHub Repository](https://github.com/hbtalha/Matrix-Library)
     - Matrix.h - merged header of our Matrix struct and the one from the library
     - Matrix.cpp - definitions for the methods of the library
   - Boost - required for the matrix library
-    - Install using: ```sudo apt-get install libboost-all-dev```
+    - Install using: `$ sudo apt-get install libboost-all-dev`
     
   - plotsim.m [matlab/] - MatLab program given to plot the results of our simulation
 
-List of program files:
+## List of program files:
   - network_header.hpp
   	- Contains all network structures and classes, as well as all important function declarations.
   - network_functions.cpp	
@@ -42,8 +48,8 @@ List of program files:
   - simulator.cpp
     - AC simulator: our final program.
 
-List of test files:
-  - Test programs [test_programs/]:
+## List of test files:
+### Test programs [test_programs/]:
     - test\_1\_network\_output.cpp
   	  - Test program that establishes a Network and then tests the output capability of the main code.
     - test\_2\_network\_io.cpp
@@ -52,7 +58,7 @@ List of test files:
   	  - Test program that reads and prints a network, and then also prints the sorted list of its nodes.
     - simulator_dc.cpp
       - Simple DC simulator (one interation with t=0).
-  - Test circuits [test_circuits/]:
+### Test circuits [test_circuits/]:
 	- test\_circuit\_1.txt
   	  - [I/O] A simple input file to test the i/o capabilities. [not a tested working circuit]
     - test\_circuit\_2.txt
@@ -87,6 +93,8 @@ List of test files:
   	  - [DC] RCC circuit - A resistor and two capacitors in parallel.
   	- test\_circuit\_17.txt
   	  - [AC] RCC circuit - A resistor and two capacitors in parallel.
+  	- test\_circuit\_complex.txt
+  	  - [AC] Complex circuit to test the capabilities of our simulator.
   	  
-Debugging files [debugging/]:
+## Debugging files [debugging/]:
   - debug.sh - Debugging script that compiles simulator_ac.cpp with debugging instruction for runtime
