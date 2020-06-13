@@ -34,7 +34,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
   - Boost - required by the matrix library to compile the program
     - Install using: `$ sudo apt-get install libboost-all-dev`
     
-  - plotsim.m [matlab/] - MatLab program given to plot the results of our simulation
+  - plotsim.m [matlab/] - MatLab script given to plot the results of our simulation
 
 ## List of program files:
   - network_header.hpp
