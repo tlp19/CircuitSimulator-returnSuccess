@@ -331,18 +331,21 @@ bool debug = false;
 
 // OUTPUT: Prints out the first row of the CSV file
 void print_CSV_header(const vector<string> &nodenames, const vector<string> &compnames) {
+	//Set the output to be recorded in simdata.txt
+	ofstream myfile;
+	myfile.open("simdata.txt", ios::trunc);
 	
 	//The first column of the CSV file constains the time
-	cout << "Time" << tab;
+	myfile << "Time" << tab;
 	
 	for(int i = 1 ; i < nodenames.size() ; i++) {
 		//If not a node created only for analysis, output the name of the node
 		if(debug==false) {
 			if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
-				cout << "V(" << nodenames[i] << ")" << tab;
+				myfile << "V(" << nodenames[i] << ")" << tab;
 			}
 		} else {
-			cout << "V(" << nodenames[i] << ")" << tab;
+			myfile << "V(" << nodenames[i] << ")" << tab;
 		}
 	}
 	
@@ -350,31 +353,35 @@ void print_CSV_header(const vector<string> &nodenames, const vector<string> &com
 		//If not a resistor created only for analysis, output the name of the component
 		if(debug==false) {
 			if((compnames[i].at(0) != 'T')&&(compnames[i].at(0)!='S')) {
-				cout << "I(" <<compnames[i] << ")" << tab;
+				myfile << "I(" <<compnames[i] << ")" << tab;
 			}
 		} else {
-			cout << "I(" <<compnames[i] << ")" << tab;
+			myfile << "I(" <<compnames[i] << ")" << tab;
 		}
 	}
 	
-	cout << "\n";
+	myfile << "\n";
+	myfile.close();
 }
 
 
 // OUTPUT: Prints out one result row of the CSV file
 void print_in_CSV(const double &time, const Matrix &mat, const vector<double> &vec, const Network &net, const vector<string> &nodenames, const vector<string> &compnames) {
+	//Set the output to be recorded in simdata.txt
+	ofstream myfile;
+	myfile.open("simdata.txt", ios::app);
 	
 	assert(mat.cols==1);
-	cout << time << tab;
+	myfile << time << tab;
 	
 	//Output the voltages of the nodes
 	for(int i = 1 ; i < nodenames.size() ; i++) {
 		if(debug==false){
 			if((nodenames[i].at(0)!='Z' && nodenames[i].at(1)!='Z') && (nodenames[i].at(0)!='X' && nodenames[i].at(1)!='X')) {
-				cout << find_voltage_at(nodenames[i], nodenames, mat) << tab;
+				myfile << find_voltage_at(nodenames[i], nodenames, mat) << tab;
 			}
 		} else {
-			cout << find_voltage_at(nodenames[i], nodenames, mat) << tab;
+			myfile << find_voltage_at(nodenames[i], nodenames, mat) << tab;
 		}
 	}
 	
@@ -382,13 +389,14 @@ void print_in_CSV(const double &time, const Matrix &mat, const vector<double> &v
 	for(int i = 0 ; i < compnames.size() ; i++) {
 		if(debug==false) {
 			if((compnames[i].at(0)!='T')&&(compnames[i].at(0)!='S')) {
-				cout << find_current_through(compnames[i], net, vec) << tab;
+				myfile << find_current_through(compnames[i], net, vec) << tab;
 			}
 		} else {
-			cout << find_current_through(compnames[i], net, vec) << tab;
+			myfile << find_current_through(compnames[i], net, vec) << tab;
 		}
 	}
-	cout << "\n";
+	myfile << "\n";
+	myfile.close();
 }
 
 

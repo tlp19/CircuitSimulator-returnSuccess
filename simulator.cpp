@@ -64,7 +64,8 @@ int main() {
 	print_CSV_header(list_of_nodes, list_of_components);
 	
 	//Do the analysis at all the time intervals
-	cerr << "Start of transient analysis" << endl;
+	cerr << endl << "Start of transient analysis (" << time_intervals.size() << " iterations)" << endl;
+	
 	for(int t_index = 0 ; t_index < time_intervals.size() ; t_index++) {
 		time = time_intervals[t_index];
 		

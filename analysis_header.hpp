@@ -2,6 +2,7 @@
 #define analysis_header_hpp
 
 #include <algorithm>
+#include <fstream> 
 
 #include "network_header.hpp"
 #include "network_functions.cpp"
