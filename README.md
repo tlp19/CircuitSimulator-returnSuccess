@@ -18,7 +18,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
 
   - There is already a compiled version of our simulator called "Simulator".
   - To compile the simulator again, run the script `compile_simulator.sh` using the command `$ bash compile_simulator.sh`.
-  - To run the simulator, use the command `$ ./Simulator < input_circuit.txt`
+  - To run the simulator, use the command `$ ./Simulator < input_netlist.txt`
   - The output is automatically recorded in a file simdata.txt (if it previously exists, it will be overwritten).
 
 #### Note
