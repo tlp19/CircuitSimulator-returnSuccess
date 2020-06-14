@@ -3,9 +3,9 @@
 This is the GitHub repository containing all our files for our Final Project of EEE/EIE Year 1 at Imperial College London (2019/2020).
 
 Code written by :
-  - Bertil de Germay de Cirfontaine
-  - Daniel Romano
-  - Tanguy Perron
+  - Bertil de Germay de Cirfontaine - CID 01767839
+  - Daniel Romano - CID 01728878
+  - Tanguy Perron - CID 01722386
 
 
 # Prerequisites
