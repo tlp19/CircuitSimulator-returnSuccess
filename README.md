@@ -16,8 +16,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
 
 # Guidelines to use the simulator
 
-  - There is already a compiled version of our simulator called "Simulator".
-  - To compile the simulator again, run the script `compile_simulator.sh` using the command `$ bash compile_simulator.sh`.
+  - To compile the simulator, run the script `compile_simulator.sh` using the command `$ bash compile_simulator.sh`.
   - To run the simulator, use the command `$ ./Simulator < input_netlist.txt`
   - The output is automatically recorded in a file simdata.txt (if it previously exists, it will be overwritten).
 
@@ -35,7 +34,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
     - Install using: `$ sudo apt-get install libboost-all-dev`
     
   - plotsim.m [matlab/] - MatLab script given to plot the results of our simulation
-    - The matlab/ directory also contains a few selected test outputs and MatLab graphs.
+
 
 ## List of program files:
   - simulator.cpp
