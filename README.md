@@ -10,7 +10,7 @@ Code written by :
 
 # Prerequisites
 
-Boost 1.71.0 was used to write the Matrix library that we use. Therefore, it is required in order to compile our simulator (see below in "Project files" for installation command).
+Boost 1.71.0 was used to write the Matrix library that we use. Therefore, it is required in order to compile our simulator (see below in the "Project files" section for the installation command).
 The rest of the files were written using standard C++ libraries on Ubuntu and compiled using GCC 7.5.0.
 
 
