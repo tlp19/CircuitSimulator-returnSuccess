@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <cstddef>
 
-#include "../analysis_header.hpp"
+#include "../network_header.hpp"
 
 using namespace std;
 

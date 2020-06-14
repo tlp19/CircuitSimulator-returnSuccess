@@ -17,7 +17,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
 # Guidelines to use the simulator
 
   - There is already a compiled version of our simulator called "Simulator".
-  - To compile the simulator again, use `$ g++ simulator.cpp -o Simulator` in the main directory of the project folder.
+  - To compile the simulator again, run the script `compile_simulator.sh` using the command `$ bash compile_simulator.sh`.
   - To run the simulator, use the command `$ ./Simulator < input_circuit.txt`
   - The output is automatically recorded in a file simdata.txt (if it previously exists, it will be overwritten).
 
@@ -38,6 +38,8 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
     - The matlab/ directory also contains a few selected test outputs and MatLab graphs.
 
 ## List of program files:
+  - simulator.cpp
+    - AC simulator: the final program.
   - network_header.hpp
   	- Contains all network structures and classes, as well as important function declarations.
   - network_functions.cpp	
@@ -46,8 +48,7 @@ The rest of the files were written using standard C++ libraries on Ubuntu and co
     - Contains important general function declarations regarding the analysis of a circuit.
   - analysis_functions.cpp
     - Contains all definitions of the functions associated with the analysis of a circuit.
-  - simulator.cpp
-    - AC simulator: our final program.
+
 
 ## List of test files:
 Test programs [test_programs/] :

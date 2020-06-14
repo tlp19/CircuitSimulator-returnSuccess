@@ -5,9 +5,7 @@
 #include <fstream> 
 
 #include "network_header.hpp"
-#include "network_functions.cpp"
 #include "matrix_library/Matrix.h"
-#include "matrix_library/Matrix.cpp"
 
 using namespace std;
 
