@@ -2,9 +2,11 @@
 
 This is the GitHub repository containing all our files for our Final Project of EEE/EIE Year 1 at Imperial College London (2019/2020).
 
-For this project, we built a Electrical Circuit Simulator in C++. Our simulator parses an input Netlist file and outputs in a CSV file the Voltage and Current of each component at every timestep of the simulation. It can currently handle Voltage sources, Current sources, Resistors, Capacitors and Inductors.
+For this project, we built an **Electrical circuit Simulator** in C++.
 
-Code written by :
+Our simulator parses an input Netlist file and outputs in a CSV file the Voltage and Current of each component at every timestep of the simulation. It can currently handle Voltage sources, Current sources, Resistors, Capacitors and Inductors.
+
+The code was written by :
   - Bertil de Germay de Cirfontaine - CID 01767839
   - Daniel Romano - CID 01728878
   - Tanguy Perron - CID 01722386
